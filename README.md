@@ -6,7 +6,7 @@
   <img alt="LinuxBenchHub — compare Linux distros under identical virtual hardware, with a Rails dashboard and live noVNC view." src="assets/banner-dark.svg">
 </picture>
 
-[![CI](https://github.com/Builder106/LinuxBenchHub/actions/workflows/ci.yml/badge.svg)](https://github.com/Builder106/LinuxBenchHub/actions/workflows/ci.yml)
+[![CI](https://github.com/Builder106/linux-bench-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/Builder106/linux-bench-hub/actions/workflows/ci.yml)
 [![Ruby](https://img.shields.io/badge/Ruby-3.3.0-CC342D.svg?logo=ruby&logoColor=white)](https://www.ruby-lang.org/)
 [![Rails](https://img.shields.io/badge/Rails-8.0-D30001.svg?logo=rubyonrails&logoColor=white)](https://rubyonrails.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#license)

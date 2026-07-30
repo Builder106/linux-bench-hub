@@ -197,6 +197,6 @@
 
     <line x1="620" y1="558" x2="1140" y2="558" stroke="#3d1a1d" stroke-width="1"/>
 
-    <text x="620" y="592" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-size="13" letter-spacing="0.6" fill="#cc342d" font-weight="600">github.com/Builder106/LinuxBenchHub</text>
+    <text x="620" y="592" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-size="13" letter-spacing="0.6" fill="#cc342d" font-weight="600">github.com/Builder106/linux-bench-hub</text>
   </g>
 </svg>
