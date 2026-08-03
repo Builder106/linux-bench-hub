@@ -15,6 +15,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_NOTIFY_USER_LIST: ""
+
   rails:
     name: Rails (lint + test)
     runs-on: ubuntu-24.04
@@ -40,6 +51,9 @@ jobs:
             ruby -c "$f" >/dev/null || { echo "::error file=website/$f::Ruby parse error"; fail=1; }
           done < <(find app bin config lib test -name '*.rb' -not -path '*/node_modules/*')
           exit "$fail"
+
+      - name: Ruby dependency audit
+        run: gem install bundler-audit && bundle-audit check --update
 
       - name: Test suite
         run: bundle exec rails test
