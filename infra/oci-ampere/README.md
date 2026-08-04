@@ -4,7 +4,7 @@ Terraform module that provisions a single Always-Free Ampere A1 Flex instance (U
 
 ## What it builds
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │ Region: <var.region>                     │
 │ Compartment: <var.compartment_ocid>      │
@@ -77,7 +77,7 @@ Removes every resource the module created. Useful when Oracle's free-tier capaci
 
 `.github/workflows/capture-benchmarks.yml`'s `capture-ampere-arm64` job stores `OCI_AMPERE_HOST` (IP) and `OCI_AMPERE_SSH_KEY` (private key PEM) as repo secrets, then runs a `[ubuntu, fedora, debian]` matrix against this one host — same images, same `pkg_install` lists, and the same `.github/scripts/container-capture.sh` body the x86 legs run inside GitHub's native `container:`, just driven remotely instead of locally:
 
-```
+```bash
 scp pkg-install.sh container-capture.sh pts-batch-config.xml ubuntu@$OCI_AMPERE_HOST:~/lbh-run/<distro>/
 ssh ubuntu@$OCI_AMPERE_HOST "docker run --rm \
   -v ~/lbh-run/<distro>/pkg-install.sh:/pkg-install.sh:ro \

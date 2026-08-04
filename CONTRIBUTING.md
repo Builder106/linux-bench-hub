@@ -55,7 +55,7 @@ cd website && bundle exec rubocop --parallel
 
 The existing log uses short imperative subjects. Examples:
 
-```
+```text
 Add Rails UJS support, update performance benchmarks controller for destroy action, and adjust JavaScript imports
 Add rdoc for documentation, implement background job for benchmark execution, and enhance GUI with VM connection details
 Trying to fix this

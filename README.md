@@ -80,7 +80,7 @@ The R parsers and the Rails app are interchangeable consumers of the same `compo
 
 ## Repo layout
 
-```
+```text
 .
 |-- benchmarks/              # captured Phoronix results, per platform
 |   |-- ubuntu/              #   ubuntu.md + Parse_composite_Ubuntu.R + composite-latest.xml + captures/
