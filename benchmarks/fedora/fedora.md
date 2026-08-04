@@ -13,16 +13,16 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 
 ### Hardware
 
-- **Processor**: AMD EPYC 9V74 80-Core (2 Cores / 4 Threads)
+- **Processor**: AMD EPYC 7763 64-Core (2 Cores / 4 Threads)
 - **Motherboard**: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS)
 - **Memory**: 16GB
-- **Disk**: 2 x 81GB Virtual Disk
+- **Disk**: 161GB Virtual Disk
 - **Graphics**: hyperv_drmdrmfb
 
 ### Software
 
 - **OS**: Fedora Linux 44
-- **Kernel**: 6.17.0-1018-azure (x86_64)
+- **Kernel**: 6.17.0-1020-azure (x86_64)
 - **Compiler**: GCC 16.1.1 20260515
 - **File-System**: overlayfs
 - **Screen Resolution**: 1024x768
@@ -32,9 +32,9 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 
 ## Tinymembench Benchmark
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 1)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 1)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -42,32 +42,29 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 1)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (MB/s)**: 24283.9
-- **Raw String (MB/s)**: `25595.3:25947.7:24214.2:24458.4:23995.2:21492.5`
+- **Identifier**: AMD EPYC 7763 64-Core
+- **Value (MB/s)**: 22071.4
+- **Raw String (MB/s)**: `21476.6:22295.4:22442.1`
 
-### Detailed Run Values
+### Detailed Run Values (test 1)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 25595.3 |
-| 2   | 25947.7 |
-| 3   | 24214.2 |
-| 4   | 24458.4 |
-| 5   | 23995.2 |
-| 6   | 21492.5 |
+| --- | ------------ |
+| 1   | 21476.6      |
+| 2   | 22295.4      |
+| 3   | 22442.1      |
 
-### Summary Statistics
+### Summary Statistics (test 1)
 
-- **Mean Value (MB/s)**: 24283.883
-- **Median Value (MB/s)**: 24336.3
-- **Standard Deviation (MB/s)**: 1574.711
+- **Mean Value (MB/s)**: 22071.367
+- **Median Value (MB/s)**: 22295.4
+- **Standard Deviation (MB/s)**: 520.28
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 2)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 2)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -75,36 +72,33 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 2)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (MB/s)**: 45480.9
-- **Raw String (MB/s)**: `52955.8:53614:45969.6:37502.7:45961.7:36881.8`
+- **Identifier**: AMD EPYC 7763 64-Core
+- **Value (MB/s)**: 36227.9
+- **Raw String (MB/s)**: `35632.5:36634:36417.1`
 
-### Detailed Run Values
+### Detailed Run Values (test 2)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 52955.8 |
-| 2   | 53614.0 |
-| 3   | 45969.6 |
-| 4   | 37502.7 |
-| 5   | 45961.7 |
-| 6   | 36881.8 |
+| --- | ------------ |
+| 1   | 35632.5      |
+| 2   | 36634.0      |
+| 3   | 36417.1      |
 
-### Summary Statistics
+### Summary Statistics (test 2)
 
-- **Mean Value (MB/s)**: 45480.933
-- **Median Value (MB/s)**: 45965.65
-- **Standard Deviation (MB/s)**: 7212.318
+- **Mean Value (MB/s)**: 36227.867
+- **Median Value (MB/s)**: 36417.1
+- **Standard Deviation (MB/s)**: 526.885
 
 ---
 
 ## C-Ray Benchmark
 
-### Test Identifier: `pts/c-ray-2.0.0`
+### Test Identifier: `pts/c-ray-2.0.0` (test 3)
 
-#### Title: C-Ray
+#### Title: C-Ray (test 3)
 
 - **App Version**: 2.0
 - **Arguments**: `-s 1920x1080 -r 16`
@@ -112,33 +106,33 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 - **Scale**: Seconds
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 3)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (Seconds)**: 359.315
-- **Raw String (Seconds)**: `359.212:359.117:359.616`
+- **Identifier**: AMD EPYC 7763 64-Core
+- **Value (Seconds)**: 352.315
+- **Raw String (Seconds)**: `352.229:352.719:351.997`
 
-### Detailed Run Values
+### Detailed Run Values (test 3)
 
 | Run | Value (Seconds) |
-|-----|-------------------|
-| 1   | 359.212 |
-| 2   | 359.117 |
-| 3   | 359.616 |
+| --- | --------------- |
+| 1   | 352.229         |
+| 2   | 352.719         |
+| 3   | 351.997         |
 
-### Summary Statistics
+### Summary Statistics (test 3)
 
-- **Mean Value (Seconds)**: 359.315
-- **Median Value (Seconds)**: 359.212
-- **Standard Deviation (Seconds)**: 0.265
+- **Mean Value (Seconds)**: 352.315
+- **Median Value (Seconds)**: 352.229
+- **Standard Deviation (Seconds)**: 0.369
 
 ---
 
 ## Aircrack-ng Benchmark
 
-### Test Identifier: `pts/aircrack-ng-1.3.0`
+### Test Identifier: `pts/aircrack-ng-1.3.0` (test 4)
 
-#### Title: Aircrack-ng
+#### Title: Aircrack-ng (test 4)
 
 - **App Version**: 1.7
 - **Arguments**: ``
@@ -146,24 +140,24 @@ This document provides detailed benchmarking results for Fedora Linux 44, captur
 - **Scale**: k/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 4)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (k/s)**: 6987.830
-- **Raw String (k/s)**: `6987.635:6986.896:6988.958`
+- **Identifier**: AMD EPYC 7763 64-Core
+- **Value (k/s)**: 7583.768
+- **Raw String (k/s)**: `7591.058:7567.514:7592.732`
 
-### Detailed Run Values
+### Detailed Run Values (test 4)
 
 | Run | Value (k/s) |
-|-----|-------------------|
-| 1   | 6987.635 |
-| 2   | 6986.896 |
-| 3   | 6988.958 |
+| --- | ----------- |
+| 1   | 7591.058    |
+| 2   | 7567.514    |
+| 3   | 7592.732    |
 
-### Summary Statistics
+### Summary Statistics (test 4)
 
-- **Mean Value (k/s)**: 6987.83
-- **Median Value (k/s)**: 6987.635
-- **Standard Deviation (k/s)**: 1.045
+- **Mean Value (k/s)**: 7583.768
+- **Median Value (k/s)**: 7591.058
+- **Standard Deviation (k/s)**: 14.101
 
 ---

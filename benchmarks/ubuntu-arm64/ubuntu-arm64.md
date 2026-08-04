@@ -16,14 +16,14 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Processor**: ARMv8 Neoverse-N1 (4 Cores)
 - **Motherboard**: QEMU KVM Virtual Machine (1.6.6 BIOS)
 - **Memory**: 24GB
-- **Disk**: 107GB BlockVolume
+- **Disk**: 161GB BlockVolume
 - **Graphics**: virtio_gpudrmfb
 - **Monitor**: QEMU Monitor
 
 ### Software
 
 - **OS**: Ubuntu 26.04 LTS
-- **Kernel**: 6.17.0-1011-oracle (aarch64)
+- **Kernel**: 6.17.0-1018-oracle (aarch64)
 - **Compiler**: GCC 15.2.0
 - **File-System**: overlayfs
 - **Screen Resolution**: 1280x800
@@ -33,9 +33,9 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 
 ## Tinymembench Benchmark
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 1)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 1)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -43,29 +43,29 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 1)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (MB/s)**: 11776.2
-- **Raw String (MB/s)**: `11825.2:11715.7:11787.6`
+- **Value (MB/s)**: 12752.8
+- **Raw String (MB/s)**: `12467.1:12946.7:12844.5`
 
-### Detailed Run Values
+### Detailed Run Values (test 1)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 11825.2 |
-| 2   | 11715.7 |
-| 3   | 11787.6 |
+| --- | ------------ |
+| 1   | 12467.1      |
+| 2   | 12946.7      |
+| 3   | 12844.5      |
 
-### Summary Statistics
+### Summary Statistics (test 1)
 
-- **Mean Value (MB/s)**: 11776.167
-- **Median Value (MB/s)**: 11787.6
-- **Standard Deviation (MB/s)**: 55.638
+- **Mean Value (MB/s)**: 12752.767
+- **Median Value (MB/s)**: 12844.5
+- **Standard Deviation (MB/s)**: 252.617
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 2)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 2)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -73,33 +73,33 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 2)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (MB/s)**: 47240.3
-- **Raw String (MB/s)**: `47251.3:47195.7:47274`
+- **Value (MB/s)**: 47490.1
+- **Raw String (MB/s)**: `47491.2:47506.3:47472.9`
 
-### Detailed Run Values
+### Detailed Run Values (test 2)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 47251.3 |
-| 2   | 47195.7 |
-| 3   | 47274.0 |
+| --- | ------------ |
+| 1   | 47491.2      |
+| 2   | 47506.3      |
+| 3   | 47472.9      |
 
-### Summary Statistics
+### Summary Statistics (test 2)
 
-- **Mean Value (MB/s)**: 47240.333
-- **Median Value (MB/s)**: 47251.3
-- **Standard Deviation (MB/s)**: 40.286
+- **Mean Value (MB/s)**: 47490.133
+- **Median Value (MB/s)**: 47491.2
+- **Standard Deviation (MB/s)**: 16.726
 
 ---
 
 ## C-Ray Benchmark
 
-### Test Identifier: `pts/c-ray-2.0.0`
+### Test Identifier: `pts/c-ray-2.0.0` (test 3)
 
-#### Title: C-Ray
+#### Title: C-Ray (test 3)
 
 - **App Version**: 2.0
 - **Arguments**: `-s 1920x1080 -r 16`
@@ -107,33 +107,33 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: Seconds
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 3)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (Seconds)**: 205.504
-- **Raw String (Seconds)**: `206.237:205.473:204.801`
+- **Value (Seconds)**: 245.638
+- **Raw String (Seconds)**: `244.433:246.879:245.601`
 
-### Detailed Run Values
+### Detailed Run Values (test 3)
 
 | Run | Value (Seconds) |
-|-----|-------------------|
-| 1   | 206.237 |
-| 2   | 205.473 |
-| 3   | 204.801 |
+| --- | --------------- |
+| 1   | 244.433         |
+| 2   | 246.879         |
+| 3   | 245.601         |
 
-### Summary Statistics
+### Summary Statistics (test 3)
 
-- **Mean Value (Seconds)**: 205.504
-- **Median Value (Seconds)**: 205.473
-- **Standard Deviation (Seconds)**: 0.718
+- **Mean Value (Seconds)**: 245.638
+- **Median Value (Seconds)**: 245.601
+- **Standard Deviation (Seconds)**: 1.223
 
 ---
 
 ## Aircrack-ng Benchmark
 
-### Test Identifier: `pts/aircrack-ng-1.3.0`
+### Test Identifier: `pts/aircrack-ng-1.3.0` (test 4)
 
-#### Title: Aircrack-ng
+#### Title: Aircrack-ng (test 4)
 
 - **App Version**: 1.7
 - **Arguments**: ``
@@ -141,36 +141,24 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: k/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 4)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (k/s)**: 4274.258
-- **Raw String (k/s)**: `4348.223:4342.495:3994.261:4349.705:4344.805:4347.136:4348.365:3985.502:3989.579:4347.669:4349.865:4345.14:4331.438:4344.339:4345.341`
+- **Value (k/s)**: 3726.172
+- **Raw String (k/s)**: `3782.19:3689.443:3706.882`
 
-### Detailed Run Values
+### Detailed Run Values (test 4)
 
 | Run | Value (k/s) |
-| ----- | ------------------- |
-| 1 | 4348.223 |
-| 2 | 4342.495 |
-| 3 | 3994.261 |
-| 4 | 4349.705 |
-| 5 | 4344.805 |
-| 6 | 4347.136 |
-| 7 | 4348.365 |
-| 8 | 3985.502 |
-| 9 | 3989.579 |
-| 10 | 4347.669 |
-| 11 | 4349.865 |
-| 12 | 4345.14 |
-| 13 | 4331.438 |
-| 14 | 4344.339 |
-| 15 | 4345.341 |
+| --- | ----------- |
+| 1   | 3782.19     |
+| 2   | 3689.443    |
+| 3   | 3706.882    |
 
-### Summary Statistics
+### Summary Statistics (test 4)
 
-- **Mean Value (k/s)**: 4274.258
-- **Median Value (k/s)**: 4345.14
-- **Standard Deviation (k/s)**: 147.305
+- **Mean Value (k/s)**: 3726.172
+- **Median Value (k/s)**: 3706.882
+- **Standard Deviation (k/s)**: 49.291
 
 ---

@@ -45,6 +45,25 @@ def slugify(s)
   s.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-|-\z/, "")
 end
 
+# Pads every cell to a consistent column width so the emitted table satisfies
+# markdownlint's MD060 (table-column-style), which requires uniform pipe
+# spacing across header, delimiter, and data rows.
+def build_run_table(scale, raw_values)
+  run_header = "Run"
+  value_header = "Value (#{scale})"
+  formatted = raw_values.map { |v| fmt(v) }
+  run_width = [run_header.length, raw_values.length.to_s.length].max
+  value_width = [value_header.length, *formatted.map(&:length)].max
+
+  rows = []
+  rows << "| #{run_header.ljust(run_width)} | #{value_header.ljust(value_width)} |"
+  rows << "| #{"-" * run_width} | #{"-" * value_width} |"
+  formatted.each_with_index do |v, i|
+    rows << "| #{(i + 1).to_s.ljust(run_width)} | #{v.ljust(value_width)} |"
+  end
+  rows
+end
+
 def build_markdown(distro, doc)
   system_node = doc.elements["PhoronixTestSuite/System"]
   hardware = spec_pairs(system_node.elements["Hardware"]&.text)
@@ -78,10 +97,12 @@ def build_markdown(distro, doc)
   lines << ""
   lines << "---"
 
+  test_number = 0
   groups.each do |title, tests|
     lines << ""
     lines << "## #{title} Benchmark"
     tests.each do |result|
+      test_number += 1
       identifier = result.elements["Identifier"].text
       app_version = result.elements["AppVersion"]&.text.to_s
       arguments = result.elements["Arguments"]&.text.to_s
@@ -92,27 +113,25 @@ def build_markdown(distro, doc)
       raw_values = entry.elements["RawString"].text.split(":").map(&:to_f)
 
       lines << ""
-      lines << "### Test Identifier: `#{identifier}`"
+      lines << "### Test Identifier: `#{identifier}` (test #{test_number})"
       lines << ""
-      lines << "#### Title: #{title}"
+      lines << "#### Title: #{title} (test #{test_number})"
       lines << "- **App Version**: #{app_version}"
       lines << "- **Arguments**: `#{arguments}`"
       lines << "- **Description**: #{description}"
       lines << "- **Scale**: #{scale}"
       lines << "- **Display Format**: #{display_format}"
       lines << ""
-      lines << "### Data Entries"
+      lines << "### Data Entries (test #{test_number})"
       lines << "- **Identifier**: #{entry.elements["Identifier"].text}"
       lines << "- **Value (#{scale})**: #{entry.elements["Value"].text}"
       lines << "- **Raw String (#{scale})**: `#{entry.elements["RawString"].text}`"
       lines << ""
-      lines << "### Detailed Run Values"
+      lines << "### Detailed Run Values (test #{test_number})"
       lines << ""
-      lines << "| Run | Value (#{scale}) |"
-      lines << "|-----|-------------------|"
-      raw_values.each_with_index { |v, i| lines << "| #{i + 1}   | #{fmt(v)} |" }
+      lines.concat(build_run_table(scale, raw_values))
       lines << ""
-      lines << "### Summary Statistics"
+      lines << "### Summary Statistics (test #{test_number})"
       lines << "- **Mean Value (#{scale})**: #{fmt(mean(raw_values))}"
       lines << "- **Median Value (#{scale})**: #{fmt(median(raw_values))}"
       lines << "- **Standard Deviation (#{scale})**: #{fmt(sample_stddev(raw_values))}"

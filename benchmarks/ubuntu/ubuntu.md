@@ -13,28 +13,29 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 
 ### Hardware
 
-- **Processor**: AMD EPYC 9V74 80-Core (2 Cores / 4 Threads)
-- **Motherboard**: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS)
-- **Memory**: 16GB
-- **Disk**: 2 x 81GB Virtual Disk
-- **Graphics**: hyperv_drmdrmfb
+- **Processor**: ARMv8 Neoverse-N1 (4 Cores)
+- **Motherboard**: QEMU KVM Virtual Machine (1.6.6 BIOS)
+- **Memory**: 24GB
+- **Disk**: 161GB BlockVolume
+- **Graphics**: virtio_gpudrmfb
+- **Monitor**: QEMU Monitor
 
 ### Software
 
 - **OS**: Ubuntu 26.04 LTS
-- **Kernel**: 6.17.0-1018-azure (x86_64)
+- **Kernel**: 6.17.0-1018-oracle (aarch64)
 - **Compiler**: GCC 15.2.0
 - **File-System**: overlayfs
-- **Screen Resolution**: 1024x768
+- **Screen Resolution**: 1280x800
 - **System Layer**: Docker
 
 ---
 
 ## Tinymembench Benchmark
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 1)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 1)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -42,34 +43,29 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 1)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (MB/s)**: 23210.7
-- **Raw String (MB/s)**: `20870:22694.8:22420.7:22338.3:22664.7:23032.7:24692.3:26972.2`
+- **Identifier**: ARMv8 Neoverse-N1
+- **Value (MB/s)**: 12752.8
+- **Raw String (MB/s)**: `12467.1:12946.7:12844.5`
 
-### Detailed Run Values
+### Detailed Run Values (test 1)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 20870.0 |
-| 2   | 22694.8 |
-| 3   | 22420.7 |
-| 4   | 22338.3 |
-| 5   | 22664.7 |
-| 6   | 23032.7 |
-| 7   | 24692.3 |
-| 8   | 26972.2 |
+| --- | ------------ |
+| 1   | 12467.1      |
+| 2   | 12946.7      |
+| 3   | 12844.5      |
 
-### Summary Statistics
+### Summary Statistics (test 1)
 
-- **Mean Value (MB/s)**: 23210.712
-- **Median Value (MB/s)**: 22679.75
-- **Standard Deviation (MB/s)**: 1844.065
+- **Mean Value (MB/s)**: 12752.767
+- **Median Value (MB/s)**: 12844.5
+- **Standard Deviation (MB/s)**: 252.617
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 2)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 2)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -77,38 +73,33 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 2)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (MB/s)**: 43653.0
-- **Raw String (MB/s)**: `38480.5:39845.2:39794.4:39357.1:39979:41231.4:52780:57756.8`
+- **Identifier**: ARMv8 Neoverse-N1
+- **Value (MB/s)**: 47490.1
+- **Raw String (MB/s)**: `47491.2:47506.3:47472.9`
 
-### Detailed Run Values
+### Detailed Run Values (test 2)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 38480.5 |
-| 2   | 39845.2 |
-| 3   | 39794.4 |
-| 4   | 39357.1 |
-| 5   | 39979.0 |
-| 6   | 41231.4 |
-| 7   | 52780.0 |
-| 8   | 57756.8 |
+| --- | ------------ |
+| 1   | 47491.2      |
+| 2   | 47506.3      |
+| 3   | 47472.9      |
 
-### Summary Statistics
+### Summary Statistics (test 2)
 
-- **Mean Value (MB/s)**: 43653.05
-- **Median Value (MB/s)**: 39912.1
-- **Standard Deviation (MB/s)**: 7330.751
+- **Mean Value (MB/s)**: 47490.133
+- **Median Value (MB/s)**: 47491.2
+- **Standard Deviation (MB/s)**: 16.726
 
 ---
 
 ## C-Ray Benchmark
 
-### Test Identifier: `pts/c-ray-2.0.0`
+### Test Identifier: `pts/c-ray-2.0.0` (test 3)
 
-#### Title: C-Ray
+#### Title: C-Ray (test 3)
 
 - **App Version**: 2.0
 - **Arguments**: `-s 1920x1080 -r 16`
@@ -116,33 +107,33 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: Seconds
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 3)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (Seconds)**: 366.009
-- **Raw String (Seconds)**: `366.359:365.858:365.811`
+- **Identifier**: ARMv8 Neoverse-N1
+- **Value (Seconds)**: 245.638
+- **Raw String (Seconds)**: `244.433:246.879:245.601`
 
-### Detailed Run Values
+### Detailed Run Values (test 3)
 
 | Run | Value (Seconds) |
-|-----|-------------------|
-| 1   | 366.359 |
-| 2   | 365.858 |
-| 3   | 365.811 |
+| --- | --------------- |
+| 1   | 244.433         |
+| 2   | 246.879         |
+| 3   | 245.601         |
 
-### Summary Statistics
+### Summary Statistics (test 3)
 
-- **Mean Value (Seconds)**: 366.009
-- **Median Value (Seconds)**: 365.858
-- **Standard Deviation (Seconds)**: 0.304
+- **Mean Value (Seconds)**: 245.638
+- **Median Value (Seconds)**: 245.601
+- **Standard Deviation (Seconds)**: 1.223
 
 ---
 
 ## Aircrack-ng Benchmark
 
-### Test Identifier: `pts/aircrack-ng-1.3.0`
+### Test Identifier: `pts/aircrack-ng-1.3.0` (test 4)
 
-#### Title: Aircrack-ng
+#### Title: Aircrack-ng (test 4)
 
 - **App Version**: 1.7
 - **Arguments**: ``
@@ -150,24 +141,24 @@ This document provides detailed benchmarking results for Ubuntu 26.04 LTS, captu
 - **Scale**: k/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 4)
 
-- **Identifier**: AMD EPYC 9V74 80-Core
-- **Value (k/s)**: 6978.865
-- **Raw String (k/s)**: `7003.043:6952.318:6981.234`
+- **Identifier**: ARMv8 Neoverse-N1
+- **Value (k/s)**: 3726.172
+- **Raw String (k/s)**: `3782.19:3689.443:3706.882`
 
-### Detailed Run Values
+### Detailed Run Values (test 4)
 
 | Run | Value (k/s) |
-|-----|-------------------|
-| 1   | 7003.043 |
-| 2   | 6952.318 |
-| 3   | 6981.234 |
+| --- | ----------- |
+| 1   | 3782.19     |
+| 2   | 3689.443    |
+| 3   | 3706.882    |
 
-### Summary Statistics
+### Summary Statistics (test 4)
 
-- **Mean Value (k/s)**: 6978.865
-- **Median Value (k/s)**: 6981.234
-- **Standard Deviation (k/s)**: 25.445
+- **Mean Value (k/s)**: 3726.172
+- **Median Value (k/s)**: 3706.882
+- **Standard Deviation (k/s)**: 49.291
 
 ---

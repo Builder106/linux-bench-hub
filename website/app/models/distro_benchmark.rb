@@ -86,10 +86,10 @@ class DistroBenchmark
   end
 
   def parse_test(block)
-    table = block[/### Detailed Run (?:Times|Values)\s*\n+(.*?)(?=\n###|\n---|\z)/m, 1]
+    table = block[/### Detailed Run (?:Times|Values)[^\n]*\n+(.*?)(?=\n###|\n---|\z)/m, 1]
     Test.new(
       identifier: block[/### Test Identifier:\s*`?([^`\n]+)`?/, 1].to_s.strip,
-      title: block[/#### Title:\s*(.+)/, 1].to_s.strip,
+      title: block[/#### Title:\s*(.+?)(?:\s+\(test\s+\d+\))?\s*$/, 1].to_s.strip,
       description: find_key_value(block, /\ADescription\z/),
       app_version: find_key_value(block, /\AApp Version\z/),
       args: find_key_value(block, /\AArguments\z/),

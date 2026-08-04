@@ -16,14 +16,14 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Processor**: ARMv8 Neoverse-N1 (4 Cores)
 - **Motherboard**: QEMU KVM Virtual Machine (1.6.6 BIOS)
 - **Memory**: 24GB
-- **Disk**: 107GB BlockVolume
+- **Disk**: 161GB BlockVolume
 - **Graphics**: virtio_gpudrmfb
 - **Monitor**: QEMU Monitor
 
 ### Software
 
 - **OS**: Debian GNU/Linux 13
-- **Kernel**: 6.17.0-1011-oracle (aarch64)
+- **Kernel**: 6.17.0-1018-oracle (aarch64)
 - **Compiler**: GCC 14.2.0
 - **File-System**: overlayfs
 - **Screen Resolution**: 1280x800
@@ -33,9 +33,9 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 
 ## Tinymembench Benchmark
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 1)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 1)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -43,29 +43,29 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 1)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (MB/s)**: 11667.0
-- **Raw String (MB/s)**: `11693:11696.4:11611.6`
+- **Value (MB/s)**: 11919.6
+- **Raw String (MB/s)**: `12081.7:11633.9:12043.1`
 
-### Detailed Run Values
+### Detailed Run Values (test 1)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 11693.0 |
-| 2   | 11696.4 |
-| 3   | 11611.6 |
+| --- | ------------ |
+| 1   | 12081.7      |
+| 2   | 11633.9      |
+| 3   | 12043.1      |
 
-### Summary Statistics
+### Summary Statistics (test 1)
 
-- **Mean Value (MB/s)**: 11667.0
-- **Median Value (MB/s)**: 11693.0
-- **Standard Deviation (MB/s)**: 48.008
+- **Mean Value (MB/s)**: 11919.567
+- **Median Value (MB/s)**: 12043.1
+- **Standard Deviation (MB/s)**: 248.146
 
-### Test Identifier: `pts/tinymembench-1.0.2`
+### Test Identifier: `pts/tinymembench-1.0.2` (test 2)
 
-#### Title: Tinymembench
+#### Title: Tinymembench (test 2)
 
 - **App Version**: 2018-05-28
 - **Arguments**: ``
@@ -73,33 +73,33 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Scale**: MB/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 2)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (MB/s)**: 47525.3
-- **Raw String (MB/s)**: `47527.1:47488.1:47560.6`
+- **Value (MB/s)**: 47470.9
+- **Raw String (MB/s)**: `47519.7:47423.3:47469.6`
 
-### Detailed Run Values
+### Detailed Run Values (test 2)
 
 | Run | Value (MB/s) |
-|-----|-------------------|
-| 1   | 47527.1 |
-| 2   | 47488.1 |
-| 3   | 47560.6 |
+| --- | ------------ |
+| 1   | 47519.7      |
+| 2   | 47423.3      |
+| 3   | 47469.6      |
 
-### Summary Statistics
+### Summary Statistics (test 2)
 
-- **Mean Value (MB/s)**: 47525.267
-- **Median Value (MB/s)**: 47527.1
-- **Standard Deviation (MB/s)**: 36.285
+- **Mean Value (MB/s)**: 47470.867
+- **Median Value (MB/s)**: 47469.6
+- **Standard Deviation (MB/s)**: 48.212
 
 ---
 
 ## C-Ray Benchmark
 
-### Test Identifier: `pts/c-ray-2.0.0`
+### Test Identifier: `pts/c-ray-2.0.0` (test 3)
 
-#### Title: C-Ray
+#### Title: C-Ray (test 3)
 
 - **App Version**: 2.0
 - **Arguments**: `-s 1920x1080 -r 16`
@@ -107,33 +107,33 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Scale**: Seconds
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 3)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (Seconds)**: 199.848
-- **Raw String (Seconds)**: `199.791:199.892:199.861`
+- **Value (Seconds)**: 237.698
+- **Raw String (Seconds)**: `237.107:238.025:237.961`
 
-### Detailed Run Values
+### Detailed Run Values (test 3)
 
 | Run | Value (Seconds) |
-|-----|-------------------|
-| 1   | 199.791 |
-| 2   | 199.892 |
-| 3   | 199.861 |
+| --- | --------------- |
+| 1   | 237.107         |
+| 2   | 238.025         |
+| 3   | 237.961         |
 
-### Summary Statistics
+### Summary Statistics (test 3)
 
-- **Mean Value (Seconds)**: 199.848
-- **Median Value (Seconds)**: 199.861
-- **Standard Deviation (Seconds)**: 0.052
+- **Mean Value (Seconds)**: 237.698
+- **Median Value (Seconds)**: 237.961
+- **Standard Deviation (Seconds)**: 0.513
 
 ---
 
 ## Aircrack-ng Benchmark
 
-### Test Identifier: `pts/aircrack-ng-1.3.0`
+### Test Identifier: `pts/aircrack-ng-1.3.0` (test 4)
 
-#### Title: Aircrack-ng
+#### Title: Aircrack-ng (test 4)
 
 - **App Version**: 1.7
 - **Arguments**: ``
@@ -141,24 +141,36 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Scale**: k/s
 - **Display Format**: BAR_GRAPH
 
-### Data Entries
+### Data Entries (test 4)
 
 - **Identifier**: ARMv8 Neoverse-N1
-- **Value (k/s)**: 4271.842
-- **Raw String (k/s)**: `4273.283:4270.992:4271.252`
+- **Value (k/s)**: 3699.635
+- **Raw String (k/s)**: `3287.725:3652.637:3723.387:3642.309:3345.511:4097.679:3697.419:3838.126:3638.606:4071.467:3598.347:3374.275:3671.583:3754.223:4101.228`
 
-### Detailed Run Values
+### Detailed Run Values (test 4)
 
 | Run | Value (k/s) |
-|-----|-------------------|
-| 1   | 4273.283 |
-| 2   | 4270.992 |
-| 3   | 4271.252 |
+| --- | ----------- |
+| 1   | 3287.725    |
+| 2   | 3652.637    |
+| 3   | 3723.387    |
+| 4   | 3642.309    |
+| 5   | 3345.511    |
+| 6   | 4097.679    |
+| 7   | 3697.419    |
+| 8   | 3838.126    |
+| 9   | 3638.606    |
+| 10  | 4071.467    |
+| 11  | 3598.347    |
+| 12  | 3374.275    |
+| 13  | 3671.583    |
+| 14  | 3754.223    |
+| 15  | 4101.228    |
 
-### Summary Statistics
+### Summary Statistics (test 4)
 
-- **Mean Value (k/s)**: 4271.842
-- **Median Value (k/s)**: 4271.252
-- **Standard Deviation (k/s)**: 1.254
+- **Mean Value (k/s)**: 3699.635
+- **Median Value (k/s)**: 3671.583
+- **Standard Deviation (k/s)**: 253.814
 
 ---

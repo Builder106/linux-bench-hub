@@ -23,21 +23,21 @@ class DistroBenchmarkTest < ActiveSupport::TestCase
 
     ## Tinymembench Benchmark
 
-    ### Test Identifier: `pts/tinymembench-1.0.2`
+    ### Test Identifier: `pts/tinymembench-1.0.2` (test 1)
 
-    #### Title: Tinymembench
+    #### Title: Tinymembench (test 1)
     - **App Version**: 2018-05-28
     - **Arguments**: ``
     - **Description**: Standard Memcpy
 
-    ### Detailed Run Values
+    ### Detailed Run Values (test 1)
 
     | Run | Value (MB/s) |
-    |-----|--------------|
-    | 1   | 20870.0 |
-    | 2   | 22694.8 |
+    | --- | ------------ |
+    | 1   | 20870.0      |
+    | 2   | 22694.8      |
 
-    ### Summary Statistics
+    ### Summary Statistics (test 1)
     - **Mean Value (MB/s)**: 21782.4
     - **Median Value (MB/s)**: 21782.4
     - **Standard Deviation (MB/s)**: 912.4
