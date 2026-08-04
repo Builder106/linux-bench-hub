@@ -3,6 +3,7 @@
 This document provides detailed benchmarking results for Debian GNU/Linux 13, captured monthly by LinuxBenchHub's CI pipeline via Docker using the Phoronix Test Suite.
 
 ## Table of Contents
+
 1. [System Information](#system-information)
 2. [Tinymembench Benchmark](#tinymembench-benchmark)
 3. [C-Ray Benchmark](#c-ray-benchmark)
@@ -11,6 +12,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 ## System Information
 
 ### Hardware
+
 - **Processor**: Intel Xeon Platinum 8370C @ 2.80GHz (2 Cores / 4 Threads)
 - **Motherboard**: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS)
 - **Memory**: 16GB
@@ -18,6 +20,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Graphics**: hyperv_drmdrmfb
 
 ### Software
+
 - **OS**: Debian GNU/Linux 13
 - **Kernel**: 6.17.0-1018-azure (x86_64)
 - **Compiler**: GCC 14.2.0
@@ -32,6 +35,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 ### Test Identifier: `pts/tinymembench-1.0.2`
 
 #### Title: Tinymembench
+
 - **App Version**: 2018-05-28
 - **Arguments**: ``
 - **Description**: Standard Memcpy
@@ -39,6 +43,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Display Format**: BAR_GRAPH
 
 ### Data Entries
+
 - **Identifier**: Intel Xeon Platinum 8370C
 - **Value (MB/s)**: 15101.0
 - **Raw String (MB/s)**: `14421.2:16034.7:16029.8:13573.7:15697:15275.2:15128.9:15343.7:14405.1`
@@ -58,6 +63,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 | 9   | 14405.1 |
 
 ### Summary Statistics
+
 - **Mean Value (MB/s)**: 15101.033
 - **Median Value (MB/s)**: 15275.2
 - **Standard Deviation (MB/s)**: 826.042
@@ -65,6 +71,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 ### Test Identifier: `pts/tinymembench-1.0.2`
 
 #### Title: Tinymembench
+
 - **App Version**: 2018-05-28
 - **Arguments**: ``
 - **Description**: Standard Memset
@@ -72,6 +79,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Display Format**: BAR_GRAPH
 
 ### Data Entries
+
 - **Identifier**: Intel Xeon Platinum 8370C
 - **Value (MB/s)**: 26571.9
 - **Raw String (MB/s)**: `26645.1:26681:26694.6:26302.9:26697.8:26421.1:26374:26677.9:26652.8`
@@ -91,6 +99,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 | 9   | 26652.8 |
 
 ### Summary Statistics
+
 - **Mean Value (MB/s)**: 26571.911
 - **Median Value (MB/s)**: 26652.8
 - **Standard Deviation (MB/s)**: 158.198
@@ -102,6 +111,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 ### Test Identifier: `pts/c-ray-2.0.0`
 
 #### Title: C-Ray
+
 - **App Version**: 2.0
 - **Arguments**: `-s 1920x1080 -r 16`
 - **Description**: Resolution: 1080p - Rays Per Pixel: 16
@@ -109,6 +119,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 - **Display Format**: BAR_GRAPH
 
 ### Data Entries
+
 - **Identifier**: Intel Xeon Platinum 8370C
 - **Value (Seconds)**: 456.055
 - **Raw String (Seconds)**: `456.927:455.706:455.532`
@@ -122,6 +133,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 | 3   | 455.532 |
 
 ### Summary Statistics
+
 - **Mean Value (Seconds)**: 456.055
 - **Median Value (Seconds)**: 455.706
 - **Standard Deviation (Seconds)**: 0.76
@@ -133,13 +145,15 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 ### Test Identifier: `pts/aircrack-ng-1.3.0`
 
 #### Title: Aircrack-ng
+
 - **App Version**: 1.7
 - **Arguments**: ``
-- **Description**: 
+- **Description**:
 - **Scale**: k/s
 - **Display Format**: BAR_GRAPH
 
 ### Data Entries
+
 - **Identifier**: Intel Xeon Platinum 8370C
 - **Value (k/s)**: 6663.283
 - **Raw String (k/s)**: `6669.034:6655.157:6665.657`
@@ -153,6 +167,7 @@ This document provides detailed benchmarking results for Debian GNU/Linux 13, ca
 | 3   | 6665.657 |
 
 ### Summary Statistics
+
 - **Mean Value (k/s)**: 6663.283
 - **Median Value (k/s)**: 6665.657
 - **Standard Deviation (k/s)**: 7.237
