@@ -138,14 +138,12 @@
   <rect width="1200" height="420" fill="url(#bg-warm)"/>
 
   <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-    <text x="64" y="78" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-size="12" letter-spacing="2.6" fill="#cc342d" font-weight="700">RUBY 3.3 &#183; RAILS 8 &#183; PHORONIX TEST SUITE</text>
+    <text x="64" y="145" font-size="76" font-weight="800" fill="#ffffff" letter-spacing="-0.024em">LinuxBenchHub</text>
 
-    <text x="64" y="180" font-size="76" font-weight="800" fill="#ffffff" letter-spacing="-0.024em">LinuxBenchHub</text>
+    <text x="64" y="195" font-size="19" fill="#b09a9e">VM benchmarking for Linux distros &#8212; three distros, identical</text>
+    <text x="64" y="221" font-size="19" fill="#b09a9e">hardware, one Ruby gem watching them sweat.</text>
 
-    <text x="64" y="230" font-size="19" fill="#b09a9e">VM benchmarking for Linux distros &#8212; three distros, identical</text>
-    <text x="64" y="256" font-size="19" fill="#b09a9e">hardware, one Ruby gem watching them sweat.</text>
-
-    <g transform="translate(64, 360)" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace">
+    <g transform="translate(64, 325)" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace">
       <g>
         <circle cx="0" cy="-5" r="4.5" fill="#e95420"/>
         <text x="14" y="0" font-size="13" letter-spacing="1.6" fill="#e8d4d8" font-weight="600">UBUNTU 24.04</text>

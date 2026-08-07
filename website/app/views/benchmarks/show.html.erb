@@ -9,12 +9,12 @@
       <%= render "shared/distro_mark", distro: @distro.slug, size: 84 %>
     </div>
     <div class="distro-hero-body">
-      <div class="distro-hero-eyebrow">PHORONIX TEST SUITE <%= @meta[:pts] %></div>
       <h1 class="distro-hero-name">
         <%= @meta[:name] %>
         <span class="distro-hero-version"><%= @distro.version %></span>
       </h1>
       <p class="distro-hero-intro"><%= @distro.intro %></p>
+      <div class="distro-hero-meta">Phoronix Test Suite <%= @meta[:pts] %></div>
     </div>
   </header>
 
