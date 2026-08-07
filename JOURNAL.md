@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-08-07 — Audited and updated project status roadmap in UI and documentation #milestone #docs
+
+Audited the project status panel and main documentation to reflect the current architecture. Updated `PagesController::STATUS_ROWS`, `PagesControllerTest`, `README.md`, and `website/export/index.html` to clarify that benchmark datasets now cover both x86_64 and arm64 architectures, Markdown writeups are generated via `generate_writeup.rb` (Ruby), and the showcase is served via Rails 8 static export to Vercel. Flagged the cross-distro comparison matrix and interactive metrics filter as the primary open roadmap items.
+
 ## 2026-07-29 — Migrated linux_bench_hub package publishing to GitHub Actions #decision #milestone
 
 Migrated `linux_bench_hub` container image builds from manual local Docker CLI pushes to an automated GitHub Actions workflow (`.github/workflows/docker-publish.yml`) publishing to `ghcr.io`. The workflow compiles multi-arch manifests (`linux/amd64` and `linux/arm64`) using Buildx and QEMU, setting `provenance: false` to remove `unknown/unknown` entries from the GitHub Packages dashboard.

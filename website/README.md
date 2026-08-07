@@ -1,24 +1,25 @@
-# README
+# LinuxBenchHub Website (Rails 8 Showcase)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The web showcase for **LinuxBenchHub** &mdash; a static showcase app built with Rails 8 (`--skip-active-record`) that renders benchmark writeups for Ubuntu, Fedora, and Debian.
 
-Things you may want to cover:
+## Architecture
 
-* Ruby version
+- **Data Source**: Parses per-distro markdown writeups located under `../benchmarks/<distro>/<distro>.md` via `DistroBenchmark` (`app/models/distro_benchmark.rb`).
+- **Static Export**: Generates static HTML and compiled assets into `export/` via `bin/rails export:static` (`lib/tasks/export.rake`).
+- **Deployment**: Deployed directly to Vercel via static export ([`vercel.json`](../vercel.json)).
 
-* System dependencies
+## Local Development
 
-* Configuration
+```bash
+# Install dependencies
+bundle install
 
-* Database creation
+# Run local development server (http://localhost:3000)
+bin/rails server
 
-* Database initialization
+# Run Minitest suite
+bundle exec rake test
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Export static site locally
+bin/rails export:static
+```
