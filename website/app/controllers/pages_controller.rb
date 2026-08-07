@@ -3,7 +3,7 @@ class PagesController < ApplicationController
                          :median, :stddev, keyword_init: true)
 
   SAMPLE_BENCHMARKS = [
-    Benchmark.new(name: "C-Ray", test: "pts/c-ray-2.0.0 · 1080p @ 16 rpp", unit: "ms",
+    Benchmark.new(name: "C-Ray", test: "pts/c-ray-2.0.0 · 1080p @ 16 rpp", unit: "Seconds",
                   mean: 1088.787, mean_label: "1,088", min: 767.61, max: 1447.948,
                   median: 1141.11, stddev: 222.509),
     Benchmark.new(name: "Tinymembench memcpy", test: "pts/tinymembench-1.0.2 · standard memcpy",
