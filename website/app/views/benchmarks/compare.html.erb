@@ -1,0 +1,50 @@
+<div class="showcase-header">
+  <div class="showcase-container">
+    <a href="/" class="back-link">&larr; Back to Overview</a>
+    <h1>Cross-Distro Comparison Matrix</h1>
+    <p class="lead">Side-by-side performance benchmarks for Ubuntu, Fedora, and Debian captured under standardized virtual hardware environments.</p>
+  </div>
+</div>
+
+<div class="showcase-container showcase-content">
+  <div class="comparison-card">
+    <h2>Side-by-Side Metric Matrix</h2>
+    <div class="table-responsive">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Distro</th>
+            <th>Release Version</th>
+            <th>C-Ray 2.0.0 (Seconds)</th>
+            <th>Tinymembench (memcpy MB/s)</th>
+            <th>Tinymembench (memset MB/s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @distros.each do |distro| %>
+            <% meta = distro.meta %>
+            <% c_ray = distro.test("pts/c-ray-2.0.0") %>
+            <% tinymem = distro.test("pts/tinymembench-1.0.2") %>
+            <tr>
+              <td>
+                <span class="distro-badge distro-<%= meta[:name].downcase %>">
+                  <%= meta[:name] %>
+                </span>
+              </td>
+              <td><%= distro.version %></td>
+              <td>
+                <strong><%= c_ray ? "#{c_ray.mean} s" : "N/A" %></strong>
+              </td>
+              <td>
+                <strong><%= tinymem ? "#{tinymem.mean} MB/s" : "N/A" %></strong>
+              </td>
+              <td>
+                <strong><%= tinymem ? "#{tinymem.median} MB/s" : "N/A" %></strong>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

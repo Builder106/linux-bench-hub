@@ -6,4 +6,8 @@ class BenchmarksController < ApplicationController
     @distro = DistroBenchmark.load(slug)
     @meta = @distro.meta
   end
+
+  def compare
+    @distros = %w[ubuntu fedora debian].map { |slug| DistroBenchmark.load(slug) }
+  end
 end

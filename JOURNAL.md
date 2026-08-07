@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-08-07 — Built Cross-Distro Comparison Matrix, TrendHelper & Benchmark Specification #milestone #feature #docs
+
+Implemented the primary open roadmap item: the Cross-Distro Comparison Matrix view (`website/app/views/benchmarks/compare.html.erb`), controller action `BenchmarksController#compare`, and static export integration (`rake export:static`). Added `TrendHelper` for metric formatting, authored `docs/BENCHMARK_SPECIFICATION.md` detailing PTS test parameters and capture pipelines, and verified clean test execution and static export on `ampere-dev`.
+
 ## 2026-08-07 — Audited and updated project status roadmap in UI and documentation #milestone #docs
 
 Audited the project status panel and main documentation to reflect the current architecture. Updated `PagesController::STATUS_ROWS`, `PagesControllerTest`, `README.md`, and `website/export/index.html` to clarify that benchmark datasets now cover both x86_64 and arm64 architectures, Markdown writeups are generated via `generate_writeup.rb` (Ruby), and the showcase is served via Rails 8 static export to Vercel. Flagged the cross-distro comparison matrix and interactive metrics filter as the primary open roadmap items.

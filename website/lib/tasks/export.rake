@@ -10,7 +10,7 @@ namespace :export do
     session = ActionDispatch::Integration::Session.new(Rails.application)
     session.host = "127.0.0.1"
 
-    pages = { "/" => "index.html" }
+    pages = { "/" => "index.html", "/compare" => "compare/index.html" }
     DistroBenchmark::DISTROS.each do |slug|
       pages["/benchmarks/#{slug}"] = "benchmarks/#{slug}/index.html"
     end
