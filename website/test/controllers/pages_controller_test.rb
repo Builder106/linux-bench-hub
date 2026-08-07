@@ -6,7 +6,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".data-panel .data-row", 4
     assert_select ".hex-tile", 3
-    assert_select ".status-panel .status-row", 6
+    assert_select ".status-panel .status-row", 5
     assert_select ".flowchart svg"
   end
 end

@@ -32,12 +32,11 @@ class PagesController < ApplicationController
   HEADLINE_TEST_IDENTIFIER = "pts/c-ray-2.0.0"
 
   STATUS_ROWS = [
-    { pill: "done", text: "Bare-metal Phoronix sample for Ubuntu, Fedora, Debian" },
-    { pill: "done", text: "R parser pipeline producing markdown writeups from <code>composite.xml</code>" },
+    { pill: "done", text: "Phoronix benchmark datasets for Ubuntu, Fedora, Debian (x86_64 & arm64)" },
+    { pill: "done", text: "Ruby parser pipeline producing markdown writeups from <code>composite.xml</code>" },
     { pill: "done", text: "Monthly CI capture in <code>.github/workflows/capture-benchmarks.yml</code> — committing fresh runs back to <code>benchmarks/</code>" },
-    { pill: "wip",  text: "Rails dashboard — reads <code>composite.xml</code> directly; on-demand-VM code retired" },
-    { pill: "todo", text: "Cross-distro comparison page" },
-    { pill: "todo", text: "Fill in Kamal deploy targets and ship the dashboard" }
+    { pill: "done", text: "Rails 8 showcase with static export engine deployed to Vercel (on-demand VM code retired)" },
+    { pill: "todo", text: "Cross-distro comparison page & interactive metrics filter" }
   ].freeze
 
   def home
