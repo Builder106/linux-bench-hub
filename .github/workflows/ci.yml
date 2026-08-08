@@ -59,8 +59,7 @@ jobs:
         run: bundle exec rails test
 
       - name: Rubocop
-        run: bundle exec rubocop --parallel || echo "::warning::rubocop reported issues; not blocking"
-        continue-on-error: true
+        run: bundle exec rubocop --parallel
 
   r-syntax:
     name: R syntax
