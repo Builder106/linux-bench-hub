@@ -2,6 +2,9 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.5"
+# Pinned above Rails' transitive requirement to pick up the CVE-2026-71847 fix
+# (JSON::ResumableParser use-after-free on truncated duplicate-key streams).
+gem "json", ">= 2.21.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use the Puma web server [https://github.com/puma/puma]
