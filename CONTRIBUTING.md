@@ -7,34 +7,41 @@ LinuxBenchHub is a personal project mid-build. The Ubuntu writeup and R parsers 
 ### Static benchmarks (R)
 
 ```bash
+
 # R deps (one-time)
+
 Rscript -e 'install.packages(c("xml2", "dplyr", "ggplot2", "tidyr"))'
 
 # Re-parse an existing composite into summary stats + plots
+
 Rscript benchmarks/ubuntu/Parse_composite_Ubuntu.R path/to/composite.xml
 ```
 
-Lint rules for the R scripts are pinned in `.lintr` at repo root; run via `lintr::lint_dir(".")` if you have lintr installed.
+Lint rules for the R scripts are pinned in `.lintr`at repo root; run via`lintr::lint_dir(".")` if you have lintr installed.
 
-### Rails dashboard
+## Rails dashboard
 
 ```bash
 cd website
 
 # Ruby version is pinned in website/.ruby-version (3.3.0)
-# Use rbenv, asdf, or your Ruby version manager of choice.
+
+# Use rbenv, asdf, or your Ruby version manager of choice
+
 bundle install
 
 # Database, asset prep
+
 bin/rails db:prepare
 
 # Dev server
+
 bin/rails server
 ```
 
 The dashboard reads `benchmarks/<distro>/composite-latest.xml` directly &mdash; no VMware, no Azure, no live VM spawning. To pick up fresh captures locally, either wait for the monthly CI run to push them or trigger the [`capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml) workflow manually and pull.
 
-### Lint
+## Lint
 
 The Rails app uses the omakase Ruby style (`website/.rubocop.yml`):
 
@@ -47,7 +54,7 @@ cd website && bundle exec rubocop --parallel
 - **Identical hardware per capture batch is load-bearing.** The original sample ran on a specific VMware Fusion profile (2&times; i5-7360U, 4 GB RAM); the CI captures run on whatever GitHub assigns to `ubuntu-latest`. Don't mix runs from different hardware profiles in the same `composite-latest.xml` &mdash; that breaks the comparison the whole project is built around.
 - **`composite.xml` is the contract between the R parser and the Rails ingester.** Both sides read the same XML; don't split them onto separate schemas. If you change the parser, change the ingester in the same PR.
 - **The `.kamal/` config is not currently pointing at a live host.** Don't add a "deploy to prod" CI step without first confirming the deploy target exists.
-- **`.github/workflows/capture-benchmarks.yml` writes back to `main`.** Any breaking change to the workflow's git operations (pull/rebase/push) can corrupt history on the default branch. Test such changes on a feature branch with `workflow_dispatch` first.
+- **`.github/workflows/capture-benchmarks.yml`writes back to`main`.** Any breaking change to the workflow's git operations (pull/rebase/push) can corrupt history on the default branch. Test such changes on a feature branch with `workflow_dispatch` first.
 - **Don't commit raw test runs that don't have a writeup.** The CI workflow handles its own archival under `benchmarks/<distro>/captures/`; manual additions should track to the `<distro>.md` markdown writeup.
 - **Devise migrations and seeds are not in a known-stable state.** Treat the database as scratch in development &mdash; don't write production data assumptions into seeds yet.
 
@@ -67,10 +74,12 @@ Trying to fix this
 
 1. Open an issue first for anything that touches more than one of: benchmarks, R parsers, Rails dashboard. Easier to align on scope before code review.
 2. Run the relevant lint and tests locally before opening the PR:
-   - Static benchmarks: `Rscript -e 'lintr::lint_dir(".")'`
-   - Rails: `cd website && bundle exec rubocop --parallel && bin/rails test`
-3. CI (Ruby + R syntax) must be green.
-4. Squash-merge into `main`.
+
+- Static benchmarks: `Rscript -e 'lintr::lint_dir(".")'`
+- Rails: `cd website && bundle exec rubocop --parallel && bin/rails test`
+
+1. CI (Ruby + R syntax) must be green.
+2. Squash-merge into `main`.
 
 ## Scope
 

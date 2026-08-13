@@ -20,7 +20,7 @@
 LinuxBenchHub has three components:
 
 1. **A benchmark dataset and writeup pipeline** under [`benchmarks/`](benchmarks/) &mdash; per-distro Phoronix Test Suite results (CPU, memory, network). The Ruby generator ([`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb)) parses raw `pts/composite.xml` files into structured markdown writeups.
-2. **A capture pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml) &mdash; a monthly GitHub Actions workflow that runs `pts/c-ray`, `pts/tinymembench`, and `pts/aircrack-ng` across Ubuntu, Fedora, and Debian (x86_64 containers and arm64 Oracle Ampere A1 VM), then commits the resulting `composite.xml` back to the repo.
+2. **A capture pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml) &mdash; a monthly GitHub Actions workflow that runs `pts/c-ray`, `pts/tinymembench`, and `pts/aircrack-ng`across Ubuntu, Fedora, and Debian (x86_64 containers and arm64 Oracle Ampere A1 VM), then commits the resulting`composite.xml` back to the repo.
 3. **A Rails 8 showcase** under [`website/`](website/) &mdash; a static showcase app (`--skip-active-record`) rendering per-distro writeups and static-exporting to HTML via `rake export:static` for Vercel deployment.
 
 ## Sample results &mdash; Ubuntu 24.04
@@ -34,7 +34,7 @@ The dataset has two reference platforms. The x86 sample is the original 2024 bar
 | **Tinymembench** (memset) | `pts/tinymembench-1.0.2` | MB/s | 23,480.2 | 47,575.6 |
 | **Aircrack-ng** (network) | `pts/aircrack-ng-1.3.0` | k/s | 4,542.6 | 4,154.3 |
 
-Headline gap: Ampere is **~5&times; faster on C-Ray** and **~2&times; faster on memset**, comparable on memcpy and aircrack-ng. (Note: the x86 C-Ray label was previously "ms" in this README; PTS's `<Scale>` is `Seconds` &mdash; this row is now corrected.)
+Headline gap: Ampere is **~5&times; faster on C-Ray**and**~2&times; faster on memset**, comparable on memcpy and aircrack-ng. (Note: the x86 C-Ray label was previously "ms" in this README; PTS's `<Scale>`is`Seconds` &mdash; this row is now corrected.)
 
 Full per-run data and visualizations:
 
@@ -109,18 +109,20 @@ The R parsers and the Rails app are interchangeable consumers of the same `compo
 
 ### Capturing fresh benchmarks
 
-Captures happen automatically on the 1st of every month via [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml). To trigger an out-of-band run, push the workflow's "Run workflow" button on the Actions tab &mdash; you can pick a single distro or all three. The job commits `composite-YYYY-MM-DD.xml` (a dated archive) and overwrites `composite-latest.xml` (the stable pointer the dashboard and R scripts read).
+Captures happen automatically on the 1st of every month via [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml). To trigger an out-of-band run, push the workflow's "Run workflow" button on the Actions tab &mdash; you can pick a single distro or all three. The job commits `composite-YYYY-MM-DD.xml`(a dated archive) and overwrites`composite-latest.xml` (the stable pointer the dashboard and R scripts read).
 
 To re-derive markdown writeups from `composite.xml` files locally:
 
 ```bash
+
 # Generate markdown writeups from composite XML
+
 ruby benchmarks/generate_writeup.rb
 ```
 
-### Capturing arm64 (Ampere)
+## Capturing arm64 (Ampere)
 
-The arm64 leg runs on a long-lived Always-Free Ampere A1 host, not a container. Provisioning is one `tofu apply` in [`infra/oci-ampere/`](infra/oci-ampere/) &mdash; see that directory's README for the OCI-account prerequisites. Once the host exists and the repo secrets `OCI_AMPERE_HOST` + `OCI_AMPERE_SSH_KEY` (raw PEM &mdash; pipe via `gh secret set OCI_AMPERE_SSH_KEY < ~/.ssh/lbh-ampere`) are set, the monthly cron drives it automatically. Manual dispatches honour the `include_arm64` toggle.
+The arm64 leg runs on a long-lived Always-Free Ampere A1 host, not a container. Provisioning is one `tofu apply` in [`infra/oci-ampere/`](infra/oci-ampere/) &mdash; see that directory's README for the OCI-account prerequisites. Once the host exists and the repo secrets `OCI_AMPERE_HOST`+`OCI_AMPERE_SSH_KEY`(raw PEM &mdash; pipe via`gh secret set OCI_AMPERE_SSH_KEY < ~/.ssh/lbh-ampere`) are set, the monthly cron drives it automatically. Manual dispatches honour the `include_arm64` toggle.
 
 ### Running the Rails showcase & static export
 
@@ -129,7 +131,8 @@ cd website
 bundle install
 bin/rails server
 
-# To export static HTML/assets for Vercel deployment:
+# To export static HTML/assets for Vercel deployment
+
 bin/rails export:static
 ```
 
@@ -155,4 +158,4 @@ The architecture pivoted from "on-demand Azure VMs per click" to "monthly CI cap
 
 ## License
 
-Code released under the [MIT License](LICENSE). Third-party components retain their upstream licenses: **Phoronix Test Suite** is GPLv3 (referenced, not bundled); **noVNC**, embedded under [`website/noVNC/`](website/noVNC/), is MPL-2.0; Rails and Ruby are MIT. Captured Phoronix outputs under `benchmarks/*/` are derivative works of the upstream tests.
+Code released under the [MIT License](LICENSE). Third-party components retain their upstream licenses: **Phoronix Test Suite**is GPLv3 (referenced, not bundled);**noVNC**, embedded under [`website/noVNC/`](website/noVNC/), is MPL-2.0; Rails and Ruby are MIT. Captured Phoronix outputs under `benchmarks/*/` are derivative works of the upstream tests.

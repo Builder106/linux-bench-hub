@@ -7,7 +7,7 @@ This document details the benchmark suites, automated capture workflows, hardwar
 Captured monthly across identical virtual hardware:
 
 - **`pts/c-ray-2.0.0`**: CPU raytracing performance (1080p @ 16 rays per pixel). Output unit: `Seconds` (lower is faster).
-- **`pts/tinymembench-1.0.2`**: Sub-cache memory bandwidth (`memcpy` and `memset`). Output unit: `MB/s` (higher is faster).
+- **`pts/tinymembench-1.0.2`**: Sub-cache memory bandwidth (`memcpy`and`memset`). Output unit: `MB/s` (higher is faster).
 - **`pts/aircrack-ng-1.3.0`**: Multithreaded cryptographic network hash rate. Output unit: `k/s` (higher is faster).
 
 ## 2. Infrastructure & Execution Pipelines
@@ -21,7 +21,7 @@ Captured monthly across identical virtual hardware:
 
 - Always-Free Oracle Cloud Infrastructure Ampere A1 VM (4 OCPU, 24 GB RAM, Neoverse-N1).
 - Infrastructure provisioned via OpenTofu in `infra/oci-ampere/`.
-- CI SSH orchestration triggers `/usr/local/bin/lbh-capture` non-interactively, returning `composite-latest.xml`.
+- CI SSH orchestration triggers `/usr/local/bin/lbh-capture`non-interactively, returning`composite-latest.xml`.
 
 ## 3. Web Showcase & Static Export Engine
 
