@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-08-14: Accessible plain-English documentation update #decision
+
+Updated the README headline, summary tagline, and introduction to frame the benchmark engine around automated fair testing across Linux distributions. Streamlined the overview and removed em dashes while keeping the Phoronix Test Suite data and Rails 8 architecture intact.
+
 ## 2026-08-07 — Built Cross-Distro Comparison Matrix, TrendHelper & Benchmark Specification #milestone #feature #docs
 
 Implemented the primary open roadmap item: the Cross-Distro Comparison Matrix view (`website/app/views/benchmarks/compare.html.erb`), controller action `BenchmarksController#compare`, and static export integration (`rake export:static`). Added `TrendHelper`for metric formatting, authored`docs/BENCHMARK_SPECIFICATION.md`detailing PTS test parameters and capture pipelines, and verified clean test execution and static export on`ampere-dev`.

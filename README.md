@@ -3,7 +3,7 @@
   <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg" type="image/svg+xml">
   <source media="(prefers-color-scheme: dark)"  srcset="assets/banner-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.png">
-  <img alt="LinuxBenchHub — compare Linux distros under identical virtual hardware." src="assets/banner-dark.svg">
+  <img alt="LinuxBenchHub: Compare Linux distributions under identical virtual hardware" src="assets/banner-dark.svg">
 </picture>
 
 [![CI](https://github.com/Builder106/linux-bench-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/Builder106/linux-bench-hub/actions/workflows/ci.yml)
@@ -13,15 +13,23 @@
 [![Status](https://img.shields.io/badge/status-in--development-orange.svg)](#project-status)
 [![Demo](https://img.shields.io/badge/demo-live-success.svg)](https://linuxbenchhub.vercel.app/)
 
-> A benchmarking dataset for Linux distros &mdash; run Phoronix Test Suite across identical virtual hardware on Ubuntu, Fedora, and Debian, captured monthly in CI, with a Rails 8 showcase and static export pipeline.
+> **Automated performance testing for Linux.** Compares the speed and memory efficiency of Ubuntu, Fedora, and Debian on identical virtual machines.
 
-## What this is
+## 💡 What is LinuxBenchHub?
 
-LinuxBenchHub has three components:
+Different flavors of Linux (Ubuntu, Fedora, Debian) often claim performance advantages, but comparing them fairly requires running identical tests on identical virtual hardware. LinuxBenchHub automates monthly speed, CPU, and memory benchmarks across operating systems, publishing clear comparison charts and raw data to show which setup is truly fastest.
 
-1. **A benchmark dataset and writeup pipeline** under [`benchmarks/`](benchmarks/) &mdash; per-distro Phoronix Test Suite results (CPU, memory, network). The Ruby generator ([`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb)) parses raw `pts/composite.xml` files into structured markdown writeups.
-2. **A capture pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml) &mdash; a monthly GitHub Actions workflow that runs `pts/c-ray`, `pts/tinymembench`, and `pts/aircrack-ng`across Ubuntu, Fedora, and Debian (x86_64 containers and arm64 Oracle Ampere A1 VM), then commits the resulting`composite.xml` back to the repo.
-3. **A Rails 8 showcase** under [`website/`](website/) &mdash; a static showcase app (`--skip-active-record`) rendering per-distro writeups and static-exporting to HTML via `rake export:static` for Vercel deployment.
+LinuxBenchHub runs Phoronix Test Suite across identical virtual hardware, captured monthly in GitHub Actions CI, with a Rails 8 showcase and static export pipeline.
+
+**Live demo:** [linuxbenchhub.vercel.app](https://linuxbenchhub.vercel.app/)
+
+## 🛠 Architecture & Components
+
+LinuxBenchHub has three core components:
+
+1. **A benchmark dataset and writeup pipeline** under [`benchmarks/`](benchmarks/): Per-distribution Phoronix Test Suite results (CPU, memory, network). The Ruby generator ([`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb)) parses raw XML into structured markdown writeups.
+2. **A capture pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml): A monthly GitHub Actions workflow that runs standard benchmark suites across Ubuntu, Fedora, and Debian (x86_64 containers and arm64 Oracle Ampere A1 VM), committing resulting datasets back to the repository.
+3. **A Rails 8 showcase** under [`website/`](website/): A static showcase app rendering per-distribution writeups and exporting static HTML via `rake export:static` for Vercel deployment.
 
 ## Sample results &mdash; Ubuntu 24.04
 
