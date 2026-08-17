@@ -5,7 +5,6 @@ require 'socket'
 require 'timeout'
 require 'fileutils'
 
-# Function to start a VM using vmrun
 def start_vm(vm_path)
   stdout, stderr, status = Open3.capture3("vmrun", "start", vm_path)
   if status.success?
@@ -16,7 +15,6 @@ def start_vm(vm_path)
   end
 end
 
-# Function to get the IP address of a VM using vmrun
 def get_vm_ip(vm_path)
   retries = 5
   begin
@@ -43,7 +41,6 @@ def get_vm_ip(vm_path)
   end
 end
 
-# Function to shut down a VM using vmrun
 def shutdown_vm(vm_path)
   stdout, stderr, status = Open3.capture3("vmrun", "stop", vm_path, "soft")
   if status.success?
@@ -53,7 +50,6 @@ def shutdown_vm(vm_path)
   end
 end
 
-# Function to check if a port is open
 def port_open?(ip, port, seconds=1)
   Timeout::timeout(seconds) do
     begin
@@ -67,7 +63,6 @@ rescue Timeout::Error
   false
 end
 
-# Function to ensure required packages are installed
 def ensure_packages_installed(ssh)
   packages = ['build-essential', 'php-cli', 'php-xml']
   packages.each do |pkg|
@@ -79,19 +74,16 @@ def ensure_packages_installed(ssh)
   end
 end
 
-# Function to check if a test is installed
 def test_installed?(ssh, test_name)
   result = ssh.exec!("phoronix-test-suite list-installed-tests")
   result.include?(test_name)
 end
 
-# Function to install a test
 def install_test(ssh, test_name)
   puts "Installing test: #{test_name}"
   ssh.exec!("phoronix-test-suite install #{test_name}")
 end
 
-# Function to run a benchmark on a remote VM
 def run_benchmark(vm_ip, username, password, test_name)
   puts "Running benchmark #{test_name} on VM at #{vm_ip}..."
   retries = 5
@@ -134,7 +126,6 @@ def run_benchmark(vm_ip, username, password, test_name)
   end
 end
 
-# Function to open a terminal on the VM and run commands
 def open_terminal_and_run_commands(vm_ip, username, password, commands)
   Net::SSH.start(vm_ip, username, password: password) do |ssh|
     ssh.open_channel do |channel|

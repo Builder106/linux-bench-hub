@@ -1,7 +1,6 @@
 # Set CRAN mirror
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
 
-# Function to install and load required packages
 install_and_load_packages <- function(packages) {
   new_packages <- packages[!(packages %in% installed.packages()[, "Package"])]
   if (length(new_packages)) install.packages(new_packages)
@@ -26,7 +25,6 @@ utils::globalVariables(c("run", "value"))
 run <- NULL
 value <- NULL
 
-# Function to load and parse XML file
 load_xml_file <- function(xml_file) {
   if (!file.exists(xml_file)) {
     stop("XML file does not exist.")
@@ -38,7 +36,6 @@ load_xml_file <- function(xml_file) {
   })
 }
 
-# Function to extract system information
 extract_system_info <- function(system_node) {
   if (!is.null(system_node)) {
     system_info <- xmlToList(system_node)
@@ -53,7 +50,6 @@ extract_system_info <- function(system_node) {
   }
 }
 
-# Function to process a single result node
 process_result_node <- function(result_node, value_unit, output_dir) {
   result <- xmlToList(result_node)
   cat("\nTest Results: ", result$Title, "\n")
@@ -110,7 +106,6 @@ process_result_node <- function(result_node, value_unit, output_dir) {
   }
 }
 
-# Function to create memory plots for Memset and Memcpy
 create_memory_plot <- function(result, title, value_unit, output_dir) {
   data_node <- result$Data$Entry
   if (!is.null(data_node)) {
@@ -131,7 +126,6 @@ create_memory_plot <- function(result, title, value_unit, output_dir) {
   }
 }
 
-# Function to process XML file
 process_xml_file <- function(xml_file, benchmark_title, value_unit, output_dir) {
   xml_data <- load_xml_file(xml_file)
   cat("XML Structure:\n")
