@@ -55,15 +55,15 @@ Full per-run data and visualizations:
 
 ```mermaid
 flowchart LR
-  cron[GitHub Actions<br/>monthly cron]
-  ubuntu[ubuntu:24.04 container<br/>x86_64]
-  fedora[fedora:41 container<br/>x86_64]
-  debian[debian:12 container<br/>x86_64]
-  ampere[Ampere A1 VM<br/>aarch64 over SSH]
-  pts[Phoronix Test Suite<br/>c-ray, tinymembench, aircrack-ng]
-  composite[benchmarks/*/composite-latest.xml]
-  rparser[benchmarks/*/Parse_composite_*.R<br/>summary stats + plots]
-  md[benchmarks/*/*.md<br/>static writeup]
+  cron["GitHub Actions<br/>monthly cron"]
+  ubuntu["ubuntu:24.04 container<br/>x86_64"]
+  fedora["fedora:41 container<br/>x86_64"]
+  debian["debian:12 container<br/>x86_64"]
+  ampere["Ampere A1 VM<br/>aarch64 over SSH"]
+  pts["Phoronix Test Suite<br/>c-ray, tinymembench, aircrack-ng"]
+  composite["benchmarks/*/composite-latest.xml"]
+  rparser["benchmarks/*/Parse_composite_*.R<br/>summary stats + plots"]
+  md["benchmarks/*/*.md<br/>static writeup"]
 
   cron --> ubuntu
   cron --> fedora
@@ -77,8 +77,8 @@ flowchart LR
   composite --> rparser
   rparser --> md
 
-  rails[Rails 8 dashboard<br/>website/]
-  charts[Chartkick + Groupdate]
+  rails["Rails 8 dashboard<br/>website/"]
+  charts["Chartkick + Groupdate"]
 
   composite --> rails
   rails --> charts
