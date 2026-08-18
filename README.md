@@ -27,29 +27,31 @@ LinuxBenchHub runs Phoronix Test Suite across identical virtual hardware, captur
 
 LinuxBenchHub has three core components:
 
-1. **A benchmark dataset and writeup pipeline** under [`benchmarks/`](benchmarks/): Per-distribution Phoronix Test Suite results (CPU, memory, network). The Ruby generator ([`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb)) parses raw XML into structured markdown writeups.
-2. **A capture pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml): A monthly GitHub Actions workflow that runs standard benchmark suites across Ubuntu, Fedora, and Debian (x86_64 containers and arm64 Oracle Ampere A1 VM), committing resulting datasets back to the repository.
-3. **A Rails 8 showcase** under [`website/`](website/): A static showcase app rendering per-distribution writeups and exporting static HTML via `rake export:static` for Vercel deployment.
+1. **Benchmark dataset and writeup pipeline** under [`benchmarks/`](benchmarks/): Automated test results measuring CPU math, memory throughput, and network performance across Linux distributions. A Ruby script (`benchmarks/generate_writeup.rb`) converts raw benchmark data into clean markdown reports.
+2. **Automated testing pipeline** under [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml): A monthly automated workflow that runs identical speed tests across Ubuntu, Fedora, and Debian on both standard x86 computers and ARM64 cloud servers.
+3. **Web dashboard** under [`website/`](website/): A clean Rails showcase that renders performance comparison charts and exports static web pages for deployment.
 
-## Sample results &mdash; Ubuntu 24.04
+## Sample results (Ubuntu 24.04 Performance)
 
-The dataset has two reference platforms. The x86 sample is the original 2024 bare-metal capture on a 2&times; Intel Core i5-7360U (3 cores), 4 GB RAM, 21 GB disk, in VMware Fusion Pro 13.6.1. The arm64 sample is a 2026 capture on Oracle Cloud's Always-Free Ampere A1 (Neoverse-N1, 4 OCPU, 24 GB), captured natively over SSH by the CI workflow against the host provisioned in [`infra/oci-ampere/`](infra/oci-ampere/).
+The dataset tests two distinct computer architectures:
+- **x86 PC architecture**: Tested on an Intel Core i5 processor with 4 GB RAM.
+- **ARM64 cloud architecture**: Tested on an Oracle Cloud Ampere A1 server with 4 CPU cores and 24 GB RAM.
 
-| Benchmark | Test | Metric | x86 (i5-7360U) | arm64 (Ampere A1) |
-| --- | --- | --- | --- | --- |
-| **C-Ray** (CPU) | `pts/c-ray-2.0.0`, 1080p @ 16 rpp | Seconds | 1,088.8 | 212.0 |
-| **Tinymembench** (memcpy) | `pts/tinymembench-1.0.2` | MB/s | 11,209.5 | 12,155.5 |
-| **Tinymembench** (memset) | `pts/tinymembench-1.0.2` | MB/s | 23,480.2 | 47,575.6 |
-| **Aircrack-ng** (network) | `pts/aircrack-ng-1.3.0` | k/s | 4,542.6 | 4,154.3 |
+| Benchmark Test | What it measures | Unit | Intel Core i5 (x86) | Ampere A1 (ARM64) | Takeaway |
+| --- | --- | --- | --- | --- | --- |
+| **C-Ray** | 3D rendering computation (CPU) | Seconds (lower is better) | 1,088.8 | **212.0** | Ampere is ~5x faster |
+| **Tinymembench (memcpy)** | Memory copying speed | MB/sec (higher is better) | 11,209.5 | **12,155.5** | Comparable speeds |
+| **Tinymembench (memset)** | Memory allocation speed | MB/sec (higher is better) | 23,480.2 | **47,575.6** | Ampere is ~2x faster |
+| **Aircrack-ng** | Cryptographic key calculation | Keys/sec (higher is better) | **4,542.6** | 4,154.3 | Intel is slightly faster |
 
-Headline gap: Ampere is **~5&times; faster on C-Ray**and**~2&times; faster on memset**, comparable on memcpy and aircrack-ng. (Note: the x86 C-Ray label was previously "ms" in this README; PTS's `<Scale>`is`Seconds` &mdash; this row is now corrected.)
+Headline takeaway: The cloud ARM server is **~5x faster at multi-threaded calculation** and **~2x faster at memory writes**, while single-core encryption speed is very close between both platforms.
 
-Full per-run data and visualizations:
+Full per-distribution data and reports:
 
-- [**`benchmarks/ubuntu/ubuntu.md`**](benchmarks/ubuntu/ubuntu.md) &mdash; Ubuntu 24.04 (x86, VMware bare-metal sample)
-- [**`benchmarks/ubuntu-arm64/composite-latest.xml`**](benchmarks/ubuntu-arm64/composite-latest.xml) &mdash; Ubuntu 24.04 (arm64, Ampere A1)
-- [**`benchmarks/fedora/fedora.md`**](benchmarks/fedora/fedora.md) &mdash; Fedora Linux 41
-- [**`benchmarks/debian/debian.md`**](benchmarks/debian/debian.md) &mdash; Debian 12
+- [**`benchmarks/ubuntu/ubuntu.md`**](benchmarks/ubuntu/ubuntu.md): Ubuntu 24.04 (Intel x86)
+- [**`benchmarks/ubuntu-arm64/composite-latest.xml`**](benchmarks/ubuntu-arm64/composite-latest.xml): Ubuntu 24.04 (Ampere ARM64)
+- [**`benchmarks/fedora/fedora.md`**](benchmarks/fedora/fedora.md): Fedora Linux 41
+- [**`benchmarks/debian/debian.md`**](benchmarks/debian/debian.md): Debian 12
 
 ## How the pieces fit
 
@@ -84,14 +86,14 @@ flowchart LR
   rails --> charts
 ```
 
-The R parsers and the Rails app are interchangeable consumers of the same `composite.xml` &mdash; run the static analysis with R alone, or boot the dashboard alone, or both. The capture workflow doesn't care which one downstream uses the files.
+The R parsers and the Rails app are interchangeable consumers of the same `composite.xml` data. You can run the static analysis with R alone, boot the dashboard alone, or use both together.
 
 ## Repo layout
 
 ```text
 .
-|-- benchmarks/              # captured Phoronix results, per platform
-|   |-- ubuntu/              #   ubuntu.md + Parse_composite_Ubuntu.R + composite-latest.xml + captures/
+|-- benchmarks/              # captured benchmark results, per platform
+|   |-- ubuntu/              #   ubuntu.md + Parse_composite_Ubuntu.R + composite-latest.xml
 |   |-- ubuntu-arm64/        #   Ampere A1 aarch64 captures (CI-captured over SSH)
 |   |-- fedora/
 |   `-- debian/
@@ -103,7 +105,7 @@ The R parsers and the Rails app are interchangeable consumers of the same `compo
 |   |   |-- ci.yml                    # Rails test suite gate
 |   |   `-- deploy.yml                # Rails app deploy
 |   `-- scripts/
-|       `-- pts-batch-config.xml      # seeded into PTS before non-interactive runs
+|       `-- pts-batch-config.xml      # seeded into benchmark suite before non-interactive runs
 |-- website/                 # Rails 8 dashboard (incl. the /showcase writeups)
 |   |-- app/                 #   models, controllers, views
 |   |-- config/              #   routes, Whenever schedule
@@ -117,20 +119,18 @@ The R parsers and the Rails app are interchangeable consumers of the same `compo
 
 ### Capturing fresh benchmarks
 
-Captures happen automatically on the 1st of every month via [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml). To trigger an out-of-band run, push the workflow's "Run workflow" button on the Actions tab &mdash; you can pick a single distro or all three. The job commits `composite-YYYY-MM-DD.xml`(a dated archive) and overwrites`composite-latest.xml` (the stable pointer the dashboard and R scripts read).
+Captures happen automatically on the 1st of every month via [`.github/workflows/capture-benchmarks.yml`](.github/workflows/capture-benchmarks.yml). To trigger an ad-hoc run, use the "Run workflow" button on the GitHub Actions tab.
 
 To re-derive markdown writeups from `composite.xml` files locally:
 
 ```bash
-
 # Generate markdown writeups from composite XML
-
 ruby benchmarks/generate_writeup.rb
 ```
 
 ## Capturing arm64 (Ampere)
 
-The arm64 leg runs on a long-lived Always-Free Ampere A1 host, not a container. Provisioning is one `tofu apply` in [`infra/oci-ampere/`](infra/oci-ampere/) &mdash; see that directory's README for the OCI-account prerequisites. Once the host exists and the repo secrets `OCI_AMPERE_HOST`+`OCI_AMPERE_SSH_KEY`(raw PEM &mdash; pipe via`gh secret set OCI_AMPERE_SSH_KEY < ~/.ssh/lbh-ampere`) are set, the monthly cron drives it automatically. Manual dispatches honour the `include_arm64` toggle.
+The ARM64 tests run on a long-lived Oracle Cloud Always-Free Ampere A1 server. Cloud infrastructure setup is managed via OpenTofu in [`infra/oci-ampere/`](infra/oci-ampere/).
 
 ### Running the Rails showcase & static export
 
@@ -140,30 +140,29 @@ bundle install
 bin/rails server
 
 # To export static HTML/assets for Vercel deployment
-
 bin/rails export:static
 ```
 
-The Rails showcase parses per-distro writeups via [`DistroBenchmark`](website/app/models/distro_benchmark.rb). Static export writes to [`website/export/`](website/export/) which is deployed to Vercel via [`vercel.json`](vercel.json).
+The Rails showcase parses per-distribution writeups via [`DistroBenchmark`](website/app/models/distro_benchmark.rb). Static export writes to [`website/export/`](website/export/) which is deployed to Vercel via [`vercel.json`](vercel.json).
 
 ## Project status
 
-The architecture pivoted from "on-demand Azure VMs per click" to "monthly CI captures into git" and static showcase export to Vercel.
-
-- **Ubuntu 26.04 / Fedora 44 / Debian 13 (x86_64)** &mdash; monthly containerized benchmark runs captured in GitHub Actions into `benchmarks/<distro>/`.
-- **Ubuntu / Fedora / Debian arm64 (Ampere A1)** &mdash; captured natively over SSH against an Oracle Cloud Always-Free Ampere VM provisioned via [`infra/oci-ampere/`](infra/oci-ampere/).
-- **Ruby parser pipeline** &mdash; [`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb) turns raw `pts/composite.xml` outputs into structured per-distro markdown writeups.
-- **Rails 8 showcase & static export engine** &mdash; live at [`linuxbenchhub.vercel.app`](https://linuxbenchhub.vercel.app/), pre-rendered via `rake export:static`.
-- **Cross-distro comparison page & interactive metrics filter** &mdash; planned feature to render side-by-side metric tables and interactive filtering across distros.
+- **Ubuntu / Fedora / Debian (x86_64)**: Monthly containerized benchmark runs captured in GitHub Actions into `benchmarks/<distro>/`.
+- **Ubuntu / Fedora / Debian arm64 (Ampere A1)**: Captured natively over SSH against an Oracle Cloud Ampere VM.
+- **Ruby parser pipeline**: [`benchmarks/generate_writeup.rb`](benchmarks/generate_writeup.rb) turns raw XML outputs into structured markdown writeups.
+- **Rails 8 showcase & static export engine**: Live at [`linuxbenchhub.vercel.app`](https://linuxbenchhub.vercel.app/).
+- **Cross-distro comparison view**: Side-by-side metric tables and interactive filtering across distributions.
 
 ## Tech stack
 
 - **Benchmarks**: Phoronix Test Suite, Ruby (`benchmarks/generate_writeup.rb`)
-- **Capture (x86)**: GitHub Actions (monthly cron, distro containers on `ubuntu-latest`)
-- **Capture (arm64)**: Oracle Cloud Ampere A1 (Always-Free, Ubuntu 24.04 aarch64), driven over SSH from the same workflow
-- **Infra**: OpenTofu &mdash; see [`infra/oci-ampere/`](infra/oci-ampere/) for the VCN/subnet/security-list/instance module
-- **Showcase**: Rails 8.0, Ruby 3.3/4.0, Static Export, Vercel
+- **Capture (x86)**: GitHub Actions (monthly cron, distribution containers on `ubuntu-latest`)
+- **Capture (arm64)**: Oracle Cloud Ampere A1 (Ubuntu 24.04 aarch64) driven over SSH
+- **Infrastructure**: OpenTofu (see [`infra/oci-ampere/`](infra/oci-ampere/))
+- **Showcase**: Rails 8.0, Ruby, Static Export, Vercel
 
 ## License
+
+MIT (see [LICENSE](LICENSE)).
 
 Code released under the [MIT License](LICENSE). Third-party components retain their upstream licenses: **Phoronix Test Suite**is GPLv3 (referenced, not bundled);**noVNC**, embedded under [`website/noVNC/`](website/noVNC/), is MPL-2.0; Rails and Ruby are MIT. Captured Phoronix outputs under `benchmarks/*/` are derivative works of the upstream tests.
