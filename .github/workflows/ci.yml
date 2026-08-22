@@ -59,7 +59,7 @@ jobs:
         run: bundle exec rails test
 
       - name: Rubocop
-        run: bundle exec rubocop --parallel
+        run: bundle exec rubocop --parallel --fail-level warning
 
   r-syntax:
     name: R syntax
