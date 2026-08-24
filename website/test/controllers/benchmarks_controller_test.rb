@@ -16,3 +16,19 @@ class BenchmarksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 end
+
+class BenchmarksControllerActionTest < ActionController::TestCase
+  tests BenchmarksController
+
+  test "rejects an invalid distro slug" do
+    assert_raises(ActionController::RoutingError) do
+      @controller.instance_variable_set(:@_params, { "distro" => "arch" })
+      @controller.send(:show)
+    end
+  end
+
+  test "renders the comparison page" do
+    process :compare
+    assert_response :success
+  end
+end

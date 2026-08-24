@@ -10,3 +10,20 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".flowchart svg"
   end
 end
+
+class PagesControllerActionTest < ActionController::TestCase
+  tests PagesController
+
+  test "headline stat is nil when the requested test is absent" do
+    parsed = Object.new
+    def parsed.test(_identifier) = nil
+    assert_nil @controller.send(:headline_stat, parsed)
+  end
+
+  test "headline stat is nil when the mean is not positive" do
+    test = Struct.new(:mean).new(0)
+    parsed = Object.new
+    parsed.define_singleton_method(:test) { |_identifier| test }
+    assert_nil @controller.send(:headline_stat, parsed)
+  end
+end

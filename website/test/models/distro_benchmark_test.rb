@@ -79,4 +79,74 @@ class DistroBenchmarkTest < ActiveSupport::TestCase
       assert parsed.sections.any?, "#{slug}: expected benchmark sections"
     end
   end
+
+  test "handles missing optional fields and malformed tables" do
+    markdown = <<~MD
+      # Minimal
+
+      ## Empty Benchmark
+
+      ### Test Identifier: `pts/empty`
+      #### Title: Empty
+
+      ### Detailed Run Values
+      | Run | Value |
+      | --- | --- |
+      | bad | nope |
+    MD
+    parsed = DistroBenchmark.new("ubuntu", markdown)
+    test = parsed.sections.first.tests.first
+
+    assert_equal "", parsed.version
+    assert_equal "", test.description
+    assert_equal "", test.app_version
+    assert_equal "", test.args
+    assert_equal [], test.runs
+    assert_equal 0.0, test.mean
+    assert_equal 0.0, test.median
+    assert_equal 0.0, test.stddev
+  end
+
+  test "handles a table without enough rows" do
+    markdown = <<~MD
+      # Minimal
+
+      ## Empty Benchmark
+
+      ### Test Identifier: `pts/empty`
+      #### Title: Empty
+
+      ### Detailed Run Values
+      | Run | Value |
+      | --- | --- |
+    MD
+    parsed = DistroBenchmark.new("ubuntu", markdown)
+    assert_empty parsed.sections.first.tests.first.runs
+  end
+
+  test "ignores malformed spec lines and tests without a run table" do
+    markdown = <<~MD
+      # Minimal
+
+      ### Hardware
+      not a key value
+      ### Software
+      not a key value
+      ---
+
+      ## Empty Benchmark
+
+      ### Test Identifier: `pts/empty`
+      #### Title: Empty
+    MD
+    parsed = DistroBenchmark.new("ubuntu", markdown)
+    assert_empty parsed.hardware
+    assert_empty parsed.software
+    assert_empty parsed.sections.first.tests.first.runs
+  end
+
+  test "returns nil for an unknown test identifier" do
+    parsed = DistroBenchmark.new("ubuntu", SAMPLE_MD)
+    assert_nil parsed.test("pts/missing")
+  end
 end
