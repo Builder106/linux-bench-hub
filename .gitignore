@@ -5,6 +5,7 @@ tmp
 .DS_Store
 **/.DS_Store
 .vercel
+.ruby-lsp/
 site/.next
 site/out
 site/node_modules
