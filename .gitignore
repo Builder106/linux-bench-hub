@@ -1,11 +1,16 @@
+*.log
 .env
 LinuxBenchHub Azure details.png
-node_modules
-tmp
+node_modules/
+tmp/
 .vercel
 .ruby-lsp/
-site/.next
-site/out
-site/node_modules
-site/next-env.d.ts
+.bundle/
+
+# R session & environment
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata/
+
 .vscode/settings.json
