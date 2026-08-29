@@ -3,16 +3,16 @@ class PagesController < ApplicationController
                          :median, :stddev, keyword_init: true)
 
   SAMPLE_BENCHMARKS = [
-    Benchmark.new(name: "C-Ray", test: "pts/c-ray-2.0.0 · 1080p @ 16 rpp", unit: "Seconds",
+    Benchmark.new(name: "C-Ray", test: "pts/c-ray-2.0.0 | 1080p @ 16 rpp", unit: "Seconds",
                   mean: 1088.787, mean_label: "1,088", min: 767.61, max: 1447.948,
                   median: 1141.11, stddev: 222.509),
-    Benchmark.new(name: "Tinymembench memcpy", test: "pts/tinymembench-1.0.2 · standard memcpy",
+    Benchmark.new(name: "Tinymembench memcpy", test: "pts/tinymembench-1.0.2 | standard memcpy",
                   unit: "MB/s", mean: 11209.5, mean_label: "11,210", min: 7012.8,
                   max: 14624.8, median: 11873.6, stddev: 2761.1),
-    Benchmark.new(name: "Tinymembench memset", test: "pts/tinymembench-1.0.2 · standard memset",
+    Benchmark.new(name: "Tinymembench memset", test: "pts/tinymembench-1.0.2 | standard memset",
                   unit: "MB/s", mean: 23480.2, mean_label: "23,480", min: 10140.9,
                   max: 28912.0, median: 25745.6, stddev: 5731.1),
-    Benchmark.new(name: "Aircrack-ng", test: "pts/aircrack-ng-1.3.0 · WPA dictionary attack",
+    Benchmark.new(name: "Aircrack-ng", test: "pts/aircrack-ng-1.3.0 | WPA dictionary attack",
                   unit: "k/s", mean: 4542.6, mean_label: "4,542", min: 2832.371,
                   max: 5432.095, median: 4943.083, stddev: 835.1)
   ].freeze
