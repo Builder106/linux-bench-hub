@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-08-29: Git deployment branches restricted #decision
+
+Git-triggered Vercel deployments now run only for `main` and `staging`. The project keeps `main` as its Production Branch, so `staging` is the only Preview branch. Replaced the old `ignoreCommand`, which created canceled deployment records for blocked branches, with `git.deploymentEnabled`.
+
 ## 2026-08-23 — Rails SimpleCov reaches 100% lines and branches #milestone #testing
 
 Reproduced the Rails SimpleCov baseline on `ampere-dev` at 96.09% line and 65.78% branch coverage. Added focused tests for controller error and comparison paths, homepage headline fallbacks, helper formatting thresholds and geometry, trend formatting, and parser fallbacks for missing fields, short tables, invalid rows, and unknown test identifiers. The existing Rails test helper now enforces 100% line and branch coverage, so the CI Rails test job fails if either metric regresses.
