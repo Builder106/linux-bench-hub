@@ -62,7 +62,7 @@ ssh ubuntu@<public-ip>
 cloud-init status --wait    # blocks until bootstrap finishes (or fails loudly)
 /usr/local/bin/lbh-capture  # run as ubuntu, NOT sudo — the user-config.xml is in ~ubuntu/
 
-# → /home/ubuntu/captures/composite-2026-05-28.xml
+# → /home/ubuntu/platform/build/linux-bench-hub/captures/composite-2026-05-28.xml
 
 ```
 
@@ -85,14 +85,15 @@ Removes every resource the module created. Useful when Oracle's free-tier capaci
 `.github/workflows/capture-benchmarks.yml`'s `capture-ampere-arm64`job stores`OCI_AMPERE_HOST`(IP) and`OCI_AMPERE_SSH_KEY`(private key PEM) as repo secrets, then runs a`[ubuntu, fedora, debian]`matrix against this one host — same images, same`pkg_install`lists, and the same`.github/scripts/container-capture.sh`body the x86 legs run inside GitHub's native`container:`, just driven remotely instead of locally:
 
 ```bash
-scp pkg-install.sh container-capture.sh pts-batch-config.xml ubuntu@$OCI_AMPERE_HOST:~/lbh-run/<distro>/
+scp pkg-install.sh container-capture.sh pts-batch-config.xml \
+  ubuntu@$OCI_AMPERE_HOST:/home/ubuntu/platform/build/linux-bench-hub/runner/<distro>/
 ssh ubuntu@$OCI_AMPERE_HOST "docker run --rm \
-  -v ~/lbh-run/<distro>/pkg-install.sh:/pkg-install.sh:ro \
-  -v ~/lbh-run/<distro>/container-capture.sh:/container-capture.sh:ro \
-  -v ~/lbh-run/<distro>/pts-batch-config.xml:/pts-batch-config.xml:ro \
-  -v ~/captures/<distro>:/output \
+  -v /home/ubuntu/platform/build/linux-bench-hub/runner/<distro>/pkg-install.sh:/pkg-install.sh:ro \
+  -v /home/ubuntu/platform/build/linux-bench-hub/runner/<distro>/container-capture.sh:/container-capture.sh:ro \
+  -v /home/ubuntu/platform/build/linux-bench-hub/runner/<distro>/pts-batch-config.xml:/pts-batch-config.xml:ro \
+  -v /home/ubuntu/platform/build/linux-bench-hub/captures/<distro>:/output \
   <image> bash -c 'bash /pkg-install.sh && bash /container-capture.sh'"
-scp ubuntu@$OCI_AMPERE_HOST:~/captures/<distro>/composite.xml \
+scp ubuntu@$OCI_AMPERE_HOST:/home/ubuntu/platform/build/linux-bench-hub/captures/<distro>/composite.xml \
   benchmarks/<distro>-arm64/composite-latest.xml
 ```
 
