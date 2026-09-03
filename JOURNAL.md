@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-09-01: Migrated capture and runner storage to host platform build layout #decision
+
+Migrated remote execution storage for arm64 benchmark captures on `ampere-dev` from legacy home directory paths (`~/lbh-run` and `~/captures`) to the canonical host storage layout under `/home/ubuntu/platform/build/linux-bench-hub/runner` and `/home/ubuntu/platform/build/linux-bench-hub/captures`. Updated `.github/workflows/capture-benchmarks.yml`, `infra/oci-ampere/cloud-init.yml`, documentation, and `/usr/local/bin/lbh-capture`, and consolidated and removed the legacy root-level directories on the host.
+
 ## 2026-08-29: Git deployment branches restricted #decision
 
 Git-triggered Vercel deployments now run only for `main` and `staging`. The project keeps `main` as its Production Branch, so `staging` is the only Preview branch. Replaced the old `ignoreCommand`, which created canceled deployment records for blocked branches, with `git.deploymentEnabled`.

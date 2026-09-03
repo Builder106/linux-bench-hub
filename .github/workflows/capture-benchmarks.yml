@@ -417,9 +417,10 @@ jobs:
       - name: Copy capture scripts to the Ampere host
         if: env.RUN_THIS_DISTRO == '1'
         run: |
-          run_dir="/home/ubuntu/lbh-run/${{ matrix.distro }}"
+          run_dir="/home/ubuntu/platform/build/linux-bench-hub/runner/${{ matrix.distro }}"
+          out_dir="/home/ubuntu/platform/build/linux-bench-hub/captures/${{ matrix.distro }}"
           ssh -i ~/.ssh/lbh-ampere ubuntu@"$OCI_AMPERE_HOST" \
-            "mkdir -p $run_dir /home/ubuntu/captures/${{ matrix.distro }}"
+            "mkdir -p $run_dir $out_dir"
           scp -i ~/.ssh/lbh-ampere \
             /tmp/pkg-install.sh \
             .github/scripts/container-capture.sh \
@@ -433,8 +434,8 @@ jobs:
           # -tt / ServerAlive* / TCPKeepAlive: see the original ubuntu-only
           # job for why — idle middleboxes drop the connection during the
           # long quiet stretches mid-PTS-test otherwise.
-          run_dir="/home/ubuntu/lbh-run/${{ matrix.distro }}"
-          out_dir="/home/ubuntu/captures/${{ matrix.distro }}"
+          run_dir="/home/ubuntu/platform/build/linux-bench-hub/runner/${{ matrix.distro }}"
+          out_dir="/home/ubuntu/platform/build/linux-bench-hub/captures/${{ matrix.distro }}"
           ssh -tt \
               -o ServerAliveInterval=30 \
               -o ServerAliveCountMax=20 \
@@ -454,7 +455,7 @@ jobs:
           dest="benchmarks/${{ matrix.distro }}-arm64"
           mkdir -p "$dest/captures"
           scp -i ~/.ssh/lbh-ampere \
-            ubuntu@"$OCI_AMPERE_HOST":/home/ubuntu/captures/${{ matrix.distro }}/composite.xml \
+            ubuntu@"$OCI_AMPERE_HOST":/home/ubuntu/platform/build/linux-bench-hub/captures/${{ matrix.distro }}/composite.xml \
             "$dest/composite-latest.xml"
           # Keep the dated archive too — matches the x86 captures/ layout.
           cp "$dest/composite-latest.xml" "$dest/captures/composite-${RUN_DATE}.xml"

@@ -168,7 +168,7 @@ write_files:
         exit 1
       fi
 
-      out=/home/ubuntu/captures
+      out=/home/ubuntu/platform/build/linux-bench-hub/captures
       mkdir -p "$out"
       cp "$composite" "$out/composite-${RUN_DATE}.xml"
       cp "$composite" "$out/composite-latest.xml"
