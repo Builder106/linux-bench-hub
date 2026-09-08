@@ -270,7 +270,6 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (3.5.0)
     securerandom (0.4.1)
-      websocket (~> 1.0)
     simplecov (1.1.1)
     sshkit (1.25.0)
       base64
