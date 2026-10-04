@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-03: Consolidated benchmark publishing into auto-merging PR workflow #decision #fix
+
+Consolidated separate x86 and arm64 publish jobs in `.github/workflows/capture-benchmarks.yml` into a single downstream publish job that waits for all capture matrices, stages available artifacts across architectures, and commits changes atomically. When running against `main`, the workflow now publishes to a dedicated topic branch, opens an auto-merging pull request, and triggers the CI suite, satisfying GitHub branch protection ruleset requirements without blocking monthly captures.
+
 ## 2026-09-01: Migrated capture and runner storage to host platform build layout #decision
 
 Migrated remote execution storage for arm64 benchmark captures on `ampere-dev` from legacy home directory paths (`~/lbh-run` and `~/captures`) to the canonical host storage layout under `/home/ubuntu/platform/build/linux-bench-hub/runner` and `/home/ubuntu/platform/build/linux-bench-hub/captures`. Updated `.github/workflows/capture-benchmarks.yml`, `infra/oci-ampere/cloud-init.yml`, documentation, and `/usr/local/bin/lbh-capture`, and consolidated and removed the legacy root-level directories on the host.
