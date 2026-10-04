@@ -8,12 +8,11 @@ name: Capture benchmarks
 # stays in benchmarks/ubuntu/composite.xml as the historical reference.
 #
 # The benchmark runs themselves are fully independent (different distros,
-# different hosts for arm64), so both matrices run at full parallelism. The
-# only shared resource is the git branch, so each matrix only uploads a
-# build artifact — a single downstream "publish" job per matrix (publish-x86,
-# publish-arm64) downloads everything and does one commit+push, which is
-# also what removes any need to serialize the capture jobs against each
-# other or run arm64 after x86.
+# different hosts for arm64), so both matrices run at full parallelism.
+# Each matrix entry uploads a build artifact, and a single downstream
+# publish job downloads all artifacts and commits them once.
+# Branch protection on main is respected by opening an auto-merging pull
+# request to main on scheduled runs.
 
 on:
   schedule:
@@ -238,68 +237,6 @@ jobs:
             benchmarks/${{ matrix.distro }}/composite-latest.xml
           retention-days: 365
 
-  # Single publish point for the whole x86 matrix. Each capture job only
-  # uploads an artifact (no git push), so three distros can run fully in
-  # parallel with zero risk of racing each other's commit/push — this job
-  # is the only thing in the x86 path that touches git, and it does it once.
-  publish-x86:
-    name: Publish x86 results
-    runs-on: ubuntu-latest
-    needs: capture
-    if: always() && needs.capture.result != 'skipped'
-    timeout-minutes: 15
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Download x86 capture artifacts
-        uses: actions/download-artifact@v8
-        with:
-          pattern: "*-[0-9]*-*"  # excludes the arm64 job's "<distro>-arm64-<date>" names
-          path: /tmp/artifacts
-        continue-on-error: true  # no artifacts at all (e.g. every distro failed before upload) shouldn't fail this job
-
-      - name: Stage and commit each distro's results
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config user.name  "linuxbenchhub-bot"
-          git config user.email "linuxbenchhub-bot@users.noreply.github.com"
-          for distro in ubuntu fedora debian; do
-            dir=$(find /tmp/artifacts -maxdepth 1 -type d -name "${distro}-*" 2>/dev/null | head -n1)
-            if [ -z "$dir" ]; then
-              echo "No artifact for $distro — its capture job didn't succeed or wasn't selected. Skipping."
-              continue
-            fi
-            mkdir -p "benchmarks/$distro/captures"
-            find "$dir/captures" -maxdepth 1 -name 'composite-*.xml' -exec cp {} "benchmarks/$distro/captures/" \;
-            cp "$dir/composite-latest.xml" "benchmarks/$distro/composite-latest.xml"
-            git add "benchmarks/$distro/"
-            if git diff --cached --quiet; then
-              echo "No changes for $distro."
-            else
-              git commit -m "Capture $distro benchmarks $(date -u +%Y-%m-%d)"
-            fi
-          done
-
-      - name: Push
-        run: |
-          # Retry a few times in case publish-arm64 (disjoint paths, but the
-          # same branch) pushes in the same window.
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:"${GITHUB_REF_NAME}"; then
-              exit 0
-            fi
-            echo "Push rejected (attempt $attempt) — rebasing and retrying."
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
-            sleep $(( (RANDOM % 5) + 1 ))
-          done
-          echo "::error::Failed to push after 5 attempts."
-          exit 1
-
   # arm64 captures run on a real Ampere VM (Oracle Cloud Always-Free), not in
   # a GitHub-hosted runner — GitHub Actions has no public arm64 runner on the
   # free plan, and the whole point of this leg is to add aarch64 to a dataset
@@ -473,38 +410,62 @@ jobs:
             benchmarks/${{ matrix.distro }}-arm64/captures/composite-${{ env.RUN_DATE }}.xml
           retention-days: 365
 
-  # Mirrors publish-x86: one commit+push point for the whole arm64 matrix,
-  # so the three Ampere captures don't each try to push on their own.
-  publish-arm64:
-    name: Publish arm64 results
+  # Unified publish point for all captures (x86 and arm64). Each capture job only
+  # uploads artifacts (no git push), so both matrices run at full parallelism.
+  # Once all captures conclude, this job stages all available artifacts and publishes
+  # them in a single atomic commit.
+  #
+  # When publishing to main, GitHub branch protection ruleset requires updates to
+  # be submitted via pull request and pass status checks. In that case, this job
+  # pushes to a dedicated topic branch, opens an auto-merging pull request, and
+  # triggers the CI check suite. On other branches, it pushes directly.
+  publish:
+    name: Publish benchmark results
     runs-on: ubuntu-latest
-    needs: capture-ampere-arm64
-    if: always() && needs.capture-ampere-arm64.result != 'skipped'
+    needs: [capture, capture-ampere-arm64]
+    if: always() && !cancelled() && (needs.capture.result == 'success' || needs.capture-ampere-arm64.result == 'success')
     timeout-minutes: 15
     permissions:
       contents: write
+      pull-requests: write
+      actions: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Download arm64 capture artifacts
+      - name: Download capture artifacts
         uses: actions/download-artifact@v8
         with:
-          pattern: "*-arm64-*"
           path: /tmp/artifacts
         continue-on-error: true
 
-      - name: Stage and commit each distro's results
+      - name: Stage and commit results
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name  "linuxbenchhub-bot"
           git config user.email "linuxbenchhub-bot@users.noreply.github.com"
+
+          # Stage x86 results
+          for distro in ubuntu fedora debian; do
+            dir=$(find /tmp/artifacts -maxdepth 1 -type d -name "${distro}-[0-9]*" 2>/dev/null | head -n1)
+            if [ -z "$dir" ]; then
+              echo "No x86 artifact for $distro — skipping."
+              continue
+            fi
+            dest="benchmarks/$distro"
+            mkdir -p "$dest/captures"
+            find "$dir/captures" -maxdepth 1 -name 'composite-*.xml' -exec cp {} "$dest/captures/" \;
+            cp "$dir/composite-latest.xml" "$dest/composite-latest.xml"
+            git add "$dest/"
+          done
+
+          # Stage arm64 results
           for distro in ubuntu fedora debian; do
             dir=$(find /tmp/artifacts -maxdepth 1 -type d -name "${distro}-arm64-*" 2>/dev/null | head -n1)
             if [ -z "$dir" ]; then
-              echo "No artifact for ${distro}-arm64 — its capture job didn't succeed or wasn't selected. Skipping."
+              echo "No arm64 artifact for ${distro} — skipping."
               continue
             fi
             dest="benchmarks/${distro}-arm64"
@@ -512,22 +473,49 @@ jobs:
             find "$dir/captures" -maxdepth 1 -name 'composite-*.xml' -exec cp {} "$dest/captures/" \;
             cp "$dir/composite-latest.xml" "$dest/composite-latest.xml"
             git add "$dest/"
-            if git diff --cached --quiet; then
-              echo "No changes for ${distro}-arm64."
-            else
-              git commit -m "Capture ${distro} arm64 benchmarks $(date -u +%Y-%m-%d)"
-            fi
           done
 
-      - name: Push
+          if git diff --cached --quiet; then
+            echo "No changes across captured distros."
+            exit 0
+          fi
+
+          git commit -m "Capture benchmarks $(date -u +%Y-%m-%d)"
+
+      - name: Push or create pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:"${GITHUB_REF_NAME}"; then
-              exit 0
-            fi
-            echo "Push rejected (attempt $attempt) — rebasing and retrying."
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
-            sleep $(( (RANDOM % 5) + 1 ))
-          done
-          echo "::error::Failed to push after 5 attempts."
-          exit 1
+          if git diff --quiet HEAD@{1} HEAD 2>/dev/null; then
+            echo "No new commit was created."
+            exit 0
+          fi
+
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            RUN_DATE=$(date -u +%Y-%m-%d)
+            BRANCH_NAME="data/benchmarks-${RUN_DATE}"
+            echo "Publishing to topic branch ${BRANCH_NAME}..."
+            git push origin HEAD:"${BRANCH_NAME}" --force
+            echo "Opening or updating pull request to main..."
+            pr_output=$(gh pr create \
+              --title "data(benchmarks): monthly capture ${RUN_DATE}" \
+              --body "Automated monthly benchmark captures for ${RUN_DATE}." \
+              --base main \
+              --head "${BRANCH_NAME}" 2>&1) || echo "$pr_output"
+            echo "Enabling auto-merge..."
+            gh pr merge --auto --squash --delete-branch "${BRANCH_NAME}" || true
+            echo "Dispatching CI workflow on ${BRANCH_NAME}..."
+            gh workflow run ci.yml --ref "${BRANCH_NAME}" || true
+          else
+            echo "Pushing directly to ${GITHUB_REF_NAME}..."
+            for attempt in 1 2 3 4 5; do
+              if git push origin HEAD:"${GITHUB_REF_NAME}"; then
+                exit 0
+              fi
+              echo "Push rejected (attempt $attempt) — rebasing and retrying."
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+              sleep $(( (RANDOM % 5) + 1 ))
+            done
+            echo "::error::Failed to push after 5 attempts."
+            exit 1
+          fi
