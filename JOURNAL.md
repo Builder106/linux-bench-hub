@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-13: Replace the README Mermaid diagram #decision
+
+The README now uses a static diagram with an editable HTML source at `assets/architecture.html`. PNG keeps the GitHub rendering consistent. The capture graph separates x86 containers from the ARM64 SSH target before they meet at Phoronix. Composite XML then branches to the R static writeups and Rails dashboard. The three x86 distributions and benchmark names remain in the graph or adjacent text.
+
 ## 2026-10-03: Consolidated benchmark publishing into auto-merging PR workflow #decision #fix
 
 Consolidated separate x86 and arm64 publish jobs in `.github/workflows/capture-benchmarks.yml` into a single downstream publish job that waits for all capture matrices, stages available artifacts across architectures, and commits changes atomically. When running against `main`, the workflow now publishes to a dedicated topic branch, opens an auto-merging pull request, and triggers the CI suite, satisfying GitHub branch protection ruleset requirements without blocking monthly captures.

@@ -55,36 +55,9 @@ Full per-distribution data and reports:
 
 ## How the pieces fit
 
-```mermaid
-flowchart LR
-  cron["GitHub Actions<br/>monthly cron"]
-  ubuntu["ubuntu:24.04 container<br/>x86_64"]
-  fedora["fedora:41 container<br/>x86_64"]
-  debian["debian:12 container<br/>x86_64"]
-  ampere["Ampere A1 VM<br/>aarch64 over SSH"]
-  pts["Phoronix Test Suite<br/>c-ray, tinymembench, aircrack-ng"]
-  composite["benchmarks/*/composite-latest.xml"]
-  rparser["benchmarks/*/Parse_composite_*.R<br/>summary stats + plots"]
-  md["benchmarks/*/*.md<br/>static writeup"]
+![LinuxBenchHub capture flow](assets/architecture.png)
 
-  cron --> ubuntu
-  cron --> fedora
-  cron --> debian
-  cron -.->|SSH| ampere
-  ubuntu --> pts
-  fedora --> pts
-  debian --> pts
-  ampere --> pts
-  pts --> composite
-  composite --> rparser
-  rparser --> md
-
-  rails["Rails 8 dashboard<br/>website/"]
-  charts["Chartkick + Groupdate"]
-
-  composite --> rails
-  rails --> charts
-```
+The monthly workflow runs Phoronix in three x86_64 containers and on an ARM64 host over SSH. Each capture produces composite XML. R parsers create static writeups; the Rails dashboard reads the same XML for charts.
 
 The R parsers and the Rails app are interchangeable consumers of the same `composite.xml` data. You can run the static analysis with R alone, boot the dashboard alone, or use both together.
 

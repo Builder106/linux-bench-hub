@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinuxBenchHub capture flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#fafafa}.diagram-container{width:100%;overflow-x:auto}svg{display:block;width:100%;min-width:1280px}@media print{.diagram-container{overflow-x:visible}svg{min-width:0}}</style>
+<div class="diagram-container">
+<svg viewBox="0 0 1280 720" role="img" aria-labelledby="architecture-title architecture-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="architecture-title">LinuxBenchHub capture flow</title>
+<desc id="architecture-desc">A monthly GitHub Actions workflow runs benchmarks on three x86 containers and an ARM64 host over SSH. Phoronix writes composite XML, which feeds either R parsers for static writeups or a Rails dashboard for charts.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#718096"/></marker></defs>
+<rect width="1280" height="720" fill="#fafafa"/>
+<text x="40" y="64" fill="#171719" font-family="'Instrument Serif', Georgia, serif" font-size="32">LinuxBenchHub capture flow</text>
+<path d="M 40 88 H 1240" stroke="#171719" stroke-opacity=".17"/>
+<path d="M 205 342 H 230 Q 238 342 238 334 V 238 Q 238 230 246 230 H 280" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 205 362 H 230 Q 238 362 238 370 V 458 Q 238 466 246 466 H 280" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 470 230 H 492 Q 500 230 500 238 V 330 Q 500 338 508 338 H 540" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 470 466 H 492 Q 500 466 500 458 V 370 Q 500 362 508 362 H 540" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 730 350 H 790" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 970 330 H 994 Q 1002 330 1002 322 V 238 Q 1002 230 1010 230 H 1030" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 970 370 H 994 Q 1002 370 1002 378 V 458 Q 1002 466 1010 466 H 1030" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="308" width="165" height="88" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
+<text x="56" y="336" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Monthly workflow</text>
+<path d="M 56 348 H 189" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="56" y="368" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">GitHub Actions</text>
+<rect x="280" y="170" width="190" height="120" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
+<text x="296" y="198" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">x86 containers</text>
+<path d="M 296 210 H 454" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="296" y="230" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Ubuntu 24.04</text>
+<text x="296" y="249" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Fedora 41 / Debian 12</text>
+<rect x="280" y="408" width="190" height="120" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
+<text x="296" y="436" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">ARM64 host</text>
+<path d="M 296 448 H 454" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="296" y="468" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">remote capture via SSH</text>
+<text x="296" y="487" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Ampere A1</text>
+<rect x="540" y="306" width="190" height="88" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
+<text x="556" y="334" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Phoronix</text>
+<path d="M 556 346 H 714" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="556" y="366" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">c-ray / memory / Wi-Fi</text>
+<rect x="790" y="306" width="180" height="88" rx="6" fill="#ffffff" stroke="#cc342d" stroke-width="2"/>
+<text x="806" y="334" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Composite XML</text>
+<path d="M 806 346 H 954" stroke="#cc342d" stroke-width=".8"/>
+<text x="806" y="366" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">per-platform results</text>
+<rect x="1030" y="170" width="210" height="120" rx="6" fill="#eef5f7" stroke="#c9d2dc" stroke-width="1"/>
+<text x="1046" y="198" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Static writeups</text>
+<path d="M 1046 210 H 1224" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="1046" y="230" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">R parsers / summary</text>
+<text x="1046" y="249" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">plots and Markdown</text>
+<rect x="1030" y="408" width="210" height="120" rx="6" fill="#eef5f7" stroke="#c9d2dc" stroke-width="1"/>
+<text x="1046" y="436" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Rails dashboard</text>
+<path d="M 1046 448 H 1224" stroke="#c9d2dc" stroke-width=".8"/>
+<text x="1046" y="468" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Chartkick + Groupdate</text>
+<text x="1046" y="487" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">interactive charts</text>
+</svg>
+</div>
+</html>
