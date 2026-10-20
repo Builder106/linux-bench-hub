@@ -1,57 +1,169 @@
 <!doctype html>
 <html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LinuxBenchHub capture flow</title>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
-<style>html,body{margin:0;background:#fafafa}.diagram-container{width:100%;overflow-x:auto}svg{display:block;width:100%;min-width:1280px}@media print{.diagram-container{overflow-x:visible}svg{min-width:0}}</style>
-<div class="diagram-container">
-<svg viewBox="0 0 1280 720" role="img" aria-labelledby="architecture-title architecture-desc" xmlns="http://www.w3.org/2000/svg">
-<title id="architecture-title">LinuxBenchHub capture flow</title>
-<desc id="architecture-desc">A monthly GitHub Actions workflow runs benchmarks on three x86 containers and an ARM64 host over SSH. Phoronix writes composite XML, which feeds either R parsers for static writeups or a Rails dashboard for charts.</desc>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#718096"/></marker></defs>
-<rect width="1280" height="720" fill="#fafafa"/>
-<text x="40" y="64" fill="#171719" font-family="'Instrument Serif', Georgia, serif" font-size="32">LinuxBenchHub capture flow</text>
-<path d="M 40 88 H 1240" stroke="#171719" stroke-opacity=".17"/>
-<path d="M 205 342 H 230 Q 238 342 238 334 V 238 Q 238 230 246 230 H 280" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 205 362 H 230 Q 238 362 238 370 V 458 Q 238 466 246 466 H 280" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 470 230 H 492 Q 500 230 500 238 V 330 Q 500 338 508 338 H 540" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 470 466 H 492 Q 500 466 500 458 V 370 Q 500 362 508 362 H 540" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 730 350 H 790" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 970 330 H 994 Q 1002 330 1002 322 V 238 Q 1002 230 1010 230 H 1030" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<path d="M 970 370 H 994 Q 1002 370 1002 378 V 458 Q 1002 466 1010 466 H 1030" fill="none" stroke="#718096" stroke-width="1.6" marker-end="url(#arrow)"/>
-<rect x="40" y="308" width="165" height="88" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
-<text x="56" y="336" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Monthly workflow</text>
-<path d="M 56 348 H 189" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="56" y="368" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">GitHub Actions</text>
-<rect x="280" y="170" width="190" height="120" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
-<text x="296" y="198" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">x86 containers</text>
-<path d="M 296 210 H 454" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="296" y="230" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Ubuntu 24.04</text>
-<text x="296" y="249" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Fedora 41 / Debian 12</text>
-<rect x="280" y="408" width="190" height="120" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
-<text x="296" y="436" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">ARM64 host</text>
-<path d="M 296 448 H 454" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="296" y="468" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">remote capture via SSH</text>
-<text x="296" y="487" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Ampere A1</text>
-<rect x="540" y="306" width="190" height="88" rx="6" fill="#ffffff" stroke="#c9d2dc" stroke-width="1"/>
-<text x="556" y="334" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Phoronix</text>
-<path d="M 556 346 H 714" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="556" y="366" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">c-ray / memory / Wi-Fi</text>
-<rect x="790" y="306" width="180" height="88" rx="6" fill="#ffffff" stroke="#cc342d" stroke-width="2"/>
-<text x="806" y="334" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Composite XML</text>
-<path d="M 806 346 H 954" stroke="#cc342d" stroke-width=".8"/>
-<text x="806" y="366" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">per-platform results</text>
-<rect x="1030" y="170" width="210" height="120" rx="6" fill="#eef5f7" stroke="#c9d2dc" stroke-width="1"/>
-<text x="1046" y="198" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Static writeups</text>
-<path d="M 1046 210 H 1224" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="1046" y="230" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">R parsers / summary</text>
-<text x="1046" y="249" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">plots and Markdown</text>
-<rect x="1030" y="408" width="210" height="120" rx="6" fill="#eef5f7" stroke="#c9d2dc" stroke-width="1"/>
-<text x="1046" y="436" fill="#171719" font-family="'Geist', Arial, sans-serif" font-size="16" font-weight="600">Rails dashboard</text>
-<path d="M 1046 448 H 1224" stroke="#c9d2dc" stroke-width=".8"/>
-<text x="1046" y="468" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">Chartkick + Groupdate</text>
-<text x="1046" y="487" fill="#4d5a6b" font-family="'Geist Mono', monospace" font-size="11">interactive charts</text>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root { color-scheme: light dark; --bg: #ffffff; --ink: #1f2328; --muted: #59636e; --edge: #59636e; --box: #8c959f; --group: #d1d9e0; --groupfill: #f6f8fa; --accent: #0969da; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0d1117; --ink: #f0f6fc; --muted: #9198a1; --edge: #9198a1; --box: #656c76; --group: #3d444d; --groupfill: #151b23; --accent: #4493f8; } }
+html, body { margin: 0; background: var(--bg); }
+main { max-width: 880px; margin: 0 auto; }
+svg { display: block; width: 100%; height: auto; }
+text { font-family: "IBM Plex Sans", system-ui, sans-serif; fill: var(--ink); }
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+.muted { fill: var(--muted); }
+.accent-text { fill: var(--accent); }
+.bg, .halo { fill: var(--bg); }
+.node { fill: var(--bg); stroke-width: 1.25; }
+.node.box { stroke: var(--box); }
+.node.accent { stroke: var(--accent); stroke-width: 2; }
+.group { fill: var(--groupfill); stroke: var(--group); }
+.boundary { fill: none; stroke: var(--box); stroke-dasharray: 6 6; }
+.edge { fill: none; stroke: var(--edge); stroke-width: 1.5; }
+.edge.accent { stroke: var(--accent); stroke-width: 2; }
+.edge.dashed { stroke-dasharray: 6 5; }
+.lifeline { fill: none; stroke: var(--group); stroke-dasharray: 4 5; }
+.tip { fill: var(--edge); }
+.tip-accent { fill: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 223" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">LinuxBenchHub capture flow</title>
+<desc id="diagram-desc">On the first of each month a GitHub Actions workflow runs Phoronix in Ubuntu 26.04, Fedora 44, and Debian 13 containers, and on an Ampere ARM64 host over SSH. Both paths write a composite.xml file per distro. The R parsers turn that file into static writeups, and the Rails app reads the same file for its charts.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="tip" d="M0,0 L10,5 L0,10 Z"/></marker>
+<marker id="arrow-accent" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="tip-accent" d="M0,0 L10,5 L0,10 Z"/></marker>
+</defs>
+<rect class="bg" width="880" height="223"/>
+<rect class="node box" x="16" y="83" width="180" height="67" rx="6"/>
+<text x="30" y="110" font-size="16" font-weight="600">Monthly workflow</text>
+<text x="30" y="131" font-size="14" class="muted">1st of each month</text>
+<rect class="node box" x="236" y="16" width="230" height="88" rx="6"/>
+<text x="250" y="43" font-size="16" font-weight="600">x86_64 containers</text>
+<text x="250" y="64" font-size="14" class="muted">Ubuntu 26.04, Fedora 44,</text>
+<text x="250" y="85" font-size="14" class="muted">Debian 13</text>
+<rect class="node box" x="236" y="140" width="230" height="67" rx="6"/>
+<text x="250" y="167" font-size="16" font-weight="600">ARM64 host</text>
+<text x="250" y="188" font-size="14" class="muted">Ampere, over SSH</text>
+<path class="node accent" d="M506,88 V145 A85,10 0 0 0 676,145 V88 A85,10 0 0 0 506,88 Z"/><ellipse class="node accent" cx="591" cy="88" rx="85" ry="10"/>
+<text x="520" y="115" font-size="16" class="mono" font-weight="600">composite.xml</text>
+<text x="520" y="136" font-size="14" class="muted">one per distro</text>
+<rect class="node box" x="716" y="16" width="148" height="67" rx="6"/>
+<text x="730" y="43" font-size="16" font-weight="600">R parsers</text>
+<text x="730" y="64" font-size="14" class="muted">writeups</text>
+<rect class="node box" x="716" y="140" width="148" height="67" rx="6"/>
+<text x="730" y="167" font-size="16" font-weight="600">Rails app</text>
+<text x="730" y="188" font-size="14" class="muted">charts</text>
+<path class="edge" d="M196,116.5 L216,116.5 L216,60 L236,60" marker-end="url(#arrow)"/>
+<path class="edge" d="M196,116.5 L216,116.5 L216,173.5 L236,173.5" marker-end="url(#arrow)"/>
+<path class="edge" d="M466,60 L486,60 L486,116.5 L506,116.5" marker-end="url(#arrow)"/>
+<path class="edge" d="M466,173.5 L486,173.5 L486,116.5 L506,116.5" marker-end="url(#arrow)"/>
+<path class="edge" d="M676,116.5 L696,116.5 L696,49.5 L716,49.5" marker-end="url(#arrow)"/>
+<path class="edge" d="M676,116.5 L696,116.5 L696,173.5 L716,173.5" marker-end="url(#arrow)"/>
 </svg>
-</div>
+</main>
+<script type="application/json" id="diagram-spec">
+{
+  "title": "LinuxBenchHub capture flow",
+  "desc": "On the first of each month a GitHub Actions workflow runs Phoronix in Ubuntu 26.04, Fedora 44, and Debian 13 containers, and on an Ampere ARM64 host over SSH. Both paths write a composite.xml file per distro. The R parsers turn that file into static writeups, and the Rails app reads the same file for its charts.",
+  "width": 880,
+  "nodes": [
+    {
+      "id": "cron",
+      "x": 16,
+      "y": 83,
+      "w": 180,
+      "title": "Monthly workflow",
+      "lines": [
+        "1st of each month"
+      ]
+    },
+    {
+      "id": "x86",
+      "x": 236,
+      "y": 16,
+      "w": 230,
+      "title": "x86_64 containers",
+      "lines": [
+        "Ubuntu 26.04, Fedora 44,",
+        "Debian 13"
+      ]
+    },
+    {
+      "id": "arm",
+      "x": 236,
+      "y": 140,
+      "w": 230,
+      "title": "ARM64 host",
+      "lines": [
+        "Ampere, over SSH"
+      ]
+    },
+    {
+      "id": "xml",
+      "x": 506,
+      "y": 78,
+      "w": 170,
+      "title": "composite.xml",
+      "mono_title": true,
+      "lines": [
+        "one per distro"
+      ],
+      "shape": "store",
+      "accent": true
+    },
+    {
+      "id": "r",
+      "x": 716,
+      "y": 16,
+      "w": 148,
+      "title": "R parsers",
+      "lines": [
+        "writeups"
+      ]
+    },
+    {
+      "id": "rails",
+      "x": 716,
+      "y": 140,
+      "w": 148,
+      "title": "Rails app",
+      "lines": [
+        "charts"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "cron.r",
+      "to": "x86.l"
+    },
+    {
+      "from": "cron.r",
+      "to": "arm.l"
+    },
+    {
+      "from": "x86.r",
+      "to": "xml.l"
+    },
+    {
+      "from": "arm.r",
+      "to": "xml.l"
+    },
+    {
+      "from": "xml.r",
+      "to": "r.l"
+    },
+    {
+      "from": "xml.r",
+      "to": "rails.l"
+    }
+  ]
+}
+</script>
+</body>
 </html>

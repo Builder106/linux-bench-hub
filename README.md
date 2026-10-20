@@ -55,9 +55,12 @@ Full per-distribution data and reports:
 
 ## How the pieces fit
 
-![LinuxBenchHub capture flow](assets/architecture.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/architecture-dark.png">
+  <img src="assets/architecture.png" alt="A monthly workflow starts captures in x86_64 containers for Ubuntu 26.04, Fedora 44, and Debian 13, and on an Ampere ARM64 host over SSH. Both paths write composite.xml, which the R parsers and the Rails app both read." width="880">
+</picture>
 
-The monthly workflow runs Phoronix in three x86_64 containers and on an ARM64 host over SSH. Each capture produces composite XML. R parsers create static writeups; the Rails dashboard reads the same XML for charts.
+The monthly workflow runs Phoronix in Ubuntu, Fedora, and Debian containers, and on an Ampere ARM64 host over SSH. Every capture writes a `composite.xml` file. R parsers turn it into static writeups, and the Rails dashboard reads the same file for charts.
 
 The R parsers and the Rails app are interchangeable consumers of the same `composite.xml` data. You can run the static analysis with R alone, boot the dashboard alone, or use both together.
 

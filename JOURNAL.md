@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-19: Redraw the capture figure #decision
+
+The old figure listed Ubuntu 24.04, Fedora 41, and Debian 12, but the workflow now runs 26.04, 44, and 13. The red highlight on `composite.xml` became the single accent, and the figure has a dark variant.
+
 ## 2026-10-13: Replace the README Mermaid diagram #decision
 
 The README now uses a static diagram with an editable HTML source at `assets/architecture.html`. PNG keeps the GitHub rendering consistent. The capture graph separates x86 containers from the ARM64 SSH target before they meet at Phoronix. Composite XML then branches to the R static writeups and Rails dashboard. The three x86 distributions and benchmark names remain in the graph or adjacent text.
