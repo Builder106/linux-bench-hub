@@ -20,12 +20,9 @@
   color-scheme: dark;
   --ground: #0a0507;
   --panel: #150c10;
-  --panel-deep: #1f0a10;
   --ink: #f0e4e6;
   --muted: #b09a9e;
   --line: #5a2228;
-  --kernel: #1f0a10;
-  --dim: #3d1a1d;
   --ruby: #cc342d;
   --ruby-bright: #f55a4d;
   --ubuntu: #e95420;
@@ -36,15 +33,12 @@
   --f-text: "Geist", ui-sans-serif, system-ui, sans-serif;
   --f-raw: "Geist Mono", ui-monospace, monospace;
   --t-display: clamp(2.25rem, 1rem + 3.4vw, 4.5rem);
-  --t-loupe-name: clamp(3rem, 1rem + 7vw, 8rem);
-  --t-kernel: clamp(1rem, 0.6rem + 1vw, 1.5rem);
   --t-sub: 1.25rem;
   --t-text: 1rem;
   --t-small: 0.8125rem;
   --t-tiny: 0.75rem;
 
   --gutter: 40px;
-  --row-h: 76px;
   --settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -209,217 +203,6 @@ main {
   font-size: 0.875rem;
 }
 
-/* ─── The stack ─── */
-.stacks {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  column-gap: 56px;
-}
-
-.stack {
-  --gw: 9.5rem;
-}
-
-.stack[data-arch="arm64"] {
-  --gw: 0px;
-}
-
-.stack-arch {
-  margin: 0 0 12px var(--gw);
-  color: var(--muted);
-  font-size: var(--t-small);
-  font-weight: 500;
-  line-height: 1;
-}
-
-.stack-grid {
-  display: grid;
-  grid-template-columns: var(--gw) repeat(3, minmax(0, 1fr));
-}
-
-.stack-grid [style*="--col"] {
-  grid-column: var(--col);
-}
-
-.row {
-  display: contents;
-}
-
-/* Each distro's userland is a column: a 2 px line in its color from the
-   system call line up through its runs. */
-.col-head,
-.cell,
-.userland {
-  border-left: 2px solid var(--c);
-  transition: border-color 0.35s var(--settle), color 0.35s var(--settle);
-}
-
-.col-head {
-  padding: 0 12px 14px;
-  color: var(--ct);
-  font-weight: 600;
-  line-height: 1.2;
-  text-decoration: none;
-}
-
-.col-version {
-  display: block;
-  color: var(--muted);
-  font-size: var(--t-small);
-  font-weight: 400;
-}
-
-.row-name,
-.layer-label {
-  grid-column: 1;
-  padding-right: 16px;
-}
-
-.row-name {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: var(--row-h);
-  line-height: 1.15;
-}
-
-.row-name a {
-  align-self: start;
-  font-size: var(--t-sub);
-  font-weight: 600;
-  font-stretch: 85%;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  transition: font-stretch 0.5s var(--settle);
-}
-
-.row-name a:hover,
-.row-name a:focus-visible {
-  font-stretch: 100%;
-}
-
-.row-scale,
-.layer-label {
-  color: var(--muted);
-  font-size: var(--t-tiny);
-}
-
-.row-scale {
-  margin-top: 3px;
-}
-
-.cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  height: var(--row-h);
-  padding: 0 12px;
-}
-
-.band {
-  position: relative;
-  display: block;
-  height: 18px;
-  border-bottom: 1px solid var(--line);
-}
-
-.band i {
-  position: absolute;
-  left: var(--x);
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  margin-left: -1px;
-  background: var(--c);
-  transform-origin: 50% 100%;
-  transition: scale 0.4s var(--settle), background-color 0.35s var(--settle);
-}
-
-.mean {
-  font-size: var(--t-small);
-  line-height: 1;
-}
-
-.none {
-  color: var(--muted);
-  font-size: var(--t-tiny);
-  line-height: 1.3;
-}
-
-.userland {
-  padding: 14px 12px 12px;
-  line-height: 1.2;
-}
-
-.userland code {
-  font-size: var(--t-tiny);
-}
-
-.layer-label {
-  align-self: center;
-}
-
-.syscall {
-  grid-column: 2 / -1;
-  align-self: start;
-  height: 1px;
-  background: var(--muted);
-}
-
-.stack-grid .layer-label:has(+ .syscall) {
-  align-self: start;
-  translate: 0 -0.55em;
-}
-
-.kernel {
-  margin-top: 12px;
-  padding: 16px 16px 15px;
-  background: var(--kernel);
-  line-height: 1.1;
-}
-
-.kernel code {
-  font-size: var(--t-kernel);
-  font-stretch: 87%;
-}
-
-.stack-grid .layer-label:has(+ .kernel) {
-  margin-top: 12px;
-}
-
-.machine-band {
-  padding: 12px 16px 0;
-  color: var(--muted);
-  font-size: var(--t-tiny);
-  line-height: 1.4;
-}
-
-.stacks:not(.is-focused) .stack[data-arch="arm64"] .row-name,
-.stacks:not(.is-focused) .stack[data-arch="arm64"] .layer-label {
-  display: none;
-}
-
-html.intro .comb {
-  visibility: hidden;
-}
-
-/* A distro lit (its lens page, or a hovered column head): the others recede. */
-.stacks[data-lit="ubuntu"] [data-distro]:not([data-distro="ubuntu"]),
-.stacks[data-lit="fedora"] [data-distro]:not([data-distro="fedora"]),
-.stacks[data-lit="debian"] [data-distro]:not([data-distro="debian"]),
-.stacks:has(.col-head[data-distro="ubuntu"]:hover, .col-head[data-distro="ubuntu"]:focus-visible) [data-distro]:not([data-distro="ubuntu"]),
-.stacks:has(.col-head[data-distro="fedora"]:hover, .col-head[data-distro="fedora"]:focus-visible) [data-distro]:not([data-distro="fedora"]),
-.stacks:has(.col-head[data-distro="debian"]:hover, .col-head[data-distro="debian"]:focus-visible) [data-distro]:not([data-distro="debian"]) {
-  --c: var(--dim);
-  --ct: var(--muted);
-}
-
-/* Hovering a test name lifts its row's ticks. */
-.row:has(.row-name a:hover, .row-name a:focus-visible) .band i {
-  scale: 1 1.45;
-}
-
 /* ─── Home: the thesis beside two combs ─── */
 .home {
   display: grid;
@@ -454,6 +237,10 @@ html.intro .comb {
   /* Sized by the width left beside the thesis; the combs may run a little past the fold. */
   --w: clamp(104px, calc((100vw - 560px) / 6.875), 150px);
   --h: calc(var(--w) * 0.866);
+}
+
+html.intro .comb {
+  visibility: hidden;
 }
 
 .comb-title {
@@ -737,6 +524,25 @@ a.hex:focus-visible .hex-name {
   font-weight: 600;
 }
 
+.band {
+  position: relative;
+  display: block;
+  height: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.band i {
+  position: absolute;
+  left: var(--x);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--c);
+  transform-origin: 50% 100%;
+  transition: scale 0.4s var(--settle), background-color 0.35s var(--settle);
+}
+
 .run-lane .band {
   height: 22px;
 }
@@ -767,34 +573,6 @@ a.hex:focus-visible .hex-name {
   background: linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / 10% 4px repeat-x;
 }
 
-/* ─── A test under the loupe ─── */
-.stacks.is-focused {
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 56px;
-  margin-top: 56px;
-}
-
-.stacks.is-focused .stack {
-  --gw: 9.5rem;
-}
-
-.stacks.is-focused .cell {
-  height: auto;
-  justify-content: start;
-  gap: 10px;
-  padding: 14px 16px 18px;
-}
-
-.stacks.is-focused .row-name {
-  height: auto;
-  justify-content: start;
-  padding-top: 14px;
-}
-
-.stacks.is-focused .band {
-  height: 28px;
-}
-
 .raw {
   overflow-wrap: anywhere;
   color: var(--line);
@@ -810,33 +588,11 @@ a.hex:focus-visible .hex-name {
   font-weight: 400;
 }
 
-.loupe-head {
-  margin: 40px 0 0;
-}
-
 .back {
   display: inline-block;
   font-size: var(--t-small);
   font-weight: 500;
   padding: 6px 0;
-}
-
-.loupe-name {
-  margin: 24px 0 16px -0.05em;
-  font-size: var(--t-loupe-name);
-  font-weight: 600;
-  font-stretch: 78%;
-  letter-spacing: -0.045em;
-  line-height: 0.9;
-}
-
-.loupe-name span {
-  display: inline-block;
-}
-
-.loupe-unit {
-  max-width: 60ch;
-  color: var(--muted);
 }
 
 .notes-title {
@@ -999,81 +755,15 @@ a.hex:focus-visible .hex-name {
   font-size: var(--t-small);
 }
 
-/* ─── Phone: the x86_64 stack, then the arm64 stack ─── */
+/* ─── Phone ─── */
 @media (max-width: 860px) {
   :root {
     --gutter: 16px;
-    --row-h: 66px;
   }
 
   .stack-head {
     grid-template-columns: minmax(0, 1fr);
     margin: 28px 0 36px;
-  }
-
-  .stacks {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 56px;
-  }
-
-  .stack,
-  .stack[data-arch="arm64"],
-  .stacks.is-focused .stack {
-    --gw: 0px;
-  }
-
-  .stacks:not(.is-focused) .stack[data-arch="arm64"] .row-name,
-  .stacks:not(.is-focused) .stack[data-arch="arm64"] .layer-label {
-    display: flex;
-  }
-
-  .row-name,
-  .layer-label {
-    grid-column: 1 / -1;
-    padding: 0;
-  }
-
-  .row-name {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 2px 10px;
-    height: auto;
-    padding: 16px 0 8px;
-  }
-
-  .layer-label {
-    display: block;
-    padding: 12px 0 6px;
-  }
-
-  .stack-grid .layer-label:has(+ .syscall) {
-    padding: 0;
-    translate: none;
-  }
-
-  .stack-grid .layer-label:has(+ .kernel) {
-    margin-top: 0;
-  }
-
-  .col-head,
-  .cell,
-  .userland {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-
-  .col-head {
-    font-size: var(--t-small);
-  }
-
-  .kernel {
-    margin-top: 0;
-    padding: 12px;
-  }
-
-  .machine-band {
-    padding: 10px 0 0;
   }
 
   .machines {
@@ -1142,10 +832,6 @@ a.hex:focus-visible .hex-name {
 @media (prefers-reduced-motion: reduce) {
   .band i,
   .utility,
-  .col-head,
-  .cell,
-  .userland,
-  .row-name a,
   .loupe-steps a {
     transition: none;
   }
