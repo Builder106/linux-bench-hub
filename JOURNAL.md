@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Ledger rows follow the comb #decision #incident
+
+The ledger now holds both kernel cells beside its tables, since the kernel cell is what opens it, and each row is one comb cell (distro, machine, every run in order, mean). The best mean is marked per machine, never across x86_64 and arm64, as in the comb. Test names are `h2` headings that label their tables, not `<caption>` elements: GSAP Flip mismeasured a box inside a caption and started the name at twice its offset. Removed the pre-comb partials, their helpers, and the stack direction's CSS in the same pass.
+
 ## 2026-10-23: Rebuild the showcase as the comb #decision #pivot
 
 The live showcase had stale and contradictory numbers. The banner still said Ubuntu 24.04, Fedora 41 and Debian 12, and it showed the May VMware sample beside current captures. It also broke on phones and never compared distros directly. The capture workflow writes `composite-latest.xml` but never regenerates the Markdown writeups. Every writeup had drifted, and `ubuntu.md` (x86) held an arm64 capture. The site now reads the composite XML directly through `Capture`, and the writeups are no longer on the render path. The redesign settled on a honeycomb taken from the old site's hex tiles. In a flat-top comb, the kernel cell under the middle column touches all three distro columns. That matches the data: Docker shares the host kernel, so the three distros differ only in userland. Two earlier directions were rejected: a measuring rule had nothing to do with Linux, and a layered stack read as a dashboard. The hex tiles are Blender renders made on the Mac's GPU (`design/blender/comb_tiles.py`). The lattice is drawn in Glaxnimate (`design/glaxnimate/comb-lattice.svg`). Motion uses GSAP alone. Data never goes into an image.
