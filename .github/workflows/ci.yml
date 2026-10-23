@@ -92,7 +92,7 @@ jobs:
   deploy:
     name: Trigger Vercel deploy
     needs: [secrets, rails, r-syntax]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
     runs-on: ubuntu-24.04
     steps:
       - name: Trigger staging deploy hook

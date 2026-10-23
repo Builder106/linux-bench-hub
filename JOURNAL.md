@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Allow manual release after bot merges #incident #decision
+
+PR #26 merged through GitHub Actions' auto-merge token, which did not create a `main` push workflow run. GitHub suppresses workflow events caused by that token, so the site stayed on the previous export even though the PR checks passed. CI now allows its existing `workflow_dispatch` trigger to run the production deploy job after the same checks pass. Release operators can dispatch CI on `main` after a bot merge; the container publish workflow already supports dispatch.
+
 ## 2026-10-23: Patch the new crass advisory #incident #fix
 
 PR #26's Rails check caught GHSA-pq4g-8rxf-4g29 after the advisory database updated. The lockfile held `crass` 1.0.7 through Loofah; 1.0.8 fixes the CSS tokenization bug. Updated only that gem and its checksum, leaving unrelated dependencies pinned. The PR's dependency audit must pass before the approved auto-merge can proceed.
