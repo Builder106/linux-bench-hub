@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Check the finished comb on phones #decision #testing
+
+The final review found that small Ubuntu labels faded into the rendered glass, the test page's run marks were hard to read on a phone, and the ledger rows needed more breathing room. A brighter orange now carries small Ubuntu text while the emblem keeps its original color; the test plot has larger phone marks and scale labels, and the ledger gives each phone row more space. I sampled colors from the rendered tile images before changing the text tint. The static export was rebuilt from this source. Linux ARM64 checks passed (35 Ruby files clean; 32 tests, 520 assertions, full measured line and branch coverage). The desktop and 390px phone browser sweep found no console errors, overflow, hidden links, or automated axe violations on the five checked routes. Keyboard focus stayed visible across the home, ledger, and test pages, and Enter opened the test and returned home at both widths. Axe could not determine contrast for some image-backed tiles and flagged ledger links for manual review, so this is not a full WCAG conformance claim.
+
 ## 2026-10-23: Ledger rows follow the comb #decision #incident
 
 The ledger now holds both kernel cells beside its tables, since the kernel cell is what opens it, and each row is one comb cell (distro, machine, every run in order, mean). The best mean is marked per machine, never across x86_64 and arm64, as in the comb. Test names are `h2` headings that label their tables, not `<caption>` elements: GSAP Flip mismeasured a box inside a caption and started the name at twice its offset. Removed the pre-comb partials, their helpers, and the stack direction's CSS in the same pass.
