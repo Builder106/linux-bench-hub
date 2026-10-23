@@ -26,6 +26,7 @@
   --ruby: #cc342d;
   --ruby-bright: #f55a4d;
   --ubuntu: #e95420;
+  --ubuntu-text: #ff8d60;
   --fedora: #51a2da;
   --debian: #d8a04a;
   --debian-text: #d8a04a;
@@ -41,7 +42,7 @@
   --settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-distro="ubuntu"] { --c: var(--ubuntu); --ct: var(--ubuntu); }
+[data-distro="ubuntu"] { --c: var(--ubuntu); --ct: var(--ubuntu-text); }
 [data-distro="fedora"] { --c: var(--fedora); --ct: var(--fedora); }
 [data-distro="debian"] { --c: var(--debian); --ct: var(--debian-text); }
 
@@ -544,10 +545,9 @@ a.hex:focus-visible .hex-name {
 
 .raw {
   overflow-wrap: anywhere;
-  color: var(--line);
+  color: var(--muted);
   font-family: var(--f-raw);
-  font-size: var(--t-tiny);
-  font-stretch: 87%;
+  font-size: var(--t-small);
   line-height: 1.6;
 }
 
@@ -555,6 +555,10 @@ a.hex:focus-visible .hex-name {
   display: inline-block;
   color: var(--ink);
   font-weight: 400;
+}
+
+.raw b + b {
+  margin-left: 0.2em;
 }
 
 .back {
@@ -670,7 +674,7 @@ a.hex:focus-visible .hex-name {
 }
 
 .ledger-kernels .hex-sub {
-  color: var(--ink);
+  color: var(--ground);
   font-weight: 600;
 }
 
@@ -813,6 +817,35 @@ a.hex:focus-visible .hex-name {
   .ledger-runs-table thead th:nth-child(1) { width: 28%; }
   .ledger-runs-table thead th:nth-child(2) { width: 19%; }
   .ledger-runs-table thead th:nth-child(4) { width: 23%; }
+}
+
+@media (max-width: 600px) {
+  .ledger-table {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .ledger-table tbody th,
+  .ledger-table td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .ledger-runs {
+    font-size: 0.8125rem;
+  }
+
+  .runs-scale {
+    font-size: var(--t-small);
+  }
+
+  .run-lane .band {
+    height: 30px;
+  }
+
+  .band i {
+    width: 3px;
+  }
 }
 
 /* ─── Phone: the thesis, then each comb full width ─── */

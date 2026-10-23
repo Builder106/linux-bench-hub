@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>C-Ray: every run on Ubuntu, Fedora and Debian | LinuxBenchHub</title>
+    <meta name="description" content="C-Ray ray traces one 1920 by 1080 scene at 16 rays per pixel on every thread and reports how many seconds it took. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
+    <link rel="canonical" href="https://linuxbenchhub.vercel.app/tests/c-ray/">
+    <meta name="theme-color" content="#0a0507">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="C-Ray: every run on Ubuntu, Fedora and Debian | LinuxBenchHub">
+    <meta property="og:description" content="C-Ray ray traces one 1920 by 1080 scene at 16 rays per pixel on every thread and reports how many seconds it took. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
+    <meta property="og:image" content="/social-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/geist-100_900-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <script>
+      (function () {
+        var h = document.documentElement.classList;
+        h.add("js");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        h.add("motion", "intro");
+        setTimeout(function () { h.remove("intro"); }, 2500);
+      })();
+    </script>
+    <link rel="stylesheet" href="/assets/application-b756ae5d.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="corners">
+      <a class="wordmark" href="/">LinuxBenchHub</a>
+      <nav aria-label="Site">
+        <a class="utility" href="/compare/">The ledger</a>
+        <a class="utility" href="https://github.com/Builder106/linux-bench-hub">Source on GitHub</a>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      
+<article class="pull">
+  <div class="pull-head">
+    <a class="back utility" href="/">Back to the comb</a>
+    <h1 class="pull-name"><span data-flip-id="name-c-ray">C-Ray</span></h1>
+    <p class="pull-unit">Seconds, lower is better. C-Ray ray traces one 1920 by 1080 scene at 16 rays per pixel on every thread and reports how many seconds it took.</p>
+  </div>
+
+    <section class="pull-row" data-arch="x86_64" aria-labelledby="pull-x86_64">
+      <h2 class="comb-title" id="pull-x86_64">
+        x86_64 <span class="comb-machine">on AMD EPYC 9V74, Linux 6.17.0-1022-azure</span>
+      </h2>
+      <div class="pull-cells">
+          <div class="hex hex-test" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-c-ray-ubuntu-x86_64">
+            <span class="hex-name">Ubuntu</span>
+              <strong class="hex-value">366.1</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">20.2% behind</span>
+          </div>
+          <div class="hex hex-test is-best" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-c-ray-fedora-x86_64">
+            <span class="hex-name">Fedora</span>
+              <strong class="hex-value">304.6</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">best</span>
+          </div>
+          <div class="hex hex-test" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-c-ray-debian-x86_64">
+            <span class="hex-name">Debian</span>
+              <strong class="hex-value">314.6</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">3.3% behind</span>
+          </div>
+      </div>
+
+      <ul class="runs" aria-label="Every C-Ray run on x86_64">
+        <li class="runs-scale" aria-hidden="true"><span>295.1</span><span class="scale-line"></span><span>375.6 Seconds</span></li>
+          <li class="run-lane" data-distro="ubuntu">
+            <span class="run-name">Ubuntu</span>
+              <span class="raw"><b>365.759</b>:<b>366.144</b>:<b>366.287</b></span>
+              <span class="band" role="img" aria-label="Ubuntu x86_64: 3 runs from 365.8 to 366.3 Seconds, mean 366.1">
+                  <i style="--x: 87.805%" data-flip-id="c-ray-ubuntu-x86_64-0"></i>
+                  <i style="--x: 88.284%" data-flip-id="c-ray-ubuntu-x86_64-1"></i>
+                  <i style="--x: 88.462%" data-flip-id="c-ray-ubuntu-x86_64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="fedora">
+            <span class="run-name">Fedora</span>
+              <span class="raw"><b>304.872</b>:<b>304.414</b>:<b>304.554</b></span>
+              <span class="band" role="img" aria-label="Fedora x86_64: 3 runs from 304.4 to 304.9 Seconds, mean 304.6">
+                  <i style="--x: 12.108%" data-flip-id="c-ray-fedora-x86_64-0"></i>
+                  <i style="--x: 11.538%" data-flip-id="c-ray-fedora-x86_64-1"></i>
+                  <i style="--x: 11.713%" data-flip-id="c-ray-fedora-x86_64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="debian">
+            <span class="run-name">Debian</span>
+              <span class="raw"><b>314.719</b>:<b>314.398</b>:<b>314.56</b></span>
+              <span class="band" role="img" aria-label="Debian x86_64: 3 runs from 314.4 to 314.7 Seconds, mean 314.6">
+                  <i style="--x: 24.350%" data-flip-id="c-ray-debian-x86_64-0"></i>
+                  <i style="--x: 23.951%" data-flip-id="c-ray-debian-x86_64-1"></i>
+                  <i style="--x: 24.152%" data-flip-id="c-ray-debian-x86_64-2"></i>
+              </span>
+          </li>
+      </ul>
+    </section>
+    <section class="pull-row" data-arch="arm64" aria-labelledby="pull-arm64">
+      <h2 class="comb-title" id="pull-arm64">
+        arm64 <span class="comb-machine">on ARMv8 Neoverse-N1, Linux 6.17.0-1018-oracle</span>
+      </h2>
+      <div class="pull-cells">
+          <div class="hex hex-test" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-c-ray-ubuntu-arm64">
+            <span class="hex-name">Ubuntu</span>
+              <strong class="hex-value">245.6</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">3.3% behind</span>
+          </div>
+          <div class="hex hex-test" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-c-ray-fedora-arm64">
+            <span class="hex-name">Fedora</span>
+              <strong class="hex-value">240.4</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">1.1% behind</span>
+          </div>
+          <div class="hex hex-test is-best" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-c-ray-debian-arm64">
+            <span class="hex-name">Debian</span>
+              <strong class="hex-value">237.7</strong>
+              <span class="hex-sub">Seconds, mean of 3 runs</span>
+              <span class="hex-gap">best</span>
+          </div>
+      </div>
+
+      <ul class="runs" aria-label="Every C-Ray run on arm64">
+        <li class="runs-scale" aria-hidden="true"><span>235.6</span><span class="scale-line"></span><span>248.3 Seconds</span></li>
+          <li class="run-lane" data-distro="ubuntu">
+            <span class="run-name">Ubuntu</span>
+              <span class="raw"><b>244.433</b>:<b>246.879</b>:<b>245.601</b></span>
+              <span class="band" role="img" aria-label="Ubuntu arm64: 3 runs from 244.4 to 246.9 Seconds, mean 245.6">
+                  <i style="--x: 69.207%" data-flip-id="c-ray-ubuntu-arm64-0"></i>
+                  <i style="--x: 88.462%" data-flip-id="c-ray-ubuntu-arm64-1"></i>
+                  <i style="--x: 78.401%" data-flip-id="c-ray-ubuntu-arm64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="fedora">
+            <span class="run-name">Fedora</span>
+              <span class="raw"><b>240.699</b>:<b>238.731</b>:<b>241.669</b></span>
+              <span class="band" role="img" aria-label="Fedora arm64: 3 runs from 238.7 to 241.7 Seconds, mean 240.4">
+                  <i style="--x: 39.814%" data-flip-id="c-ray-fedora-arm64-0"></i>
+                  <i style="--x: 24.322%" data-flip-id="c-ray-fedora-arm64-1"></i>
+                  <i style="--x: 47.450%" data-flip-id="c-ray-fedora-arm64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="debian">
+            <span class="run-name">Debian</span>
+              <span class="raw"><b>237.107</b>:<b>238.025</b>:<b>237.961</b></span>
+              <span class="band" role="img" aria-label="Debian arm64: 3 runs from 237.1 to 238.0 Seconds, mean 237.7">
+                  <i style="--x: 11.538%" data-flip-id="c-ray-debian-arm64-0"></i>
+                  <i style="--x: 18.765%" data-flip-id="c-ray-debian-arm64-1"></i>
+                  <i style="--x: 18.261%" data-flip-id="c-ray-debian-arm64-2"></i>
+              </span>
+          </li>
+      </ul>
+    </section>
+
+  <section class="loupe-notes" aria-labelledby="method">
+    <h2 class="notes-title" id="method">How these runs were made</h2>
+    <p>
+      <code>pts/c-ray-2.0.0</code>, application version 2.0,
+      run as <code>-s 1920x1080 -r 16</code>.
+      Raw strings are copied verbatim from each capture's composite.xml, in the order the runs happened.
+      Each machine has its own scale.
+    </p>
+    <ul class="captures">
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-09-01</a>: Ubuntu 26.04 LTS on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-08-01-0824</a>: Ubuntu 26.04 LTS on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora/composite-latest.xml">lbh-fedora-ci-2026-09-01</a>: Fedora 44 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora-arm64/composite-latest.xml">2026-08-01-0859</a>: Fedora 44 on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian/composite-latest.xml">lbh-debian-ci-2026-09-01</a>: Debian 13 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian-arm64/composite-latest.xml">2026-08-01-0935</a>: Debian 13 on arm64</li>
+    </ul>
+  </section>
+
+  <nav class="loupe-steps" aria-label="Other tests">
+    <a href="/tests/memset/">Previous: Memset</a>
+    <a class="step-next" href="/tests/aircrack-ng/">Next: Aircrack-ng</a>
+  </nav>
+</article>
+
+    </main>
+    <footer class="colophon">
+        <p>
+          x86_64 runs: AMD EPYC 9V74
+          (2 Cores / 4 Threads) in Docker, captured
+          2026-09-01.
+        </p>
+        <p>
+          arm64 runs: ARMv8 Neoverse-N1
+          (4 Cores) in Docker, captured
+          2026-08-01.
+        </p>
+      <p>
+        Phoronix Test Suite 10.8.6.
+        Code and data are MIT licensed. Type: Geist and Geist Mono.
+      </p>
+    </footer>
+    <script src="/assets/gsap/gsap.min-6cfb2fb6.js" defer="defer"></script>
+<script src="/assets/gsap/Flip.min-60a451a7.js" defer="defer"></script>
+<script src="/assets/site-9cc77ec0.js" defer="defer"></script>
+  </body>
+</html>

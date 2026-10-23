@@ -143,6 +143,7 @@ rendered tiles, so the monthly capture cannot leave a stale picture.
 | ruby | `#cc342d` | best-in-row rim, kernel glass, focus ring |
 | ruby-bright | `#f55a4d` | links |
 | ubuntu / fedora / debian | `#e95420` / `#51a2da` / `#d8a04a` | the current site's distro colors (Debian stays amber so it never reads as ruby) |
+| ubuntu text | `#ff8d60` | a brighter orange for small labels over the rendered hex tiles; the logo keeps `#e95420` |
 
 **Type.** Geist for everything, Geist Mono only for raw strings, kernel and
 compiler strings (the literal identifiers). Self-hosted. No small uppercase
