@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Patch the new crass advisory #incident #fix
+
+PR #26's Rails check caught GHSA-pq4g-8rxf-4g29 after the advisory database updated. The lockfile held `crass` 1.0.7 through Loofah; 1.0.8 fixes the CSS tokenization bug. Updated only that gem and its checksum, leaving unrelated dependencies pinned. The PR's dependency audit must pass before the approved auto-merge can proceed.
+
 ## 2026-10-23: Run the required container check on PRs #incident #decision
 
 PR #26 did not auto-merge after its visible checks passed because the main ruleset still required `Build & Push to GHCR`, but that workflow only ran after a push to `main`. A pull request now runs the same two-platform Docker build under that required check name without registry credentials or a push. Publishing remains a separate job on `main` with package write permission scoped to that job.
