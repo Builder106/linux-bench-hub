@@ -1,55 +1,66 @@
 <% content_for :title, "The ledger: every benchmark run as a table | LinuxBenchHub" %>
-<% content_for :description, "Every Phoronix Test Suite run behind the plate, for Ubuntu, Fedora and Debian on x86_64 and arm64, as plain table rows with links to each capture's XML." %>
+<% content_for :description, "Every Phoronix Test Suite run behind the comb, for Ubuntu, Fedora and Debian on x86_64 and arm64, as plain table rows with links to each capture's XML." %>
 
-<div class="ledger">
-  <div class="stack-head">
-    <h1 class="stack-title">The ledger</h1>
-    <p class="stack-lede">
-      Every run drawn in the stack, as table rows, in the order each capture recorded them.
-      <a class="utility" href="/">Back to the stack</a>
-    </p>
+<div class="home ledger">
+  <%# The kernel cells the reader clicked to get here, held beside the rows. %>
+  <div class="ledger-head">
+    <h1 class="home-title">The ledger.</h1>
+    <p class="home-lede">Every run behind the comb, in the order each capture recorded it.</p>
+    <div class="ledger-kernels">
+      <% Capture::ARCHES.each_with_index do |arch, col| %>
+        <a class="hex hex-kernel" href="/" style="<%= comb_cell(col, 0) %>" data-flip-id="kernel-<%= arch %>" aria-label="<%= arch %> kernel; back to the comb">
+          <%= render "shared/tux_mark", size: 36 %>
+          <span class="hex-sub"><%= arch %></span>
+        </a>
+      <% end %>
+    </div>
   </div>
 
-  <% BenchTest::ALL.each do |test| %>
-    <% rows = captures.map { |c| [ c, c.result_for(test) ] }.select(&:last) %>
-    <table class="ledger-table">
-      <caption><a href="/tests/<%= test.slug %>/"><%= test.name %></a> <span class="caption-unit"><%= rows.first.last.unit %>, <%= direction(rows.first.last) %></span></caption>
-      <thead>
-        <tr><th scope="col">Distro</th><th scope="col">Architecture</th><th scope="col">Run</th><th scope="col" class="num">Value</th></tr>
-      </thead>
-      <tbody>
-        <% rows.each do |capture, result| %>
-          <% result.runs.each_with_index do |run, i| %>
+  <div class="ledger-body">
+    <%# One row per comb cell: every run in the order it happened, then the mean the cell shows. %>
+    <% BenchTest::ALL.each do |test| %>
+      <% sample = captures.filter_map { |c| c.result_for(test) }.first %>
+      <%# Best per machine, as in each comb: x86_64 and arm64 runs are never compared. %>
+      <% best = Capture::ARCHES.to_h { |arch| [ arch, best_mean(captures.select { |c| c.arch == arch }.map { |c| c.result_for(test) }) ] } %>
+      <h2 class="ledger-name" id="ledger-<%= test.slug %>"><a href="/tests/<%= test.slug %>/"><span data-flip-id="name-<%= test.slug %>"><%= test.name %></span></a> <span class="ledger-unit"><%= sample.unit %>, <%= direction(sample) %></span></h2>
+      <table class="ledger-table ledger-runs-table" aria-labelledby="ledger-<%= test.slug %>">
+        <thead>
+          <tr><th scope="col">Distro</th><th scope="col">Machine</th><th scope="col">Runs, in order</th><th scope="col" class="num">Mean</th></tr>
+        </thead>
+        <tbody>
+          <% captures.each do |capture| %>
+            <% result = capture.result_for(test) %>
             <tr data-distro="<%= capture.distro %>">
-              <td><%= capture.name %> <%= capture.version %></td>
+              <th scope="row"><%= capture.name %> <%= capture.version %></th>
               <td><%= capture.arch %></td>
-              <td><%= i + 1 %></td>
-              <td class="num"><%= result.raw.split(":")[i] %></td>
+              <% if result %>
+                <td class="ledger-runs"><% result.raw.split(":").each do |token| %><span><%= token %></span> <% end %></td>
+                <td class="num<%= " is-best" if result.mean == best[capture.arch] %>"><%= run_value(result.mean) %><% if result.mean == best[capture.arch] %> <span class="best-tag">best</span><% end %></td>
+              <% else %>
+                <td class="ledger-runs ledger-none">no runs in <%= capture.title %></td>
+                <td class="num">none</td>
+              <% end %>
             </tr>
           <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <h2 class="ledger-name" id="ledger-captures">Captures</h2>
+    <table class="ledger-table" aria-labelledby="ledger-captures">
+      <thead>
+        <tr><th scope="col">Capture</th><th scope="col">Processor</th><th scope="col">Kernel</th><th scope="col">Compiler</th></tr>
+      </thead>
+      <tbody>
+        <% captures.each do |capture| %>
+          <tr data-distro="<%= capture.distro %>">
+            <th scope="row"><a class="utility" href="<%= capture.xml_url %>"><%= capture.title %></a></th>
+            <td><%= capture.processor %></td>
+            <td><%= capture.kernel %></td>
+            <td><%= capture.compiler %></td>
+          </tr>
         <% end %>
       </tbody>
     </table>
-    <% missing = captures.reject { |c| c.result_for(test) } %>
-    <% if missing.any? %>
-      <p class="ledger-gap"><%= missing.map { |c| "#{c.name} #{c.arch} (#{c.title})" }.to_sentence %> recorded no <%= test.name %> runs.</p>
-    <% end %>
-  <% end %>
-
-  <table class="ledger-table">
-    <caption>Captures</caption>
-    <thead>
-      <tr><th scope="col">Capture</th><th scope="col">Processor</th><th scope="col">Kernel</th><th scope="col">Compiler</th></tr>
-    </thead>
-    <tbody>
-      <% captures.each do |capture| %>
-        <tr data-distro="<%= capture.distro %>">
-          <td><a class="utility" href="<%= capture.xml_url %>"><%= capture.title %></a></td>
-          <td><%= capture.processor %></td>
-          <td><%= capture.kernel %></td>
-          <td><%= capture.compiler %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  </div>
 </div>

@@ -16,8 +16,22 @@ class BenchmarksControllerTest < ActionDispatch::IntegrationTest
     get compare_benchmarks_url
     assert_response :success
     assert_select "table.ledger-table", 5
-    assert_select ".ledger-gap", text: /Fedora x86_64 \(lbh-fedora-ci-2026-09-01\) recorded no Memcpy runs/
-    assert_select "td.num", text: "304.872"
+    assert_select "table.ledger-table tbody tr", 6 * 5
+    assert_select "tr[data-distro='fedora'] .ledger-none", "no runs in lbh-fedora-ci-2026-09-01"
+    assert_select ".ledger-runs span", text: "304.872"
+    assert_select "td.is-best .best-tag", BenchTest::ALL.size * Capture::ARCHES.size
+    assert_select "tr[data-distro='fedora'] td.is-best", text: /\A304\.6 best\z/
+  end
+
+  test "the ledger holds both kernel cells and takes each test name from the comb" do
+    get compare_benchmarks_url
+    Capture::ARCHES.each do |arch|
+      assert_select ".ledger-kernels a.hex-kernel[href='/'][data-flip-id='kernel-#{arch}']", 1
+    end
+    BenchTest::ALL.each do |test|
+      assert_select "h2.ledger-name a[href='/tests/#{test.slug}/'] [data-flip-id='name-#{test.slug}']", test.name
+      assert_select "table[aria-labelledby='ledger-#{test.slug}']"
+    end
   end
 
   test "unknown distro is not routable" do

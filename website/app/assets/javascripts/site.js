@@ -13,8 +13,9 @@
   const MOVE = "expo.inOut";
   const FADE = [
     ".home-head", ".comb-title", ".row-label:not([data-flip-id])", ".hex-head", ".hex-userland",
-    ".hex-kernel", ".kernel-caption", ".comb-lattice", ".pull-head > :not(.pull-name)", ".runs",
-    ".loupe-notes", ".loupe-steps", ".ledger"
+    ".kernel-caption", ".comb-lattice", ".pull-head > :not(.pull-name)", ".runs",
+    ".loupe-notes", ".loupe-steps", ".ledger-head > :not(.ledger-kernels)",
+    ".ledger-table", ".ledger-unit", "#ledger-captures"
   ].join(",");
   // Hand cells back to CSS when a tween ends (hover dimming, the cells' own scale).
   // Never "all": that would also wipe the --col and --row position variables.

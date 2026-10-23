@@ -44,7 +44,7 @@
           </div>
         <% end %>
 
-        <a class="hex hex-kernel" style="<%= comb_cell(1, 6) %>" href="/compare/" aria-label="Linux kernel shared by all three distros on <%= arch %>; open the ledger">
+        <a class="hex hex-kernel" style="<%= comb_cell(1, 6) %>" href="/compare/" data-flip-id="kernel-<%= arch %>" aria-label="Linux kernel shared by all three distros on <%= arch %>; open the ledger">
           <%= render "shared/tux_mark", size: 56 %>
         </a>
         <%# Below the kernel, as in the stack: the kernel, then the machine it runs on. %>

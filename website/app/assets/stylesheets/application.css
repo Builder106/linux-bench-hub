@@ -32,7 +32,6 @@
 
   --f-text: "Geist", ui-sans-serif, system-ui, sans-serif;
   --f-raw: "Geist Mono", ui-monospace, monospace;
-  --t-display: clamp(2.25rem, 1rem + 3.4vw, 4.5rem);
   --t-sub: 1.25rem;
   --t-text: 1rem;
   --t-small: 0.8125rem;
@@ -171,36 +170,6 @@ td .utility {
 
 main {
   padding: 0 var(--gutter);
-}
-
-/* ─── Head ─── */
-.stack-head {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 24px 48px;
-  align-items: end;
-  margin: 40px 0 44px;
-}
-
-.stack-title {
-  margin: 0;
-  font-size: var(--t-display);
-  font-weight: 600;
-  font-stretch: 80%;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  margin-left: -0.04em;
-  text-wrap: balance;
-}
-
-.stack-title .lit-name {
-  color: var(--ct);
-}
-
-.stack-lede {
-  max-width: 54ch;
-  color: var(--muted);
-  font-size: 0.875rem;
 }
 
 /* ─── Home: the thesis beside two combs ─── */
@@ -685,39 +654,65 @@ a.hex:focus-visible .hex-name {
   font-size: var(--t-small);
 }
 
-/* ─── The ledger ─── */
+/* ─── The ledger: the two kernel cells held beside every run ─── */
+.ledger-head {
+  position: sticky;
+  top: 24px;
+}
+
+.ledger-kernels {
+  --w: 112px;
+  --h: calc(var(--w) * 0.866);
+  position: relative;
+  width: calc(var(--w) * 1.75);
+  height: calc(var(--h) * 1.5);
+  margin-top: 36px;
+}
+
+.ledger-kernels .hex-sub {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ledger-body > :first-child {
+  margin-top: 0;
+}
+
 .ledger-table {
   width: 100%;
   max-width: 960px;
-  margin-top: 48px;
   border-collapse: collapse;
   font-size: var(--t-small);
 }
 
-.ledger-table caption {
-  margin-bottom: 12px;
-  text-align: left;
+/* Headings, not captions: GSAP Flip mismeasures boxes inside a table caption. */
+.ledger-name {
+  max-width: 960px;
+  margin: 72px 0 12px;
   font-size: clamp(2rem, 1.2rem + 2.4vw, 3.5rem);
   font-weight: 600;
-  font-stretch: 82%;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
-.ledger-table caption a {
+.ledger-name a {
   text-decoration: none;
 }
 
-.caption-unit {
+/* Flip moves the test name in from the comb's row label; inline boxes take no transform. */
+.ledger-name span[data-flip-id] {
+  display: inline-block;
+}
+
+.ledger-unit {
   margin-left: 8px;
   color: var(--muted);
   font-size: var(--t-small);
   font-weight: 400;
-  font-stretch: 100%;
   letter-spacing: 0;
 }
 
-.ledger-table th {
+.ledger-table thead th {
   padding: 0 16px 8px 0;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
@@ -725,23 +720,59 @@ a.hex:focus-visible .hex-name {
   text-align: left;
 }
 
+.ledger-table tbody th,
 .ledger-table td {
-  padding: 5px 16px 5px 0;
+  padding: 7px 16px 7px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
   overflow-wrap: anywhere;
+  text-align: left;
+  vertical-align: baseline;
 }
 
-.ledger-table td:first-child {
+.ledger-table tbody th {
   color: var(--ct);
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .ledger-table .num {
   text-align: right;
+  white-space: nowrap;
 }
 
-.ledger-gap {
-  margin-top: 12px;
+/* Fixed columns, so every test's runs line up down the page. */
+.ledger-runs-table {
+  table-layout: fixed;
+}
+
+.ledger-runs-table thead th:nth-child(1) { width: 22%; }
+.ledger-runs-table thead th:nth-child(2) { width: 13%; }
+.ledger-runs-table thead th:nth-child(4) { width: 15%; }
+
+.ledger-table .is-best {
+  color: var(--ruby-bright);
+  font-weight: 600;
+}
+
+.best-tag {
+  font-size: var(--t-tiny);
+  font-weight: 500;
+}
+
+/* The runs as the capture's raw string has them, one token per run. */
+.ledger-runs {
+  font-family: var(--f-raw);
+  font-size: var(--t-tiny);
+  font-stretch: 87%;
+}
+
+.ledger-runs span {
+  display: inline-block;
+  margin-right: 0.9em;
+}
+
+.ledger-none {
   color: var(--muted);
-  font-size: var(--t-small);
 }
 
 /* ─── Colophon ─── */
@@ -761,19 +792,27 @@ a.hex:focus-visible .hex-name {
     --gutter: 16px;
   }
 
-  .stack-head {
-    grid-template-columns: minmax(0, 1fr);
-    margin: 28px 0 36px;
-  }
-
   .machines {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .ledger-table th,
+  .ledger-head {
+    position: static;
+  }
+
+  .ledger-table thead th,
+  .ledger-table tbody th,
   .ledger-table td {
     padding-right: 10px;
   }
+
+  .ledger-table tbody th {
+    white-space: normal;
+  }
+
+  .ledger-runs-table thead th:nth-child(1) { width: 28%; }
+  .ledger-runs-table thead th:nth-child(2) { width: 19%; }
+  .ledger-runs-table thead th:nth-child(4) { width: 23%; }
 }
 
 /* ─── Phone: the thesis, then each comb full width ─── */
