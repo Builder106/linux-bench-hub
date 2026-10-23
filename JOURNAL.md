@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Rebuild the showcase as the comb #decision #pivot
+
+The live showcase had stale and contradictory numbers. The banner still said Ubuntu 24.04, Fedora 41 and Debian 12, and it showed the May VMware sample beside current captures. It also broke on phones and never compared distros directly. The capture workflow writes `composite-latest.xml` but never regenerates the Markdown writeups. Every writeup had drifted, and `ubuntu.md` (x86) held an arm64 capture. The site now reads the composite XML directly through `Capture`, and the writeups are no longer on the render path. The redesign settled on a honeycomb taken from the old site's hex tiles. In a flat-top comb, the kernel cell under the middle column touches all three distro columns. That matches the data: Docker shares the host kernel, so the three distros differ only in userland. Two earlier directions were rejected: a measuring rule had nothing to do with Linux, and a layered stack read as a dashboard. The hex tiles are Blender renders made on the Mac's GPU (`design/blender/comb_tiles.py`). The lattice is drawn in Glaxnimate (`design/glaxnimate/comb-lattice.svg`). Motion uses GSAP alone. Data never goes into an image.
+
 ## 2026-10-19: Redraw the capture figure #decision
 
 The old figure listed Ubuntu 24.04, Fedora 41, and Debian 12, but the workflow now runs 26.04, 44, and 13. The red highlight on `composite.xml` became the single accent, and the figure has a dark variant.
