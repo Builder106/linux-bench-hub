@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Aircrack-ng: every run on Ubuntu, Fedora and Debian | LinuxBenchHub</title>
+    <meta name="description" content="Aircrack-ng runs its WPA passphrase benchmark and reports how many keys it tested each second. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
+    <link rel="canonical" href="https://linuxbenchhub.vercel.app/tests/aircrack-ng/">
+    <meta name="theme-color" content="#0a0507">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aircrack-ng: every run on Ubuntu, Fedora and Debian | LinuxBenchHub">
+    <meta property="og:description" content="Aircrack-ng runs its WPA passphrase benchmark and reports how many keys it tested each second. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
+    <meta property="og:image" content="/social-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/geist-100_900-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <script>
+      (function () {
+        var h = document.documentElement.classList;
+        h.add("js");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        h.add("motion", "intro");
+        setTimeout(function () { h.remove("intro"); }, 2500);
+      })();
+    </script>
+    <link rel="stylesheet" href="/assets/application-b756ae5d.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="corners">
+      <a class="wordmark" href="/">LinuxBenchHub</a>
+      <nav aria-label="Site">
+        <a class="utility" href="/compare/">The ledger</a>
+        <a class="utility" href="https://github.com/Builder106/linux-bench-hub">Source on GitHub</a>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      
+<article class="pull">
+  <div class="pull-head">
+    <a class="back utility" href="/">Back to the comb</a>
+    <h1 class="pull-name"><span data-flip-id="name-aircrack-ng">Aircrack-ng</span></h1>
+    <p class="pull-unit">k/s, higher is better. Aircrack-ng runs its WPA passphrase benchmark and reports how many keys it tested each second.</p>
+  </div>
+
+    <section class="pull-row" data-arch="x86_64" aria-labelledby="pull-x86_64">
+      <h2 class="comb-title" id="pull-x86_64">
+        x86_64 <span class="comb-machine">on AMD EPYC 9V74, Linux 6.17.0-1022-azure</span>
+      </h2>
+      <div class="pull-cells">
+          <div class="hex hex-test" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-aircrack-ng-ubuntu-x86_64">
+            <span class="hex-name">Ubuntu</span>
+              <strong class="hex-value">6,989</strong>
+              <span class="hex-sub">k/s, mean of 3 runs</span>
+              <span class="hex-gap">21.2% behind</span>
+          </div>
+          <div class="hex hex-test is-best" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-aircrack-ng-fedora-x86_64">
+            <span class="hex-name">Fedora</span>
+              <strong class="hex-value">8,865</strong>
+              <span class="hex-sub">k/s, mean of 3 runs</span>
+              <span class="hex-gap">best</span>
+          </div>
+          <div class="hex hex-test" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-aircrack-ng-debian-x86_64">
+            <span class="hex-name">Debian</span>
+              <strong class="hex-value">8,828</strong>
+              <span class="hex-sub">k/s, mean of 3 runs</span>
+              <span class="hex-gap">0.4% behind</span>
+          </div>
+      </div>
+
+      <ul class="runs" aria-label="Every Aircrack-ng run on x86_64">
+        <li class="runs-scale" aria-hidden="true"><span>6,695</span><span class="scale-line"></span><span>9,149 k/s</span></li>
+          <li class="run-lane" data-distro="ubuntu">
+            <span class="run-name">Ubuntu</span>
+              <span class="raw"><b>7000.804</b>:<b>6978.279</b>:<b>6987.324</b></span>
+              <span class="band" role="img" aria-label="Ubuntu x86_64: 3 runs from 6,978 to 7,001 k/s, mean 6,989">
+                  <i style="--x: 12.456%" data-flip-id="aircrack-ng-ubuntu-x86_64-0"></i>
+                  <i style="--x: 11.538%" data-flip-id="aircrack-ng-ubuntu-x86_64-1"></i>
+                  <i style="--x: 11.907%" data-flip-id="aircrack-ng-ubuntu-x86_64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="fedora">
+            <span class="run-name">Fedora</span>
+              <span class="raw"><b>8862.914</b>:<b>8865.703</b>:<b>8865.009</b></span>
+              <span class="band" role="img" aria-label="Fedora x86_64: 3 runs from 8,863 to 8,866 k/s, mean 8,865">
+                  <i style="--x: 88.348%" data-flip-id="aircrack-ng-fedora-x86_64-0"></i>
+                  <i style="--x: 88.462%" data-flip-id="aircrack-ng-fedora-x86_64-1"></i>
+                  <i style="--x: 88.433%" data-flip-id="aircrack-ng-fedora-x86_64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="debian">
+            <span class="run-name">Debian</span>
+              <span class="raw"><b>8819.127</b>:<b>8842.394</b>:<b>8821.805</b></span>
+              <span class="band" role="img" aria-label="Debian x86_64: 3 runs from 8,819 to 8,842 k/s, mean 8,828">
+                  <i style="--x: 86.563%" data-flip-id="aircrack-ng-debian-x86_64-0"></i>
+                  <i style="--x: 87.512%" data-flip-id="aircrack-ng-debian-x86_64-1"></i>
+                  <i style="--x: 86.672%" data-flip-id="aircrack-ng-debian-x86_64-2"></i>
+              </span>
+          </li>
+      </ul>
+    </section>
+    <section class="pull-row" data-arch="arm64" aria-labelledby="pull-arm64">
+      <h2 class="comb-title" id="pull-arm64">
+        arm64 <span class="comb-machine">on ARMv8 Neoverse-N1, Linux 6.17.0-1018-oracle</span>
+      </h2>
+      <div class="pull-cells">
+          <div class="hex hex-test" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-aircrack-ng-ubuntu-arm64">
+            <span class="hex-name">Ubuntu</span>
+              <strong class="hex-value">3,726</strong>
+              <span class="hex-sub">k/s, mean of 3 runs</span>
+              <span class="hex-gap">2.3% behind</span>
+          </div>
+          <div class="hex hex-test is-best" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-aircrack-ng-fedora-arm64">
+            <span class="hex-name">Fedora</span>
+              <strong class="hex-value">3,813</strong>
+              <span class="hex-sub">k/s, mean of 4 runs</span>
+              <span class="hex-gap">best</span>
+          </div>
+          <div class="hex hex-test" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-aircrack-ng-debian-arm64">
+            <span class="hex-name">Debian</span>
+              <strong class="hex-value">3,700</strong>
+              <span class="hex-sub">k/s, mean of 15 runs</span>
+              <span class="hex-gap">3.0% behind</span>
+          </div>
+      </div>
+
+      <ul class="runs" aria-label="Every Aircrack-ng run on arm64">
+        <li class="runs-scale" aria-hidden="true"><span>3,166</span><span class="scale-line"></span><span>4,223 k/s</span></li>
+          <li class="run-lane" data-distro="ubuntu">
+            <span class="run-name">Ubuntu</span>
+              <span class="raw"><b>3782.19</b>:<b>3689.443</b>:<b>3706.882</b></span>
+              <span class="band" role="img" aria-label="Ubuntu arm64: 3 runs from 3,689 to 3,782 k/s, mean 3,726">
+                  <i style="--x: 58.294%" data-flip-id="aircrack-ng-ubuntu-arm64-0"></i>
+                  <i style="--x: 49.524%" data-flip-id="aircrack-ng-ubuntu-arm64-1"></i>
+                  <i style="--x: 51.173%" data-flip-id="aircrack-ng-ubuntu-arm64-2"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="fedora">
+            <span class="run-name">Fedora</span>
+              <span class="raw"><b>3716.317</b>:<b>3923.098</b>:<b>3762.538</b>:<b>3851.249</b></span>
+              <span class="band" role="img" aria-label="Fedora arm64: 4 runs from 3,716 to 3,923 k/s, mean 3,813">
+                  <i style="--x: 52.065%" data-flip-id="aircrack-ng-fedora-arm64-0"></i>
+                  <i style="--x: 71.618%" data-flip-id="aircrack-ng-fedora-arm64-1"></i>
+                  <i style="--x: 56.436%" data-flip-id="aircrack-ng-fedora-arm64-2"></i>
+                  <i style="--x: 64.824%" data-flip-id="aircrack-ng-fedora-arm64-3"></i>
+              </span>
+          </li>
+          <li class="run-lane" data-distro="debian">
+            <span class="run-name">Debian</span>
+              <span class="raw"><b>3287.725</b>:<b>3652.637</b>:<b>3723.387</b>:<b>3642.309</b>:<b>3345.511</b>:<b>4097.679</b>:<b>3697.419</b>:<b>3838.126</b>:<b>3638.606</b>:<b>4071.467</b>:<b>3598.347</b>:<b>3374.275</b>:<b>3671.583</b>:<b>3754.223</b>:<b>4101.228</b></span>
+              <span class="band" role="img" aria-label="Debian arm64: 15 runs from 3,288 to 4,101 k/s, mean 3,700">
+                  <i style="--x: 11.538%" data-flip-id="aircrack-ng-debian-arm64-0"></i>
+                  <i style="--x: 46.044%" data-flip-id="aircrack-ng-debian-arm64-1"></i>
+                  <i style="--x: 52.734%" data-flip-id="aircrack-ng-debian-arm64-2"></i>
+                  <i style="--x: 45.067%" data-flip-id="aircrack-ng-debian-arm64-3"></i>
+                  <i style="--x: 17.003%" data-flip-id="aircrack-ng-debian-arm64-4"></i>
+                  <i style="--x: 88.126%" data-flip-id="aircrack-ng-debian-arm64-5"></i>
+                  <i style="--x: 50.278%" data-flip-id="aircrack-ng-debian-arm64-6"></i>
+                  <i style="--x: 63.583%" data-flip-id="aircrack-ng-debian-arm64-7"></i>
+                  <i style="--x: 44.717%" data-flip-id="aircrack-ng-debian-arm64-8"></i>
+                  <i style="--x: 85.647%" data-flip-id="aircrack-ng-debian-arm64-9"></i>
+                  <i style="--x: 40.910%" data-flip-id="aircrack-ng-debian-arm64-10"></i>
+                  <i style="--x: 19.722%" data-flip-id="aircrack-ng-debian-arm64-11"></i>
+                  <i style="--x: 47.835%" data-flip-id="aircrack-ng-debian-arm64-12"></i>
+                  <i style="--x: 55.649%" data-flip-id="aircrack-ng-debian-arm64-13"></i>
+                  <i style="--x: 88.462%" data-flip-id="aircrack-ng-debian-arm64-14"></i>
+              </span>
+          </li>
+      </ul>
+    </section>
+
+  <section class="loupe-notes" aria-labelledby="method">
+    <h2 class="notes-title" id="method">How these runs were made</h2>
+    <p>
+      <code>pts/aircrack-ng-1.3.0</code>, application version 1.7.
+      Raw strings are copied verbatim from each capture's composite.xml, in the order the runs happened.
+      Each machine has its own scale.
+    </p>
+    <ul class="captures">
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-09-01</a>: Ubuntu 26.04 LTS on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-08-01-0824</a>: Ubuntu 26.04 LTS on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora/composite-latest.xml">lbh-fedora-ci-2026-09-01</a>: Fedora 44 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora-arm64/composite-latest.xml">2026-08-01-0859</a>: Fedora 44 on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian/composite-latest.xml">lbh-debian-ci-2026-09-01</a>: Debian 13 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian-arm64/composite-latest.xml">2026-08-01-0935</a>: Debian 13 on arm64</li>
+    </ul>
+  </section>
+
+  <nav class="loupe-steps" aria-label="Other tests">
+    <a href="/tests/c-ray/">Previous: C-Ray</a>
+    
+  </nav>
+</article>
+
+    </main>
+    <footer class="colophon">
+        <p>
+          x86_64 runs: AMD EPYC 9V74
+          (2 Cores / 4 Threads) in Docker, captured
+          2026-09-01.
+        </p>
+        <p>
+          arm64 runs: ARMv8 Neoverse-N1
+          (4 Cores) in Docker, captured
+          2026-08-01.
+        </p>
+      <p>
+        Phoronix Test Suite 10.8.6.
+        Code and data are MIT licensed. Type: Geist and Geist Mono.
+      </p>
+    </footer>
+    <script src="/assets/gsap/gsap.min-6cfb2fb6.js" defer="defer"></script>
+<script src="/assets/gsap/Flip.min-60a451a7.js" defer="defer"></script>
+<script src="/assets/site-9cc77ec0.js" defer="defer"></script>
+  </body>
+</html>

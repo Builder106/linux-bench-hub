@@ -1,1219 +1,910 @@
-:root,
-:root[data-theme="dark"] {
-  --bg: #0a0507;
-  --panel: #150c10;
-  --panel-deep: #1f0a10;
-  --panel-emphasis: #2a0e10;
-  --border-warm: #3d1a1d;
-  --border-warm-bright: #5a2228;
-  --fg: #f0e4e6;
-  --fg-muted: #b09a9e;
-  --fg-dim: #7a5a60;
-  --accent: #cc342d;
-  --accent-bright: #f55a4d;
-  --accent-dim: #7a1a16;
-  --code-bg: #0f0608;
-  --grid-bg: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='52' viewBox='0 0 60 52'><polygon points='30,1 59,17 59,35 30,51 1,35 1,17' fill='none' stroke='%233d1a1d' stroke-width='0.6' opacity='0.55'/></svg>");
-  --banner-shadow: none;
+/* LinuxBenchHub: the comb. Tokens and decisions live in DESIGN.md. */
 
-  --status-done-bg: rgba(95, 184, 74, 0.12);
-  --status-done-fg: #5fb84a;
-  --status-done-border: rgba(95, 184, 74, 0.35);
-  --status-wip-bg: rgba(216, 160, 74, 0.12);
-  --status-wip-fg: #d8a04a;
-  --status-wip-border: rgba(216, 160, 74, 0.35);
-  --status-todo-bg: rgba(122, 90, 96, 0.15);
-  --status-todo-fg: #7a5a60;
-  --status-todo-border: rgba(122, 90, 96, 0.4);
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/geist-100_900-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #fdf9f8;
-    --panel: #faf0ee;
-    --panel-deep: #fff5f3;
-    --panel-emphasis: #f8dfd9;
-    --border-warm: #e8c8c4;
-    --border-warm-bright: #d8a8a2;
-    --fg: #2a0508;
-    --fg-muted: #6b4a4a;
-    --fg-dim: #9a7a7a;
-    --accent: #cc342d;
-    --accent-bright: #a02620;
-    --accent-dim: #f0b5af;
-    --code-bg: #fbf1ee;
-    --grid-bg: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='52' viewBox='0 0 60 52'><polygon points='30,1 59,17 59,35 30,51 1,35 1,17' fill='none' stroke='%23e8c8c4' stroke-width='0.6' opacity='0.7'/></svg>");
-    --banner-shadow: 0 2px 12px rgba(120, 30, 30, 0.06);
-
-    --status-done-bg: rgba(74, 140, 56, 0.1);
-    --status-done-fg: #3d7a30;
-    --status-done-border: rgba(74, 140, 56, 0.4);
-    --status-wip-bg: rgba(184, 128, 26, 0.12);
-    --status-wip-fg: #8a6018;
-    --status-wip-border: rgba(184, 128, 26, 0.4);
-    --status-todo-bg: rgba(154, 122, 122, 0.14);
-    --status-todo-fg: #7a5050;
-    --status-todo-border: rgba(154, 122, 122, 0.45);
-  }
-}
-
-:root[data-theme="light"] {
-  --bg: #fdf9f8;
-  --panel: #faf0ee;
-  --panel-deep: #fff5f3;
-  --panel-emphasis: #f8dfd9;
-  --border-warm: #e8c8c4;
-  --border-warm-bright: #d8a8a2;
-  --fg: #2a0508;
-  --fg-muted: #6b4a4a;
-  --fg-dim: #9a7a7a;
-  --accent: #cc342d;
-  --accent-bright: #a02620;
-  --accent-dim: #f0b5af;
-  --code-bg: #fbf1ee;
-  --grid-bg: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='52' viewBox='0 0 60 52'><polygon points='30,1 59,17 59,35 30,51 1,35 1,17' fill='none' stroke='%23e8c8c4' stroke-width='0.6' opacity='0.7'/></svg>");
-  --banner-shadow: 0 2px 12px rgba(120, 30, 30, 0.06);
-
-  --status-done-bg: rgba(74, 140, 56, 0.1);
-  --status-done-fg: #3d7a30;
-  --status-done-border: rgba(74, 140, 56, 0.4);
-  --status-wip-bg: rgba(184, 128, 26, 0.12);
-  --status-wip-fg: #8a6018;
-  --status-wip-border: rgba(184, 128, 26, 0.4);
-  --status-todo-bg: rgba(154, 122, 122, 0.14);
-  --status-todo-fg: #7a5050;
-  --status-todo-border: rgba(154, 122, 122, 0.45);
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-100_900-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
-  --distro-ubuntu: #e95420;
-  --distro-fedora: #51a2da;
-  --distro-debian: #d8a04a;
+  color-scheme: dark;
+  --ground: #0a0507;
+  --panel: #150c10;
+  --ink: #f0e4e6;
+  --muted: #b09a9e;
+  --line: #5a2228;
+  --ruby: #cc342d;
+  --ruby-bright: #f55a4d;
+  --ubuntu: #e95420;
+  --ubuntu-text: #ff8d60;
+  --fedora: #51a2da;
+  --debian: #d8a04a;
+  --debian-text: #d8a04a;
 
-  --font-display: "Geist", "Inter", system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-body: "Geist", "Inter", system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace,
-    SFMono-Regular, Menlo, Consolas, monospace;
+  --f-text: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --f-raw: "Geist Mono", ui-monospace, monospace;
+  --t-sub: 1.25rem;
+  --t-text: 1rem;
+  --t-small: 0.8125rem;
+  --t-tiny: 0.75rem;
+
+  --gutter: 40px;
+  --settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+[data-distro="ubuntu"] { --c: var(--ubuntu); --ct: var(--ubuntu-text); }
+[data-distro="fedora"] { --c: var(--fedora); --ct: var(--fedora); }
+[data-distro="debian"] { --c: var(--debian); --ct: var(--debian-text); }
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html,
 body {
   margin: 0;
-  padding: 0;
-  background-color: var(--bg);
-  background-image: var(--grid-bg);
-  background-repeat: repeat;
-  color: var(--fg);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  overflow-x: clip;
+  background: var(--ground);
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--f-text);
+  font-size: var(--t-text);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--ground);
 }
 
 a {
-  color: var(--accent-bright);
-  text-decoration: none;
+  color: inherit;
 }
 
-a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: var(--accent-dim);
-  text-underline-offset: 3px;
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
-.page {
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 0 32px 96px;
-}
-
-/* ─── HEADER ─── */
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--border-warm);
-  margin-bottom: 40px;
-  font-family: var(--font-mono);
-}
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  color: var(--fg);
-}
-
-.nav-brand-marks {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  font-weight: 500;
-}
-
-.nav-links a {
-  color: var(--fg-dim);
-  text-transform: uppercase;
-}
-
-.nav-links a.nav-distro {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-distro-mark {
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.nav-links a.nav-github {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-github-mark {
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.nav-links a:hover {
-  color: var(--accent-bright);
-  text-decoration: none;
-}
-
-/* ─── HERO ─── */
-.banner {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    16px 0,
-    100% 0,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
-    0 100%,
-    0 16px
-  );
-  box-shadow: var(--banner-shadow);
-}
-
-.banner-light {
-  display: none;
-}
-
-@media (prefers-color-scheme: light) {
-  .banner-dark {
-    display: none;
-  }
-  .banner-light {
-    display: block;
-  }
-}
-
-[data-theme="dark"] .banner-dark {
-  display: block;
-}
-[data-theme="dark"] .banner-light {
-  display: none;
-}
-[data-theme="light"] .banner-dark {
-  display: none;
-}
-[data-theme="light"] .banner-light {
-  display: block;
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: 1px solid var(--border-warm);
-  color: var(--fg-dim);
-  cursor: pointer;
-  padding: 0;
-  margin-left: 4px;
-  clip-path: polygon(
-    6px 0,
-    100% 0,
-    100% calc(100% - 6px),
-    calc(100% - 6px) 100%,
-    0 100%,
-    0 6px
-  );
-  transition: color 0.15s ease, background 0.15s ease;
-}
-
-.theme-toggle:hover {
-  color: var(--accent-bright);
-  background: var(--panel);
-}
-
-.theme-toggle svg {
-  display: block;
-}
-
-.lede {
-  font-size: 1.15rem;
-  color: var(--fg-muted);
-  margin: 28px 0 16px;
-  line-height: 1.55;
-  max-width: 64ch;
-}
-
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 20px 0 0;
-}
-
-.badges img {
-  height: 22px;
-}
-
-/* ─── HEADINGS ─── */
-.section-flag {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 16px;
-}
-
-.section-flag h2 {
-  margin: 0;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
-  color: var(--fg);
-}
-
-h1 {
-  font-size: 2.2rem;
-  margin: 0 0 8px;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 1.45rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-h3 {
-  font-size: 1.1rem;
-  margin: 24px 0 8px;
-  font-weight: 600;
+#main:focus {
+  outline: none;
 }
 
 p {
-  margin: 12px 0;
-}
-
-ul,
-ol {
-  padding-left: 24px;
-}
-
-li {
-  margin: 6px 0;
+  margin: 0;
 }
 
 code {
-  font-family: var(--font-mono);
-  font-size: 0.88em;
-  background: var(--code-bg);
-  border: 1px solid var(--border-warm);
-  border-radius: 3px;
-  padding: 1px 6px;
-  color: var(--fg);
+  font-family: var(--f-raw);
+  font-size: 0.875em;
+  font-stretch: 87%;
 }
 
-pre {
-  background: var(--code-bg);
-  border: 1px solid var(--border-warm);
-  border-radius: 4px;
-  padding: 16px;
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
+/* Links in running text keep their underline; utility links draw one. */
+p a,
+li a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
 }
 
-pre code {
-  background: transparent;
-  border: 0;
-  padding: 0;
+p a:hover,
+li a:hover {
+  text-decoration-color: currentColor;
 }
 
-/* ─── TABLES (used inside markdown body for distro pages) ─── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 16px 0;
-  font-size: 0.94rem;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border-warm);
-}
-
-th {
-  color: var(--fg-dim);
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-tr:last-child td {
-  border-bottom: 0;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  border: 1px solid var(--border-warm);
-}
-
-/* ─── PANELS, CALLOUTS, DIVIDERS ─── */
-.callout {
-  background: var(--panel);
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    14px 0,
-    100% 0,
-    100% calc(100% - 14px),
-    calc(100% - 14px) 100%,
-    0 100%,
-    0 14px
-  );
-  padding: 14px 20px;
-  margin: 24px 0 32px;
-  font-size: 0.95rem;
-  color: var(--fg-muted);
-}
-
-.callout strong {
-  color: var(--accent-bright);
-  font-family: var(--font-mono);
-  font-size: 0.78em;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  margin-right: 6px;
-}
-
-.facet-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 48px 0;
-  height: 20px;
-}
-
-.facet-divider svg {
-  display: block;
-}
-
-.section {
-  margin: 0;
-}
-
-/* ─── DATA PANEL (sample results) ─── */
-.data-panel {
-  background: var(--panel-deep);
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    18px 0,
-    100% 0,
-    100% calc(100% - 18px),
-    calc(100% - 18px) 100%,
-    0 100%,
-    0 18px
-  );
-  padding: 24px 28px;
-  margin: 16px 0;
-}
-
-.data-row {
-  display: grid;
-  grid-template-columns: minmax(180px, 1.5fr) 70px 120px 1fr;
-  gap: 20px;
-  align-items: center;
-  padding: 14px 0;
-  border-top: 1px solid var(--border-warm);
-}
-
-.data-row:first-of-type {
-  border-top: 0;
-}
-
-.data-label {
-  font-weight: 600;
-  font-size: 0.96rem;
-}
-
-.data-label small {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--fg-dim);
-  margin-top: 4px;
-  letter-spacing: 0.04em;
-  font-weight: 500;
-}
-
-.data-unit {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fg-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.data-value {
-  font-family: var(--font-mono);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--fg);
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.spread {
-  position: relative;
-  height: 24px;
-  display: flex;
-  align-items: center;
-}
-
-.spread-track {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--accent-dim) 0%,
-    var(--accent) 50%,
-    var(--accent-bright) 100%
-  );
-  opacity: 0.4;
-}
-
-.spread-range {
-  position: absolute;
-  height: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.75;
-  border-radius: 1px;
-}
-
-.spread-mean {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background: var(--accent-bright);
-  border: 1.5px solid var(--bg);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent);
-}
-
-.spread-tick {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 1px;
-  height: 12px;
-  background: var(--fg-dim);
-}
-
-.data-footnote {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--border-warm);
-}
-
-/* ─── HONEYCOMB CLUSTER (per-distro tiles) ─── */
-.hex-cluster {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  margin: 28px auto 8px;
-  max-width: 920px;
-}
-
-.hex-tile {
-  position: relative;
-  width: 280px;
-  height: 320px;
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-  background: var(--border-warm);
+.utility {
   text-decoration: none;
-  color: var(--fg);
-  transition: background 0.15s ease;
-  flex-shrink: 0;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.4s var(--settle);
 }
 
-.hex-tile:hover {
-  background: var(--accent);
+.utility:hover,
+.utility:focus-visible {
+  background-size: 100% 1px;
 }
 
-.hex-tile-inner {
+p .utility,
+li .utility,
+dd .utility,
+td .utility {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+}
+
+.skip-link {
   position: absolute;
-  inset: 1.5px;
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-  background: var(--panel);
+  left: var(--gutter);
+  top: 12px;
+  z-index: 10;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--ground);
+  translate: 0 -200%;
+}
+
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+
+/* ─── Corners ─── */
+.corners {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 24px var(--gutter) 0;
+  font-size: var(--t-small);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.corners nav {
+  display: flex;
+  gap: 24px;
+}
+
+.corners a {
+  padding: 6px 0;
+}
+
+.wordmark {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+main {
+  padding: 0 var(--gutter);
+}
+
+/* ─── Home: the thesis beside two combs ─── */
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  margin-top: 36px;
+}
+
+.home-title {
+  margin: 0 0 20px;
+  font-size: clamp(2.25rem, 1rem + 3vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.home-lede {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ─── The comb ─── */
+.combs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 64px;
+}
+
+.comb {
+  /* Sized by the width left beside the thesis; the combs may run a little past the fold. */
+  --w: clamp(104px, calc((100vw - 560px) / 6.875), 150px);
+  --h: calc(var(--w) * 0.866);
+}
+
+html.intro .comb {
+  visibility: hidden;
+}
+
+.comb-title {
+  margin: 0 0 6px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.comb-machine {
+  display: block;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.comb[data-arch="x86_64"] .comb-grid {
+  margin-left: 6.5rem;
+}
+
+.combs {
+  margin-top: calc(var(--w, 120px) * 0.2);
+}
+
+.comb-grid {
+  margin-bottom: 40px;
+}
+
+.comb-grid {
+  position: relative;
+  width: calc(var(--w) * 2.5);
+  height: calc(var(--h) * 7 + 48px);
+}
+
+/* The Glaxnimate lattice: comb cell (0, 0) sits at (150, 216.51) in its 100-unit grid. */
+.comb-lattice {
+  position: absolute;
+  left: calc(var(--w) * -1.5);
+  top: calc(var(--w) * -1.7321);
+  width: calc(var(--w) * 5.5);
+  height: auto;
+  color: var(--line);
+  pointer-events: none;
+}
+
+.hex {
+  position: absolute;
+  left: calc(var(--col) * var(--w) * 0.75);
+  top: calc((var(--row) + 0.5 - var(--lift)) * var(--h));
+  width: var(--w);
+  height: var(--h);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 70px 40px;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 calc(var(--w) * 0.12);
   text-align: center;
+  line-height: 1.15;
+  text-decoration: none;
+  /* Inset slightly so neighbouring cells show a hairline of lattice between them. No CSS
+     scale here: GSAP would fold it into an inline transform and fight the hover lift. */
+  clip-path: polygon(25.6% 1.2%, 74.4% 1.2%, 99.3% 50%, 74.4% 98.8%, 25.6% 98.8%, 0.7% 50%);
+  /* Blender-rendered prisms (design/blender/comb_tiles.py); the panel colour is the fallback. */
+  background: var(--panel) url("/comb/tile-dark.webp") center / 100% 100% no-repeat;
 }
 
-.hex-tile-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
-  height: 44px;
+/* Hover and lens dimming fade in CSS only once GSAP has handed the cell back. */
+.hex:not([style*="opacity"]) {
+  transition: opacity 0.35s var(--settle), translate 0.35s var(--settle), filter 0.35s var(--settle);
 }
 
-.hex-tile-name {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+/* The hex clip also clips an outline, so focus shows on the tile itself: brighter and lifted. */
+a.hex:hover,
+a.hex:focus-visible {
+  translate: 0 -4px;
+  filter: brightness(1.35);
+  outline: none;
+}
+
+a.hex:focus-visible .hex-value,
+a.hex:focus-visible .hex-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.hex-head {
+  background-image: url("/comb/tile-head.webp");
+}
+
+.hex-test.is-alt {
+  background-image: url("/comb/tile-alt.webp");
+}
+
+.hex-none {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hex-logo {
   margin-bottom: 2px;
 }
 
-.hex-tile-version {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.hex-tile-stat {
-  font-family: var(--font-mono);
-  font-size: 1.7rem;
+.hex-name {
+  color: var(--ct);
   font-weight: 600;
-  color: var(--fg);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
 }
 
-.hex-tile-stat small {
-  font-size: 0.55em;
-  color: var(--fg-dim);
-  margin-left: 4px;
-  font-weight: 500;
+.hex-sub,
+.hex-gap,
+.hex-test-name {
+  color: var(--muted);
+  font-size: 0.6875rem;
 }
 
-.hex-tile-stat-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-top: 4px;
+.hex-test-name {
+  display: none;
 }
 
-.hex-tile-stat-pending {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.hex-gap {
+  white-space: nowrap;
 }
 
-.hex-tile-cta {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  color: var(--accent-bright);
-  text-transform: uppercase;
-  margin-top: 18px;
-}
-
-/* ─── FLOWCHART ─── */
-.flowchart {
-  display: flex;
-  justify-content: center;
-  margin: 28px auto;
-}
-
-.flowchart svg {
-  width: 100%;
-  height: auto;
-  max-width: 920px;
-}
-
-/* ─── TECH STACK CHIPS ─── */
-.stack-group {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 20px;
-  align-items: start;
-  margin: 14px 0;
-}
-
-.stack-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding-top: 6px;
-}
-
-.stack-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.chip {
-  display: inline-block;
-  padding: 5px 12px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 500;
-  background: var(--panel);
-  color: var(--fg);
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    8px 0,
-    100% 0,
-    100% calc(100% - 8px),
-    calc(100% - 8px) 100%,
-    0 100%,
-    0 8px
-  );
-  letter-spacing: 0.02em;
-}
-
-/* ─── STATUS PANEL ─── */
-.status-panel {
-  background: var(--panel);
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    16px 0,
-    100% 0,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
-    0 100%,
-    0 16px
-  );
-  padding: 18px 22px;
-  margin: 16px 0;
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-}
-
-.status-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 6px 0;
-  color: var(--fg-muted);
-}
-
-.status-pill {
-  display: inline-block;
-  padding: 2px 10px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  border-radius: 2px;
-  min-width: 56px;
-  text-align: center;
-}
-
-.status-pill.done {
-  background: var(--status-done-bg);
-  color: var(--status-done-fg);
-  border: 1px solid var(--status-done-border);
-}
-
-.status-pill.wip {
-  background: var(--status-wip-bg);
-  color: var(--status-wip-fg);
-  border: 1px solid var(--status-wip-border);
-}
-
-.status-pill.todo {
-  background: var(--status-todo-bg);
-  color: var(--status-todo-fg);
-  border: 1px solid var(--status-todo-border);
-}
-
-/* ─── FOOTER ─── */
-.footer {
-  margin-top: 80px;
-  padding-top: 22px;
-  border-top: 1px solid var(--border-warm);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.06em;
-}
-
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer a {
-  color: var(--fg-muted);
-}
-
-.footer a:hover {
-  color: var(--accent-bright);
-}
-
-/* ─── PER-DISTRO PAGE ─── */
-.back-link {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-  display: inline-block;
-}
-
-.distro-hero {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 28px;
-  align-items: center;
-  padding: 28px 32px;
-  background: var(--panel-deep);
-  border: 1px solid var(--border-warm);
-  clip-path: polygon(
-    24px 0,
-    100% 0,
-    100% calc(100% - 24px),
-    calc(100% - 24px) 100%,
-    0 100%,
-    0 24px
-  );
-  margin-bottom: 32px;
-}
-
-.distro-hero-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 96px;
-  height: 96px;
-}
-
-.distro-hero-body {
-  min-width: 0;
-}
-
-.distro-hero-meta {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fg-muted);
-  font-weight: 500;
-  margin-top: 8px;
-}
-
-.distro-hero-name {
-  font-size: 2.4rem;
-  font-weight: 800;
-  margin: 0 0 6px;
+.hex-value {
+  font-size: clamp(1.125rem, 0.8rem + 0.6vw, 1.5rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.1;
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  flex-wrap: wrap;
 }
 
-.distro-hero-version {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+.hex-test.is-best {
+  background-image: url("/comb/tile-lit.webp");
+}
+
+.hex-test.is-best .hex-gap {
+  color: var(--ruby-bright);
   font-weight: 600;
-  color: var(--fg-muted);
-  letter-spacing: 0.06em;
-  padding: 4px 10px;
-  background: var(--panel);
-  border: 1px solid var(--border-warm);
-  border-radius: 4px;
 }
 
-.distro-hero-intro {
-  margin: 8px 0 0;
-  color: var(--fg-muted);
-  font-size: 0.96rem;
-  max-width: 68ch;
+.hex-userland code {
+  font-size: 0.6875rem;
 }
 
-.section-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  margin: 0 0 32px;
+.hex-kernel {
+  background-image: url("/comb/tile-kernel.webp");
 }
 
-.section-nav a {
-  padding: 8px 14px;
-  border: 1px solid var(--border-warm);
-  background: var(--panel-deep);
-  color: var(--fg-dim);
-  text-decoration: none;
-  transition: color 0.12s ease, border-color 0.12s ease;
-}
-
-.section-nav a:hover {
-  color: var(--accent-bright);
-  border-color: var(--accent-dim);
-}
-
-.system-card {
-  margin: 24px 0;
-}
-
-.system-card-heading {
-  font-size: 1rem;
-  font-family: var(--font-mono);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-
-.system-card-cols {
+.kernel-caption {
+  position: absolute;
+  left: 0;
+  top: calc(7 * var(--h) + 12px);
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1px;
-  background: var(--border-warm);
-  border: 1px solid var(--border-warm);
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  line-height: 1.25;
 }
 
-.system-card-col {
-  background: var(--panel-deep);
-  padding: 20px 24px;
+.kernel-caption code {
+  white-space: nowrap;
+  font-size: 0.8125rem;
 }
 
-.system-card-col-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  color: var(--accent);
+.kernel-caption .comb-title {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.kernel-caption .comb-machine {
+  display: inline;
+}
+
+.row-label {
+  position: absolute;
+  right: calc(100% + 18px);
+  top: calc((var(--row) + 1) * var(--h));
+  translate: 0 -50%;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.comb[data-arch="arm64"] .row-label {
+  display: none;
+}
+
+.combs[data-lit="ubuntu"] .hex[data-distro]:not([data-distro="ubuntu"]),
+.combs[data-lit="fedora"] .hex[data-distro]:not([data-distro="fedora"]),
+.combs[data-lit="debian"] .hex[data-distro]:not([data-distro="debian"]),
+.combs:has(.hex-head[data-distro="ubuntu"]:hover) .hex[data-distro]:not([data-distro="ubuntu"]),
+.combs:has(.hex-head[data-distro="fedora"]:hover) .hex[data-distro]:not([data-distro="fedora"]),
+.combs:has(.hex-head[data-distro="debian"]:hover) .hex[data-distro]:not([data-distro="debian"]) {
+  opacity: 0.35;
+}
+
+/* ─── Distro page: its userland in the thesis column ─── */
+.lit-name {
+  color: var(--ct);
+}
+
+.home-head .machines {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.home-head .machines dl div {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+/* ─── A test: its row pulled out of each comb ─── */
+.pull-head {
+  margin-top: 40px;
+}
+
+.pull-name {
+  margin: 20px 0 14px -0.04em;
+  font-size: clamp(3rem, 1rem + 6vw, 7rem);
   font-weight: 700;
-  text-transform: uppercase;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+.pull-name span {
+  display: inline-block;
+}
+
+.pull-unit {
+  max-width: 60ch;
+  color: var(--muted);
+}
+
+.pull-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 56px;
+  align-items: center;
+  margin-top: 64px;
+}
+
+.pull-row .comb-title {
+  grid-column: 1 / -1;
   margin-bottom: 14px;
 }
 
-.system-card-list {
-  margin: 0;
+.pull-cells {
+  --w: clamp(150px, 14vw, 200px);
+  --h: calc(var(--w) * 0.866);
+  position: relative;
+  width: calc(var(--w) * 2.5);
+  height: calc(var(--h) * 1.5);
+}
+
+.pull-cells .hex-value {
+  font-size: clamp(1.5rem, 1rem + 1vw, 2.125rem);
+}
+
+/* One set of columns for every lane, so all ticks share the same scale positions. */
+.runs {
   display: grid;
-  gap: 8px;
+  grid-template-columns: 72px minmax(0, max-content) minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.system-card-row {
+.run-lane,
+.runs-scale {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 16px;
-  font-size: 0.86rem;
-  align-items: baseline;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
 }
 
-.system-card-row dt {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--fg-dim);
-  letter-spacing: 0.06em;
-  text-transform: lowercase;
-  margin: 0;
+.run-name {
+  color: var(--ct);
+  font-size: var(--t-small);
+  font-weight: 600;
 }
 
-.system-card-row dd {
-  margin: 0;
-  color: var(--fg);
-  font-variant-numeric: tabular-nums;
-  word-break: break-word;
+.band {
+  position: relative;
+  display: block;
+  height: 18px;
+  border-bottom: 1px solid var(--line);
 }
 
-.bench-section {
-  margin: 8px 0 24px;
-  scroll-margin-top: 24px;
+.band i {
+  position: absolute;
+  left: var(--x);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--c);
+  transform-origin: 50% 100%;
+  transition: scale 0.4s var(--settle), background-color 0.35s var(--settle);
 }
 
-.bench-section-heading {
-  font-size: 1.5rem;
-  margin: 16px 0 20px;
-  font-weight: 700;
+.run-lane .band {
+  height: 22px;
+}
+
+.runs-scale {
+  color: var(--muted);
+  font-size: var(--t-tiny);
+  row-gap: 3px;
+}
+
+.runs-scale > span:first-child {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.runs-scale > span:last-child {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.runs-scale > .scale-line {
+  grid-column: 3;
+  grid-row: 2;
+  height: 7px;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / 10% 4px repeat-x;
+}
+
+.raw {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-family: var(--f-raw);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+.raw b {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.raw b + b {
+  margin-left: 0.2em;
+}
+
+.back {
+  display: inline-block;
+  font-size: var(--t-small);
+  font-weight: 500;
+  padding: 6px 0;
+}
+
+.notes-title {
+  margin: 0 0 6px;
+  font-size: var(--t-sub);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.loupe-notes {
+  max-width: 72ch;
+  margin-top: 80px;
+}
+
+.loupe-notes p {
+  color: var(--muted);
+}
+
+.captures {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+.captures li + li {
+  margin-top: 4px;
+}
+
+.loupe-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
+  font-size: var(--t-sub);
+  font-weight: 600;
+  font-stretch: 82%;
   letter-spacing: -0.01em;
 }
 
-.bench-card {
-  background: var(--panel-deep);
-  border: 1px solid var(--border-warm);
-  padding: 24px 28px;
-  margin-bottom: 20px;
-  clip-path: polygon(
-    18px 0,
-    100% 0,
-    100% calc(100% - 18px),
-    calc(100% - 18px) 100%,
-    0 100%,
-    0 18px
-  );
+.loupe-steps a {
+  display: inline-block;
+  text-decoration: none;
+  transition: font-stretch 0.5s var(--settle);
 }
 
-.bench-card-head {
-  margin-bottom: 18px;
+.loupe-steps a:hover,
+.loupe-steps a:focus-visible {
+  font-stretch: 100%;
 }
 
-.bench-card-headline {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
+.loupe-steps .step-next {
+  margin-left: auto;
 }
 
-.bench-card-name {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.bench-card-desc {
-  font-weight: 400;
-  color: var(--fg-muted);
-  font-size: 0.92rem;
-}
-
-.bench-card-ident {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: var(--accent);
-  background: var(--panel);
-  padding: 4px 10px;
-  border: 1px solid var(--border-warm);
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-}
-
-.bench-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px 28px;
-  margin: 0;
-}
-
-.bench-card-meta > div {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  font-size: 0.82rem;
-  font-family: var(--font-mono);
-}
-
-.bench-card-meta dt {
-  color: var(--fg-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.7rem;
-  margin: 0;
-}
-
-.bench-card-meta dd {
-  margin: 0;
-  color: var(--fg);
-}
-
-.bench-card-meta code {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--fg);
-  background: var(--panel);
-  padding: 1px 6px;
-  border: 1px solid var(--border-warm);
-  border-radius: 2px;
-}
-
-.bench-card-stats {
+/* ─── Distro lens ─── */
+.machines {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1px;
-  background: var(--border-warm);
-  border: 1px solid var(--border-warm);
-  margin: 20px 0 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 72px;
 }
 
-.stat-cell {
-  background: var(--panel);
-  padding: 14px 18px;
+.machines dl {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: var(--t-small);
 }
 
-.stat-cell-emphasis {
-  background: var(--panel-emphasis);
+.machines dl div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
 }
 
-.stat-cell-label {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
-  color: var(--fg-dim);
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 6px;
+.machines dt {
+  color: var(--muted);
 }
 
-.stat-cell-emphasis .stat-cell-label {
-  color: var(--accent);
+.machines dd {
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
-.stat-cell-value {
-  font-family: var(--font-mono);
-  font-size: 1.35rem;
+.warning {
+  color: var(--debian-text);
+  font-size: var(--t-small);
+}
+
+/* ─── The ledger: the two kernel cells held beside every run ─── */
+.ledger-head {
+  position: sticky;
+  top: 24px;
+}
+
+.ledger-kernels {
+  --w: 112px;
+  --h: calc(var(--w) * 0.866);
+  position: relative;
+  width: calc(var(--w) * 1.75);
+  height: calc(var(--h) * 1.5);
+  margin-top: 36px;
+}
+
+.ledger-kernels .hex-sub {
+  color: var(--ground);
   font-weight: 600;
-  color: var(--fg);
-  font-variant-numeric: tabular-nums;
+}
+
+.ledger-body > :first-child {
+  margin-top: 0;
+}
+
+.ledger-table {
+  width: 100%;
+  max-width: 960px;
+  border-collapse: collapse;
+  font-size: var(--t-small);
+}
+
+/* Headings, not captions: GSAP Flip mismeasures boxes inside a table caption. */
+.ledger-name {
+  max-width: 960px;
+  margin: 72px 0 12px;
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 
-.stat-cell-value small {
-  font-size: 0.6em;
-  color: var(--fg-dim);
-  margin-left: 6px;
+.ledger-name a {
+  text-decoration: none;
+}
+
+/* Flip moves the test name in from the comb's row label; inline boxes take no transform. */
+.ledger-name span[data-flip-id] {
+  display: inline-block;
+}
+
+.ledger-unit {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: var(--t-small);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.ledger-table thead th {
+  padding: 0 16px 8px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+}
+
+.ledger-table tbody th,
+.ledger-table td {
+  padding: 7px 16px 7px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  overflow-wrap: anywhere;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.ledger-table tbody th {
+  color: var(--ct);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ledger-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fixed columns, so every test's runs line up down the page. */
+.ledger-runs-table {
+  table-layout: fixed;
+}
+
+.ledger-runs-table thead th:nth-child(1) { width: 22%; }
+.ledger-runs-table thead th:nth-child(2) { width: 13%; }
+.ledger-runs-table thead th:nth-child(4) { width: 15%; }
+
+.ledger-table .is-best {
+  color: var(--ruby-bright);
+  font-weight: 600;
+}
+
+.best-tag {
+  font-size: var(--t-tiny);
   font-weight: 500;
 }
 
-.run-chart {
-  margin: 0;
-  padding: 12px 0 0;
+/* The runs as the capture's raw string has them, one token per run. */
+.ledger-runs {
+  font-family: var(--f-raw);
+  font-size: var(--t-tiny);
+  font-stretch: 87%;
 }
 
-.run-chart svg {
-  width: 100%;
-  height: auto;
-  display: block;
+.ledger-runs span {
+  display: inline-block;
+  margin-right: 0.9em;
 }
 
-.run-chart figcaption {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--fg-dim);
-  text-transform: uppercase;
-  margin-top: 10px;
+.ledger-none {
+  color: var(--muted);
 }
 
-.run-chart-empty {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fg-dim);
-  padding: 20px 0;
-  text-align: center;
-  border-top: 1px dashed var(--border-warm);
+/* ─── Colophon ─── */
+.colophon {
+  display: grid;
+  gap: 4px;
+  max-width: 96ch;
+  margin: 72px var(--gutter) 0;
+  padding-bottom: 40px;
+  color: var(--muted);
+  font-size: var(--t-small);
 }
 
-/* ─── THEME TOGGLE ICONS (Rails port: icon swap is CSS-driven) ─── */
-.theme-toggle .theme-icon-moon {
-  display: none;
+/* ─── Phone ─── */
+@media (max-width: 860px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .machines {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ledger-head {
+    position: static;
+  }
+
+  .ledger-table thead th,
+  .ledger-table tbody th,
+  .ledger-table td {
+    padding-right: 10px;
+  }
+
+  .ledger-table tbody th {
+    white-space: normal;
+  }
+
+  .ledger-runs-table thead th:nth-child(1) { width: 28%; }
+  .ledger-runs-table thead th:nth-child(2) { width: 19%; }
+  .ledger-runs-table thead th:nth-child(4) { width: 23%; }
 }
 
-[data-theme="light"] .theme-toggle .theme-icon-sun {
-  display: none;
+@media (max-width: 600px) {
+  .ledger-table {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .ledger-table tbody th,
+  .ledger-table td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .ledger-runs {
+    font-size: 0.8125rem;
+  }
+
+  .runs-scale {
+    font-size: var(--t-small);
+  }
+
+  .run-lane .band {
+    height: 30px;
+  }
+
+  .band i {
+    width: 3px;
+  }
 }
 
-[data-theme="light"] .theme-toggle .theme-icon-moon {
-  display: block;
-}
+/* ─── Phone: the thesis, then each comb full width ─── */
+@media (max-width: 860px) {
+  .home {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
 
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .theme-toggle .theme-icon-sun {
+  .combs {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .comb,
+  .pull-cells {
+    --w: min(calc((100vw - 32px) / 2.5), 150px);
+  }
+
+  .comb[data-arch="x86_64"] .comb-title,
+  .comb[data-arch="x86_64"] .comb-grid {
+    margin-left: 0;
+  }
+
+  .row-label {
     display: none;
   }
-  :root:not([data-theme]) .theme-toggle .theme-icon-moon {
+
+  .hex-test-name {
     display: block;
+    font-size: 0.625rem;
+  }
+
+  .pull-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .runs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .run-lane,
+  .runs-scale {
+    row-gap: 4px;
+  }
+
+  .runs-scale > span:first-child,
+  .runs-scale > span:last-child,
+  .runs-scale > .scale-line {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .band i,
+  .utility,
+  .loupe-steps a {
+    transition: none;
   }
 }

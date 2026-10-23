@@ -4,6 +4,30 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Patch the new crass advisory #incident #fix
+
+PR #26's Rails check caught GHSA-pq4g-8rxf-4g29 after the advisory database updated. The lockfile held `crass` 1.0.7 through Loofah; 1.0.8 fixes the CSS tokenization bug. Updated only that gem and its checksum, leaving unrelated dependencies pinned. The PR's dependency audit must pass before the approved auto-merge can proceed.
+
+## 2026-10-23: Run the required container check on PRs #incident #decision
+
+PR #26 did not auto-merge after its visible checks passed because the main ruleset still required `Build & Push to GHCR`, but that workflow only ran after a push to `main`. A pull request now runs the same two-platform Docker build under that required check name without registry credentials or a push. Publishing remains a separate job on `main` with package write permission scoped to that job.
+
+## 2026-10-23: Narrow the R syntax CI setup #incident #fix
+
+PR #26's R syntax job timed out while `setup-r` was still installing packages; it never reached the repository's three R scripts. The setup step requested 172 packages, including fonts and developer tools that a syntax check does not use. The job now installs Ubuntu 24.04's `r-base-core` without recommended packages and allows ten minutes for a slow package mirror. The same Rails suite and all three R scripts passed on Linux ARM64 before the CI change was pushed.
+
+## 2026-10-23: Check the finished comb on phones #decision #testing
+
+The final review found that small Ubuntu labels faded into the rendered glass, the test page's run marks were hard to read on a phone, and the ledger rows needed more breathing room. A brighter orange now carries small Ubuntu text while the emblem keeps its original color; the test plot has larger phone marks and scale labels, and the ledger gives each phone row more space. I sampled colors from the rendered tile images before changing the text tint. The static export was rebuilt from this source. Linux ARM64 checks passed (35 Ruby files clean; 32 tests, 520 assertions, full measured line and branch coverage). The desktop and 390px phone browser sweep found no console errors, overflow, hidden links, or automated axe violations on the five checked routes. Keyboard focus stayed visible across the home, ledger, and test pages, and Enter opened the test and returned home at both widths. Axe could not determine contrast for some image-backed tiles and flagged ledger links for manual review, so this is not a full WCAG conformance claim.
+
+## 2026-10-23: Ledger rows follow the comb #decision #incident
+
+The ledger now holds both kernel cells beside its tables, since the kernel cell is what opens it, and each row is one comb cell (distro, machine, every run in order, mean). The best mean is marked per machine, never across x86_64 and arm64, as in the comb. Test names are `h2` headings that label their tables, not `<caption>` elements: GSAP Flip mismeasured a box inside a caption and started the name at twice its offset. Removed the pre-comb partials, their helpers, and the stack direction's CSS in the same pass.
+
+## 2026-10-23: Rebuild the showcase as the comb #decision #pivot
+
+The live showcase had stale and contradictory numbers. The banner still said Ubuntu 24.04, Fedora 41 and Debian 12, and it showed the May VMware sample beside current captures. It also broke on phones and never compared distros directly. The capture workflow writes `composite-latest.xml` but never regenerates the Markdown writeups. Every writeup had drifted, and `ubuntu.md` (x86) held an arm64 capture. The site now reads the composite XML directly through `Capture`, and the writeups are no longer on the render path. The redesign settled on a honeycomb taken from the old site's hex tiles. In a flat-top comb, the kernel cell under the middle column touches all three distro columns. That matches the data: Docker shares the host kernel, so the three distros differ only in userland. Two earlier directions were rejected: a measuring rule had nothing to do with Linux, and a layered stack read as a dashboard. The hex tiles are Blender renders made on the Mac's GPU (`design/blender/comb_tiles.py`). The lattice is drawn in Glaxnimate (`design/glaxnimate/comb-lattice.svg`). Motion uses GSAP alone. Data never goes into an image.
+
 ## 2026-10-19: Redraw the capture figure #decision
 
 The old figure listed Ubuntu 24.04, Fedora 41, and Debian 12, but the workflow now runs 26.04, 44, and 13. The red highlight on `composite.xml` became the single accent, and the figure has a dark variant.

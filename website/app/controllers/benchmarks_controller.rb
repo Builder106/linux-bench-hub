@@ -1,13 +1,12 @@
 class BenchmarksController < ApplicationController
+  # A distro lens: both combs with one distro's column lit, plus its machines.
   def show
-    slug = params[:distro]
-    raise ActionController::RoutingError, "Unknown distro" unless DistroBenchmark.valid_slug?(slug)
+    @distro = params[:distro]
+    raise ActionController::RoutingError, "Unknown distro" unless DistroBenchmark.valid_slug?(@distro)
 
-    @distro = DistroBenchmark.load(slug)
-    @meta = @distro.meta
+    @own = captures.select { |c| c.distro == @distro }
   end
 
-  def compare
-    @distros = %w[ubuntu fedora debian].map { |slug| DistroBenchmark.load(slug) }
-  end
+  # The ledger: every run of every capture as table rows, beside the kernels.
+  def compare; end
 end

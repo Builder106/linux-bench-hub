@@ -14,6 +14,9 @@ namespace :export do
     DistroBenchmark::DISTROS.each do |slug|
       pages["/benchmarks/#{slug}"] = "benchmarks/#{slug}/index.html"
     end
+    BenchTest::SLUGS.each do |slug|
+      pages["/tests/#{slug}"] = "tests/#{slug}/index.html"
+    end
 
     asset_paths = {}
 

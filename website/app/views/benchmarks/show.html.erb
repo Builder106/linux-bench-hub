@@ -1,58 +1,28 @@
-<% content_for :title, "#{@meta[:name]} #{@distro.version} benchmarks — LinuxBenchHub" %>
-<% content_for :description, "Phoronix Test Suite #{@meta[:pts]} results for #{@meta[:name]} #{@distro.version}." %>
+<% name = @own.first.name %>
+<% version = @own.first.version %>
+<% content_for :title, "#{name} #{version} userland: every benchmark run | LinuxBenchHub" %>
+<% content_for :description, "#{name} #{version} Phoronix Test Suite runs on x86_64 and arm64, lit in the comb beside Ubuntu, Fedora and Debian on the same kernels." %>
 
-<main>
-  <a href="/" class="back-link">← OVERVIEW</a>
-
-  <header class="distro-hero">
-    <div class="distro-hero-mark">
-      <%= render "shared/distro_mark", distro: @distro.slug, size: 84 %>
-    </div>
-    <div class="distro-hero-body">
-      <h1 class="distro-hero-name">
-        <%= @meta[:name] %>
-        <span class="distro-hero-version"><%= @distro.version %></span>
-      </h1>
-      <p class="distro-hero-intro"><%= @distro.intro %></p>
-      <div class="distro-hero-meta">Phoronix Test Suite <%= @meta[:pts] %></div>
-    </div>
-  </header>
-
-  <nav class="section-nav" aria-label="Benchmarks">
-    <a href="#system-information">System</a>
-    <% @distro.sections.each do |section| %>
-      <a href="#<%= section.anchor %>"><%= section.name.sub(/\s+Benchmark\z/i, "") %></a>
-    <% end %>
-  </nav>
-
-  <%= render "shared/facet_divider" %>
-
-  <section class="system-card" id="system-information">
-    <h2 class="system-card-heading">System</h2>
-    <div class="system-card-cols">
-      <% { "Hardware" => @distro.hardware, "Software" => @distro.software }.each do |label, pairs| %>
-        <div class="system-card-col">
-          <div class="system-card-col-label"><%= label %></div>
-          <dl class="system-card-list">
-            <% pairs.each do |pair| %>
-              <div class="system-card-row">
-                <dt><%= pair.key %></dt>
-                <dd><%= pair.value %></dd>
-              </div>
-            <% end %>
+<div class="home">
+  <div class="home-head">
+    <h1 class="home-title lens-title" data-distro="<%= @distro %>"><span class="lit-name"><%= name %> <%= version %></span> userland.</h1>
+    <p class="home-lede">Its column is lit. Same kernel, same machine as the others. <a href="/">Show every distro</a></p>
+    <div class="machines">
+      <% @own.each do |capture| %>
+        <section class="machine" aria-labelledby="machine-<%= capture.arch %>">
+          <h2 class="notes-title" id="machine-<%= capture.arch %>"><%= capture.arch %></h2>
+          <% if capture.misfiled? %>
+            <p class="warning">This capture reports a <%= capture.kernel %> kernel, which does not match its <%= capture.arch %> folder.</p>
+          <% end %>
+          <dl>
+            <div><dt>System</dt><dd><%= capture.os %></dd></div>
+            <div><dt>Compiler</dt><dd><%= capture.compiler %></dd></div>
+            <div><dt>Kernel</dt><dd><%= capture.kernel %></dd></div>
+            <div><dt>Capture</dt><dd><a class="utility" href="<%= capture.xml_url %>"><%= capture.title %></a></dd></div>
           </dl>
-        </div>
+        </section>
       <% end %>
     </div>
-  </section>
-
-  <% @distro.sections.each do |section| %>
-    <section class="bench-section" id="<%= section.anchor %>">
-      <%= render "shared/facet_divider" %>
-      <h2 class="bench-section-heading"><%= section.name %></h2>
-      <% section.tests.each do |test| %>
-        <%= render "benchmarks/benchmark_card", test: test %>
-      <% end %>
-    </section>
-  <% end %>
-</main>
+  </div>
+  <%= render "shared/comb", lit: @distro %>
+</div>

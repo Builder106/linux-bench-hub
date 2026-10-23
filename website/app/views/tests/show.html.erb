@@ -1,0 +1,79 @@
+<% sample = captures.filter_map { |c| c.result_for(@test) }.first %>
+<% content_for :title, "#{@test.name}: every run on Ubuntu, Fedora and Debian | LinuxBenchHub" %>
+<% content_for :description, "#{@test.summary} Every run from the latest captures, on x86_64 and arm64, on one kernel per machine." %>
+
+<article class="pull">
+  <div class="pull-head">
+    <a class="back utility" href="/">Back to the comb</a>
+    <h1 class="pull-name"><span data-flip-id="name-<%= @test.slug %>"><%= @test.name %></span></h1>
+    <p class="pull-unit"><%= sample.unit %>, <%= direction(sample) %>. <%= @test.summary %></p>
+  </div>
+
+  <% Capture::ARCHES.each do |arch| %>
+    <% group = captures.select { |c| c.arch == arch } %>
+    <% results = group.map { |c| c.result_for(@test) } %>
+    <% best = best_mean(results) %>
+    <% runs = results.compact.flat_map(&:runs) %>
+    <% lo, hi = runs.empty? ? [ 0, 1 ] : zoom_range(runs) %>
+    <section class="pull-row" data-arch="<%= arch %>" aria-labelledby="pull-<%= arch %>">
+      <h2 class="comb-title" id="pull-<%= arch %>">
+        <%= arch %> <span class="comb-machine">on <%= group.map(&:cpu).uniq.to_sentence %>, Linux <%= group.map(&:kernel).uniq.map { |k| k.sub(/\s+\(.*\)\z/, "") }.to_sentence %></span>
+      </h2>
+      <div class="pull-cells">
+        <% group.zip(results).each_with_index do |(capture, result), col| %>
+          <div class="hex hex-test<%= " is-best" if result && result.mean == best %>" style="<%= comb_cell(col, 0) %>" data-distro="<%= capture.distro %>" data-flip-id="cell-<%= @test.slug %>-<%= capture.distro %>-<%= arch %>">
+            <span class="hex-name"><%= capture.name %></span>
+            <% if result %>
+              <strong class="hex-value"><%= run_value(result.mean) %></strong>
+              <span class="hex-sub"><%= result.unit %>, mean of <%= pluralize(result.runs.size, "run") %></span>
+              <span class="hex-gap"><%= behind(result, best) %></span>
+            <% else %>
+              <span class="hex-none">no runs</span>
+              <span class="hex-sub"><%= capture.title %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <ul class="runs" aria-label="Every <%= @test.name %> run on <%= arch %>">
+        <li class="runs-scale" aria-hidden="true"><span><%= run_value(lo) %></span><span class="scale-line"></span><span><%= run_value(hi) %> <%= sample.unit %></span></li>
+        <% group.zip(results).each do |capture, result| %>
+          <li class="run-lane" data-distro="<%= capture.distro %>">
+            <span class="run-name"><%= capture.name %></span>
+            <% if result %>
+              <span class="raw"><% result.raw.split(":").each_with_index do |token, n| %><%= ":" if n.positive? %><b><%= token %></b><% end %></span>
+              <span class="band" role="img" aria-label="<%= lane_summary(capture, result) %>">
+                <% result.runs.each_with_index do |run, n| %>
+                  <i style="--x: <%= rule_pct(run, lo, hi) %>%" data-flip-id="<%= flip_id(@test, capture, n) %>"></i>
+                <% end %>
+              </span>
+            <% else %>
+              <span class="raw raw-empty">no runs in <%= capture.title %></span>
+              <span class="band"></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <section class="loupe-notes" aria-labelledby="method">
+    <h2 class="notes-title" id="method">How these runs were made</h2>
+    <p>
+      <code><%= sample.identifier %></code>, application version <%= sample.app_version %><% if sample.arguments.present? %>,
+      run as <code><%= sample.arguments %></code><% end %>.
+      Raw strings are copied verbatim from each capture's composite.xml, in the order the runs happened.
+      Each machine has its own scale.
+    </p>
+    <ul class="captures">
+      <% captures.each do |capture| %>
+        <li><a class="utility" href="<%= capture.xml_url %>"><%= capture.title %></a>: <%= capture.name %> <%= capture.version %> on <%= capture.arch %></li>
+      <% end %>
+    </ul>
+  </section>
+
+  <nav class="loupe-steps" aria-label="Other tests">
+    <% if @test.previous %><a href="/tests/<%= @test.previous.slug %>/">Previous: <%= @test.previous.name %></a><% end %>
+    <% if @test.following %><a class="step-next" href="/tests/<%= @test.following.slug %>/">Next: <%= @test.following.name %></a><% end %>
+  </nav>
+</article>
