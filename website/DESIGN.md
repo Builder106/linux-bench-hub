@@ -131,19 +131,19 @@ rendered tiles, so the monthly capture cannot leave a stale picture.
 
 ## Visual system
 
-**Palette** (the current site's dark theme, kept; text tokens checked for AA):
+**Palette** (the system scheme is the default; visitors can override it):
 
-| Role | Hex | Use |
-|---|---|---|
-| ground | `#0a0507` | page |
-| panel | `#150c10` | lattice cells, fallback tile |
-| line | `#3d1a1d` | lattice lines |
-| ink | `#f0e4e6` | text |
-| muted | `#b09a9e` | secondary text (the old `#7a5a60` failed AA and is retired) |
-| ruby | `#cc342d` | best-in-row rim, kernel glass, focus ring |
-| ruby-bright | `#f55a4d` | links |
-| ubuntu / fedora / debian | `#e95420` / `#51a2da` / `#d8a04a` | the current site's distro colors (Debian stays amber so it never reads as ruby) |
-| ubuntu text | `#ff8d60` | a brighter orange for small labels over the rendered hex tiles; the logo keeps `#e95420` |
+| Role | Light | Dark | Use |
+|---|---|---|---|
+| ground | `#f4f6f8` | `#0a0507` | page |
+| panel | `#e7ebef` | `#150c10` | fallback tile |
+| line | `#aab5c1` | `#5a2228` | lattice lines |
+| ink | `#1c2229` | `#f0e4e6` | text |
+| muted | `#56616d` | `#b09a9e` | secondary text |
+| ruby | `#a52b2c` | `#cc342d` | focus ring |
+| ruby-bright | `#a52b2c` | `#f55a4d` | links and best-in-row labels |
+| ubuntu / fedora / debian | `#e95420` / `#51a2da` / `#d8a04a` | `#e95420` / `#51a2da` / `#d8a04a` | the site's distro colors (Debian stays amber so it never reads as ruby) |
+| ubuntu text | `#ff8d60` | `#ff8d60` | brighter orange for small labels over the rendered hex tiles; the logo keeps `#e95420` |
 
 **Type.** Geist for everything, Geist Mono only for raw strings, kernel and
 compiler strings (the literal identifiers). Self-hosted. No small uppercase

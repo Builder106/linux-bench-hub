@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Restore system-aware light and dark themes #decision
+
+The redesign fixed the page to dark even though the Rails app still carried an unused toggle script. The site now follows the system color scheme by default, lets visitors switch modes, and keeps an override in local storage. Neutral light tokens preserve contrast while the dark rendered comb cells retain their intended depth; the control and browser UI follow the active scheme.
+
 ## 2026-10-23: Allow manual release after bot merges #incident #decision
 
 PR #26 merged through GitHub Actions' auto-merge token, which did not create a `main` push workflow run. GitHub suppresses workflow events caused by that token, so the site stayed on the previous export even though the PR checks passed. CI now allows its existing `workflow_dispatch` trigger to run the production deploy job after the same checks pass. Release operators can dispatch CI on `main` after a bot merge; the container publish workflow already supports dispatch.

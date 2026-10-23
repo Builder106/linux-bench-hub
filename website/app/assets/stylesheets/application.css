@@ -17,14 +17,14 @@
 }
 
 :root {
-  color-scheme: dark;
-  --ground: #0a0507;
-  --panel: #150c10;
-  --ink: #f0e4e6;
-  --muted: #b09a9e;
-  --line: #5a2228;
-  --ruby: #cc342d;
-  --ruby-bright: #f55a4d;
+  color-scheme: light dark;
+  --ground: light-dark(#f4f6f8, #0a0507);
+  --panel: light-dark(#e7ebef, #150c10);
+  --ink: light-dark(#1c2229, #f0e4e6);
+  --muted: light-dark(#56616d, #b09a9e);
+  --line: light-dark(#aab5c1, #5a2228);
+  --ruby: light-dark(#a52b2c, #cc342d);
+  --ruby-bright: light-dark(#a52b2c, #f55a4d);
   --ubuntu: #e95420;
   --ubuntu-text: #ff8d60;
   --fedora: #51a2da;
@@ -40,6 +40,14 @@
 
   --gutter: 40px;
   --settle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
 }
 
 [data-distro="ubuntu"] { --c: var(--ubuntu); --ct: var(--ubuntu-text); }
@@ -157,6 +165,7 @@ td .utility {
 
 .corners nav {
   display: flex;
+  align-items: center;
   gap: 24px;
 }
 
@@ -167,6 +176,58 @@ td .utility {
 .wordmark {
   font-weight: 600;
   text-decoration: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ruby);
+  background: var(--panel);
+  color: var(--ruby-bright);
+}
+
+.theme-option {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) .theme-option-dark,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .theme-option-light {
+  display: inline-flex;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:has(> head > meta[name="color-scheme"][content="light dark"]) .theme-option-dark {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:has(> head > meta[name="color-scheme"][content="light dark"]) .theme-option-light {
+    display: inline-flex;
+  }
 }
 
 main {
@@ -820,6 +881,14 @@ a.hex:focus-visible .hex-name {
 }
 
 @media (max-width: 600px) {
+  .corners {
+    gap: 12px;
+  }
+
+  .corners nav {
+    gap: 12px;
+  }
+
   .ledger-table {
     font-size: 0.875rem;
     line-height: 1.5;
@@ -845,6 +914,17 @@ a.hex:focus-visible .hex-name {
 
   .band i {
     width: 3px;
+  }
+}
+
+@media (max-width: 360px) {
+  .corners {
+    flex-wrap: wrap;
+  }
+
+  .corners nav {
+    width: 100%;
+    justify-content: flex-end;
   }
 }
 
@@ -904,6 +984,7 @@ a.hex:focus-visible .hex-name {
 @media (prefers-reduced-motion: reduce) {
   .band i,
   .utility,
+  .theme-toggle,
   .loupe-steps a {
     transition: none;
   }

@@ -3,10 +3,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0a0507">
+    <meta name="color-scheme" content="light dark">
+    <script>
+      (function () {
+        var scheme = document.querySelector('meta[name="color-scheme"]');
+        try {
+          var saved = localStorage.getItem("color-scheme");
+          if (saved === "light" || saved === "dark") {
+            localStorage.removeItem("theme");
+          } else {
+            saved = localStorage.getItem("theme");
+            if (saved === "light" || saved === "dark") {
+              localStorage.removeItem("theme");
+              localStorage.setItem("color-scheme", saved);
+            }
+          }
+          if (saved === "light" || saved === "dark") scheme.content = saved;
+        } catch {}
+        var light = scheme.content === "light" ||
+          (scheme.content === "light dark" && matchMedia("(prefers-color-scheme: light)").matches);
+        document.querySelector('meta[name="theme-color"]').content = light ? "#f4f6f8" : "#0a0507";
+      })();
+    </script>
     <title>C-Ray: every run on Ubuntu, Fedora and Debian | LinuxBenchHub</title>
     <meta name="description" content="C-Ray ray traces one 1920 by 1080 scene at 16 rays per pixel on every thread and reports how many seconds it took. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
     <link rel="canonical" href="https://linuxbenchhub.vercel.app/tests/c-ray/">
-    <meta name="theme-color" content="#0a0507">
     <meta property="og:type" content="website">
     <meta property="og:title" content="C-Ray: every run on Ubuntu, Fedora and Debian | LinuxBenchHub">
     <meta property="og:description" content="C-Ray ray traces one 1920 by 1080 scene at 16 rays per pixel on every thread and reports how many seconds it took. Every run from the latest captures, on x86_64 and arm64, on one kernel per machine.">
@@ -24,7 +46,7 @@
         setTimeout(function () { h.remove("intro"); }, 2500);
       })();
     </script>
-    <link rel="stylesheet" href="/assets/application-b756ae5d.css" />
+    <link rel="stylesheet" href="/assets/application-6cafba9a.css" />
   </head>
 
   <body>
@@ -34,6 +56,26 @@
       <nav aria-label="Site">
         <a class="utility" href="/compare/">The ledger</a>
         <a class="utility" href="https://github.com/Builder106/linux-bench-hub">Source on GitHub</a>
+        <button class="theme-toggle" type="button">
+          <span class="theme-option theme-option-light">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+                <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+                <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+              </g>
+            </svg>
+            <span class="theme-label">Switch to light theme</span>
+          </span>
+          <span class="theme-option theme-option-dark">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+            </svg>
+            <span class="theme-label">Switch to dark theme</span>
+          </span>
+        </button>
       </nav>
     </header>
     <main id="main" tabindex="-1">
@@ -202,5 +244,6 @@
     <script src="/assets/gsap/gsap.min-6cfb2fb6.js" defer="defer"></script>
 <script src="/assets/gsap/Flip.min-60a451a7.js" defer="defer"></script>
 <script src="/assets/site-9cc77ec0.js" defer="defer"></script>
+<script src="/assets/theme-60f82444.js" defer="defer"></script>
   </body>
 </html>

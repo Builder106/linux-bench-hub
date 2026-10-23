@@ -1,0 +1,991 @@
+/* LinuxBenchHub: the comb. Tokens and decisions live in DESIGN.md. */
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/geist-100_900-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-100_900-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+  --ground: light-dark(#f4f6f8, #0a0507);
+  --panel: light-dark(#e7ebef, #150c10);
+  --ink: light-dark(#1c2229, #f0e4e6);
+  --muted: light-dark(#56616d, #b09a9e);
+  --line: light-dark(#aab5c1, #5a2228);
+  --ruby: light-dark(#a52b2c, #cc342d);
+  --ruby-bright: light-dark(#a52b2c, #f55a4d);
+  --ubuntu: #e95420;
+  --ubuntu-text: #ff8d60;
+  --fedora: #51a2da;
+  --debian: #d8a04a;
+  --debian-text: #d8a04a;
+
+  --f-text: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --f-raw: "Geist Mono", ui-monospace, monospace;
+  --t-sub: 1.25rem;
+  --t-text: 1rem;
+  --t-small: 0.8125rem;
+  --t-tiny: 0.75rem;
+
+  --gutter: 40px;
+  --settle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
+}
+
+[data-distro="ubuntu"] { --c: var(--ubuntu); --ct: var(--ubuntu-text); }
+[data-distro="fedora"] { --c: var(--fedora); --ct: var(--fedora); }
+[data-distro="debian"] { --c: var(--debian); --ct: var(--debian-text); }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ground);
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--f-text);
+  font-size: var(--t-text);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--ground);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+#main:focus {
+  outline: none;
+}
+
+p {
+  margin: 0;
+}
+
+code {
+  font-family: var(--f-raw);
+  font-size: 0.875em;
+  font-stretch: 87%;
+}
+
+/* Links in running text keep their underline; utility links draw one. */
+p a,
+li a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+}
+
+p a:hover,
+li a:hover {
+  text-decoration-color: currentColor;
+}
+
+.utility {
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.4s var(--settle);
+}
+
+.utility:hover,
+.utility:focus-visible {
+  background-size: 100% 1px;
+}
+
+p .utility,
+li .utility,
+dd .utility,
+td .utility {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 12px;
+  z-index: 10;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--ground);
+  translate: 0 -200%;
+}
+
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+
+/* ─── Corners ─── */
+.corners {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 24px var(--gutter) 0;
+  font-size: var(--t-small);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.corners nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.corners a {
+  padding: 6px 0;
+}
+
+.wordmark {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ruby);
+  background: var(--panel);
+  color: var(--ruby-bright);
+}
+
+.theme-option {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) .theme-option-dark,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .theme-option-light {
+  display: inline-flex;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:has(> head > meta[name="color-scheme"][content="light dark"]) .theme-option-dark {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:has(> head > meta[name="color-scheme"][content="light dark"]) .theme-option-light {
+    display: inline-flex;
+  }
+}
+
+main {
+  padding: 0 var(--gutter);
+}
+
+/* ─── Home: the thesis beside two combs ─── */
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  margin-top: 36px;
+}
+
+.home-title {
+  margin: 0 0 20px;
+  font-size: clamp(2.25rem, 1rem + 3vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.home-lede {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ─── The comb ─── */
+.combs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 64px;
+}
+
+.comb {
+  /* Sized by the width left beside the thesis; the combs may run a little past the fold. */
+  --w: clamp(104px, calc((100vw - 560px) / 6.875), 150px);
+  --h: calc(var(--w) * 0.866);
+}
+
+html.intro .comb {
+  visibility: hidden;
+}
+
+.comb-title {
+  margin: 0 0 6px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.comb-machine {
+  display: block;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.comb[data-arch="x86_64"] .comb-grid {
+  margin-left: 6.5rem;
+}
+
+.combs {
+  margin-top: calc(var(--w, 120px) * 0.2);
+}
+
+.comb-grid {
+  margin-bottom: 40px;
+}
+
+.comb-grid {
+  position: relative;
+  width: calc(var(--w) * 2.5);
+  height: calc(var(--h) * 7 + 48px);
+}
+
+/* The Glaxnimate lattice: comb cell (0, 0) sits at (150, 216.51) in its 100-unit grid. */
+.comb-lattice {
+  position: absolute;
+  left: calc(var(--w) * -1.5);
+  top: calc(var(--w) * -1.7321);
+  width: calc(var(--w) * 5.5);
+  height: auto;
+  color: var(--line);
+  pointer-events: none;
+}
+
+.hex {
+  position: absolute;
+  left: calc(var(--col) * var(--w) * 0.75);
+  top: calc((var(--row) + 0.5 - var(--lift)) * var(--h));
+  width: var(--w);
+  height: var(--h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 calc(var(--w) * 0.12);
+  text-align: center;
+  line-height: 1.15;
+  text-decoration: none;
+  /* Inset slightly so neighbouring cells show a hairline of lattice between them. No CSS
+     scale here: GSAP would fold it into an inline transform and fight the hover lift. */
+  clip-path: polygon(25.6% 1.2%, 74.4% 1.2%, 99.3% 50%, 74.4% 98.8%, 25.6% 98.8%, 0.7% 50%);
+  /* Blender-rendered prisms (design/blender/comb_tiles.py); the panel colour is the fallback. */
+  background: var(--panel) url("/comb/tile-dark.webp") center / 100% 100% no-repeat;
+}
+
+/* Hover and lens dimming fade in CSS only once GSAP has handed the cell back. */
+.hex:not([style*="opacity"]) {
+  transition: opacity 0.35s var(--settle), translate 0.35s var(--settle), filter 0.35s var(--settle);
+}
+
+/* The hex clip also clips an outline, so focus shows on the tile itself: brighter and lifted. */
+a.hex:hover,
+a.hex:focus-visible {
+  translate: 0 -4px;
+  filter: brightness(1.35);
+  outline: none;
+}
+
+a.hex:focus-visible .hex-value,
+a.hex:focus-visible .hex-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.hex-head {
+  background-image: url("/comb/tile-head.webp");
+}
+
+.hex-test.is-alt {
+  background-image: url("/comb/tile-alt.webp");
+}
+
+.hex-none {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hex-logo {
+  margin-bottom: 2px;
+}
+
+.hex-name {
+  color: var(--ct);
+  font-weight: 600;
+}
+
+.hex-sub,
+.hex-gap,
+.hex-test-name {
+  color: var(--muted);
+  font-size: 0.6875rem;
+}
+
+.hex-test-name {
+  display: none;
+}
+
+.hex-gap {
+  white-space: nowrap;
+}
+
+.hex-value {
+  font-size: clamp(1.125rem, 0.8rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.hex-test.is-best {
+  background-image: url("/comb/tile-lit.webp");
+}
+
+.hex-test.is-best .hex-gap {
+  color: var(--ruby-bright);
+  font-weight: 600;
+}
+
+.hex-userland code {
+  font-size: 0.6875rem;
+}
+
+.hex-kernel {
+  background-image: url("/comb/tile-kernel.webp");
+}
+
+.kernel-caption {
+  position: absolute;
+  left: 0;
+  top: calc(7 * var(--h) + 12px);
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.kernel-caption code {
+  white-space: nowrap;
+  font-size: 0.8125rem;
+}
+
+.kernel-caption .comb-title {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.kernel-caption .comb-machine {
+  display: inline;
+}
+
+.row-label {
+  position: absolute;
+  right: calc(100% + 18px);
+  top: calc((var(--row) + 1) * var(--h));
+  translate: 0 -50%;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.comb[data-arch="arm64"] .row-label {
+  display: none;
+}
+
+.combs[data-lit="ubuntu"] .hex[data-distro]:not([data-distro="ubuntu"]),
+.combs[data-lit="fedora"] .hex[data-distro]:not([data-distro="fedora"]),
+.combs[data-lit="debian"] .hex[data-distro]:not([data-distro="debian"]),
+.combs:has(.hex-head[data-distro="ubuntu"]:hover) .hex[data-distro]:not([data-distro="ubuntu"]),
+.combs:has(.hex-head[data-distro="fedora"]:hover) .hex[data-distro]:not([data-distro="fedora"]),
+.combs:has(.hex-head[data-distro="debian"]:hover) .hex[data-distro]:not([data-distro="debian"]) {
+  opacity: 0.35;
+}
+
+/* ─── Distro page: its userland in the thesis column ─── */
+.lit-name {
+  color: var(--ct);
+}
+
+.home-head .machines {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.home-head .machines dl div {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+/* ─── A test: its row pulled out of each comb ─── */
+.pull-head {
+  margin-top: 40px;
+}
+
+.pull-name {
+  margin: 20px 0 14px -0.04em;
+  font-size: clamp(3rem, 1rem + 6vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+.pull-name span {
+  display: inline-block;
+}
+
+.pull-unit {
+  max-width: 60ch;
+  color: var(--muted);
+}
+
+.pull-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 56px;
+  align-items: center;
+  margin-top: 64px;
+}
+
+.pull-row .comb-title {
+  grid-column: 1 / -1;
+  margin-bottom: 14px;
+}
+
+.pull-cells {
+  --w: clamp(150px, 14vw, 200px);
+  --h: calc(var(--w) * 0.866);
+  position: relative;
+  width: calc(var(--w) * 2.5);
+  height: calc(var(--h) * 1.5);
+}
+
+.pull-cells .hex-value {
+  font-size: clamp(1.5rem, 1rem + 1vw, 2.125rem);
+}
+
+/* One set of columns for every lane, so all ticks share the same scale positions. */
+.runs {
+  display: grid;
+  grid-template-columns: 72px minmax(0, max-content) minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.run-lane,
+.runs-scale {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.run-name {
+  color: var(--ct);
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+
+.band {
+  position: relative;
+  display: block;
+  height: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.band i {
+  position: absolute;
+  left: var(--x);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--c);
+  transform-origin: 50% 100%;
+  transition: scale 0.4s var(--settle), background-color 0.35s var(--settle);
+}
+
+.run-lane .band {
+  height: 22px;
+}
+
+.runs-scale {
+  color: var(--muted);
+  font-size: var(--t-tiny);
+  row-gap: 3px;
+}
+
+.runs-scale > span:first-child {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.runs-scale > span:last-child {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.runs-scale > .scale-line {
+  grid-column: 3;
+  grid-row: 2;
+  height: 7px;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / 10% 4px repeat-x;
+}
+
+.raw {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-family: var(--f-raw);
+  font-size: var(--t-small);
+  line-height: 1.6;
+}
+
+.raw b {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.raw b + b {
+  margin-left: 0.2em;
+}
+
+.back {
+  display: inline-block;
+  font-size: var(--t-small);
+  font-weight: 500;
+  padding: 6px 0;
+}
+
+.notes-title {
+  margin: 0 0 6px;
+  font-size: var(--t-sub);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.loupe-notes {
+  max-width: 72ch;
+  margin-top: 80px;
+}
+
+.loupe-notes p {
+  color: var(--muted);
+}
+
+.captures {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+.captures li + li {
+  margin-top: 4px;
+}
+
+.loupe-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
+  font-size: var(--t-sub);
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: -0.01em;
+}
+
+.loupe-steps a {
+  display: inline-block;
+  text-decoration: none;
+  transition: font-stretch 0.5s var(--settle);
+}
+
+.loupe-steps a:hover,
+.loupe-steps a:focus-visible {
+  font-stretch: 100%;
+}
+
+.loupe-steps .step-next {
+  margin-left: auto;
+}
+
+/* ─── Distro lens ─── */
+.machines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 72px;
+}
+
+.machines dl {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: var(--t-small);
+}
+
+.machines dl div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.machines dt {
+  color: var(--muted);
+}
+
+.machines dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.warning {
+  color: var(--debian-text);
+  font-size: var(--t-small);
+}
+
+/* ─── The ledger: the two kernel cells held beside every run ─── */
+.ledger-head {
+  position: sticky;
+  top: 24px;
+}
+
+.ledger-kernels {
+  --w: 112px;
+  --h: calc(var(--w) * 0.866);
+  position: relative;
+  width: calc(var(--w) * 1.75);
+  height: calc(var(--h) * 1.5);
+  margin-top: 36px;
+}
+
+.ledger-kernels .hex-sub {
+  color: var(--ground);
+  font-weight: 600;
+}
+
+.ledger-body > :first-child {
+  margin-top: 0;
+}
+
+.ledger-table {
+  width: 100%;
+  max-width: 960px;
+  border-collapse: collapse;
+  font-size: var(--t-small);
+}
+
+/* Headings, not captions: GSAP Flip mismeasures boxes inside a table caption. */
+.ledger-name {
+  max-width: 960px;
+  margin: 72px 0 12px;
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.ledger-name a {
+  text-decoration: none;
+}
+
+/* Flip moves the test name in from the comb's row label; inline boxes take no transform. */
+.ledger-name span[data-flip-id] {
+  display: inline-block;
+}
+
+.ledger-unit {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: var(--t-small);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.ledger-table thead th {
+  padding: 0 16px 8px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+}
+
+.ledger-table tbody th,
+.ledger-table td {
+  padding: 7px 16px 7px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  overflow-wrap: anywhere;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.ledger-table tbody th {
+  color: var(--ct);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ledger-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fixed columns, so every test's runs line up down the page. */
+.ledger-runs-table {
+  table-layout: fixed;
+}
+
+.ledger-runs-table thead th:nth-child(1) { width: 22%; }
+.ledger-runs-table thead th:nth-child(2) { width: 13%; }
+.ledger-runs-table thead th:nth-child(4) { width: 15%; }
+
+.ledger-table .is-best {
+  color: var(--ruby-bright);
+  font-weight: 600;
+}
+
+.best-tag {
+  font-size: var(--t-tiny);
+  font-weight: 500;
+}
+
+/* The runs as the capture's raw string has them, one token per run. */
+.ledger-runs {
+  font-family: var(--f-raw);
+  font-size: var(--t-tiny);
+  font-stretch: 87%;
+}
+
+.ledger-runs span {
+  display: inline-block;
+  margin-right: 0.9em;
+}
+
+.ledger-none {
+  color: var(--muted);
+}
+
+/* ─── Colophon ─── */
+.colophon {
+  display: grid;
+  gap: 4px;
+  max-width: 96ch;
+  margin: 72px var(--gutter) 0;
+  padding-bottom: 40px;
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+/* ─── Phone ─── */
+@media (max-width: 860px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .machines {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ledger-head {
+    position: static;
+  }
+
+  .ledger-table thead th,
+  .ledger-table tbody th,
+  .ledger-table td {
+    padding-right: 10px;
+  }
+
+  .ledger-table tbody th {
+    white-space: normal;
+  }
+
+  .ledger-runs-table thead th:nth-child(1) { width: 28%; }
+  .ledger-runs-table thead th:nth-child(2) { width: 19%; }
+  .ledger-runs-table thead th:nth-child(4) { width: 23%; }
+}
+
+@media (max-width: 600px) {
+  .corners {
+    gap: 12px;
+  }
+
+  .corners nav {
+    gap: 12px;
+  }
+
+  .ledger-table {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .ledger-table tbody th,
+  .ledger-table td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .ledger-runs {
+    font-size: 0.8125rem;
+  }
+
+  .runs-scale {
+    font-size: var(--t-small);
+  }
+
+  .run-lane .band {
+    height: 30px;
+  }
+
+  .band i {
+    width: 3px;
+  }
+}
+
+@media (max-width: 360px) {
+  .corners {
+    flex-wrap: wrap;
+  }
+
+  .corners nav {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ─── Phone: the thesis, then each comb full width ─── */
+@media (max-width: 860px) {
+  .home {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+
+  .combs {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .comb,
+  .pull-cells {
+    --w: min(calc((100vw - 32px) / 2.5), 150px);
+  }
+
+  .comb[data-arch="x86_64"] .comb-title,
+  .comb[data-arch="x86_64"] .comb-grid {
+    margin-left: 0;
+  }
+
+  .row-label {
+    display: none;
+  }
+
+  .hex-test-name {
+    display: block;
+    font-size: 0.625rem;
+  }
+
+  .pull-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .runs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .run-lane,
+  .runs-scale {
+    row-gap: 4px;
+  }
+
+  .runs-scale > span:first-child,
+  .runs-scale > span:last-child,
+  .runs-scale > .scale-line {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .band i,
+  .utility,
+  .theme-toggle,
+  .loupe-steps a {
+    transition: none;
+  }
+}
