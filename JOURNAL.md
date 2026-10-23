@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Narrow the R syntax CI setup #incident #fix
+
+PR #26's R syntax job timed out while `setup-r` was still installing packages; it never reached the repository's three R scripts. The setup step requested 172 packages, including fonts and developer tools that a syntax check does not use. The job now installs Ubuntu 24.04's `r-base-core` without recommended packages and allows ten minutes for a slow package mirror. The same Rails suite and all three R scripts passed on Linux ARM64 before the CI change was pushed.
+
 ## 2026-10-23: Check the finished comb on phones #decision #testing
 
 The final review found that small Ubuntu labels faded into the rendered glass, the test page's run marks were hard to read on a phone, and the ledger rows needed more breathing room. A brighter orange now carries small Ubuntu text while the emblem keeps its original color; the test plot has larger phone marks and scale labels, and the ledger gives each phone row more space. I sampled colors from the rendered tile images before changing the text tint. The static export was rebuilt from this source. Linux ARM64 checks passed (35 Ruby files clean; 32 tests, 520 assertions, full measured line and branch coverage). The desktop and 390px phone browser sweep found no console errors, overflow, hidden links, or automated axe violations on the five checked routes. Keyboard focus stayed visible across the home, ledger, and test pages, and Enter opened the test and returned home at both widths. Axe could not determine contrast for some image-backed tiles and flagged ledger links for manual review, so this is not a full WCAG conformance claim.
