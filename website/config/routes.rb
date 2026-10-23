@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   get "compare", to: "benchmarks#compare", as: :compare_benchmarks
 
+  get "tests/:test", to: "tests#show", as: :bench_test,
+    constraints: { test: /memcpy|memset|c-ray|aircrack-ng/ }
+
   get "benchmarks/:distro", to: "benchmarks#show", as: :benchmark,
     constraints: { distro: /ubuntu|fedora|debian/ }
 

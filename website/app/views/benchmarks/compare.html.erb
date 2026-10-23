@@ -1,50 +1,55 @@
-<div class="showcase-header">
-  <div class="showcase-container">
-    <a href="/" class="back-link">&larr; Back to Overview</a>
-    <h1>Cross-Distro Comparison Matrix</h1>
-    <p class="lead">Side-by-side performance benchmarks for Ubuntu, Fedora, and Debian captured under standardized virtual hardware environments.</p>
-  </div>
-</div>
+<% content_for :title, "The ledger: every benchmark run as a table | LinuxBenchHub" %>
+<% content_for :description, "Every Phoronix Test Suite run behind the plate, for Ubuntu, Fedora and Debian on x86_64 and arm64, as plain table rows with links to each capture's XML." %>
 
-<div class="showcase-container showcase-content">
-  <div class="comparison-card">
-    <h2>Side-by-Side Metric Matrix</h2>
-    <div class="table-responsive">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Distro</th>
-            <th>Release Version</th>
-            <th>C-Ray 2.0.0 (Seconds)</th>
-            <th>Tinymembench (memcpy MB/s)</th>
-            <th>Tinymembench (memset MB/s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @distros.each do |distro| %>
-            <% meta = distro.meta %>
-            <% c_ray = distro.test("pts/c-ray-2.0.0") %>
-            <% tinymem = distro.test("pts/tinymembench-1.0.2") %>
-            <tr>
-              <td>
-                <span class="distro-badge distro-<%= meta[:name].downcase %>">
-                  <%= meta[:name] %>
-                </span>
-              </td>
-              <td><%= distro.version %></td>
-              <td>
-                <strong><%= c_ray ? "#{c_ray.mean} s" : "N/A" %></strong>
-              </td>
-              <td>
-                <strong><%= tinymem ? "#{tinymem.mean} MB/s" : "N/A" %></strong>
-              </td>
-              <td>
-                <strong><%= tinymem ? "#{tinymem.median} MB/s" : "N/A" %></strong>
-              </td>
+<div class="ledger">
+  <div class="stack-head">
+    <h1 class="stack-title">The ledger</h1>
+    <p class="stack-lede">
+      Every run drawn in the stack, as table rows, in the order each capture recorded them.
+      <a class="utility" href="/">Back to the stack</a>
+    </p>
+  </div>
+
+  <% BenchTest::ALL.each do |test| %>
+    <% rows = captures.map { |c| [ c, c.result_for(test) ] }.select(&:last) %>
+    <table class="ledger-table">
+      <caption><a href="/tests/<%= test.slug %>/"><%= test.name %></a> <span class="caption-unit"><%= rows.first.last.unit %>, <%= direction(rows.first.last) %></span></caption>
+      <thead>
+        <tr><th scope="col">Distro</th><th scope="col">Architecture</th><th scope="col">Run</th><th scope="col" class="num">Value</th></tr>
+      </thead>
+      <tbody>
+        <% rows.each do |capture, result| %>
+          <% result.runs.each_with_index do |run, i| %>
+            <tr data-distro="<%= capture.distro %>">
+              <td><%= capture.name %> <%= capture.version %></td>
+              <td><%= capture.arch %></td>
+              <td><%= i + 1 %></td>
+              <td class="num"><%= result.raw.split(":")[i] %></td>
             </tr>
           <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
+        <% end %>
+      </tbody>
+    </table>
+    <% missing = captures.reject { |c| c.result_for(test) } %>
+    <% if missing.any? %>
+      <p class="ledger-gap"><%= missing.map { |c| "#{c.name} #{c.arch} (#{c.title})" }.to_sentence %> recorded no <%= test.name %> runs.</p>
+    <% end %>
+  <% end %>
+
+  <table class="ledger-table">
+    <caption>Captures</caption>
+    <thead>
+      <tr><th scope="col">Capture</th><th scope="col">Processor</th><th scope="col">Kernel</th><th scope="col">Compiler</th></tr>
+    </thead>
+    <tbody>
+      <% captures.each do |capture| %>
+        <tr data-distro="<%= capture.distro %>">
+          <td><a class="utility" href="<%= capture.xml_url %>"><%= capture.title %></a></td>
+          <td><%= capture.processor %></td>
+          <td><%= capture.kernel %></td>
+          <td><%= capture.compiler %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

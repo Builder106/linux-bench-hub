@@ -1,0 +1,6 @@
+<%# The Glaxnimate lattice (design/glaxnimate/comb-lattice.svg), inlined so GSAP can draw it on.
+    Its pen colour becomes currentColor so it follows the --line token. %>
+<%== File.read(Rails.root.join("design/glaxnimate/comb-lattice.svg"))
+       .sub('width="550" height="952.63" ', 'class="comb-lattice" aria-hidden="true" focusable="false" ')
+       .gsub('stroke="#5a2228"', 'stroke="currentColor"')
+       .gsub(' id="', ' data-cell="') %>

@@ -1,0 +1,58 @@
+<%# Two combs, one per machine. In each, the kernel cell touches all three
+    distro columns; every test is a row of three touching cells. lit: a distro slug. %>
+<div class="combs"<% if local_assigns[:lit] %> data-lit="<%= lit %>"<% end %>>
+  <% Capture::ARCHES.each do |arch| %>
+    <% group = captures.select { |c| c.arch == arch } %>
+    <% kernels = group.map(&:kernel).uniq %>
+    <section class="comb" data-arch="<%= arch %>" aria-labelledby="comb-<%= arch %>">
+      <div class="comb-grid">
+        <%= render "shared/comb_lattice" %>
+        <% BenchTest::ALL.each_with_index do |test, r| %>
+          <a class="row-label" style="--row: <%= r + 1 %>" data-test="<%= test.slug %>" href="/tests/<%= test.slug %>/"<% if arch == "x86_64" %> data-flip-id="name-<%= test.slug %>"<% end %>><%= test.name %></a>
+        <% end %>
+
+        <% group.each_with_index do |capture, col| %>
+          <a class="hex hex-head" style="<%= comb_cell(col, 0) %>" data-distro="<%= capture.distro %>" href="/benchmarks/<%= capture.distro %>/">
+            <%= render "shared/distro_mark", distro: capture.distro, size: 30, css_class: "hex-logo" %>
+            <span class="hex-name"><%= capture.name %></span>
+            <span class="hex-sub"><%= capture.version %></span>
+          </a>
+        <% end %>
+
+        <% BenchTest::ALL.each_with_index do |test, r| %>
+          <% results = group.map { |c| c.result_for(test) } %>
+          <% best = best_mean(results) %>
+          <% group.zip(results).each_with_index do |(capture, result), col| %>
+            <a class="hex hex-test<%= " is-best" if result && result.mean == best %><%= " is-alt" if r.odd? %>" href="/tests/<%= test.slug %>/" style="<%= comb_cell(col, r + 1) %>" data-distro="<%= capture.distro %>" data-test="<%= test.slug %>" data-flip-id="cell-<%= test.slug %>-<%= capture.distro %>-<%= arch %>">
+              <span class="hex-test-name"><%= test.name %></span>
+              <% if result %>
+                <strong class="hex-value"><%= run_value(result.mean) %></strong>
+                <span class="hex-sub"><%= result.unit %></span>
+                <span class="hex-gap"><%= behind(result, best) %></span>
+              <% else %>
+                <span class="hex-none">no runs</span>
+                <span class="hex-sub"><%= capture.date.iso8601 %> capture</span>
+              <% end %>
+            </a>
+          <% end %>
+        <% end %>
+
+        <% group.each_with_index do |capture, col| %>
+          <div class="hex hex-userland" style="<%= comb_cell(col, 5) %>" data-distro="<%= capture.distro %>">
+            <span class="hex-sub">userland</span>
+            <code><%= short_compiler(capture) %></code>
+          </div>
+        <% end %>
+
+        <a class="hex hex-kernel" style="<%= comb_cell(1, 6) %>" href="/compare/" aria-label="Linux kernel shared by all three distros on <%= arch %>; open the ledger">
+          <%= render "shared/tux_mark", size: 56 %>
+        </a>
+        <%# Below the kernel, as in the stack: the kernel, then the machine it runs on. %>
+        <div class="kernel-caption">
+          <code>Linux <%= kernels.size == 1 ? kernels.first.sub(/\s+\(.*\)\z/, "") : "#{kernels.size} different kernels" %></code>
+          <h2 class="comb-title" id="comb-<%= arch %>"><%= arch %> <span class="comb-machine">on <%= group.map(&:cpu).uniq.to_sentence %>, <%= group.map(&:threads).uniq.to_sentence %></span></h2>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

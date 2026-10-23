@@ -2,94 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><%= content_for(:title) || "LinuxBenchHub — VM benchmarks for Linux distros" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="<%= content_for(:description) || "Compare Linux distros under identical virtual hardware. Phoronix Test Suite results for Ubuntu 24.04, Fedora 41, and Debian 12 captured on VMware Fusion Pro." %>">
-    <meta property="og:title" content="LinuxBenchHub">
-    <meta property="og:description" content="VM benchmarks for Linux distros — Ubuntu, Fedora, Debian under identical virtual hardware.">
+    <title><%= content_for(:title) || "LinuxBenchHub: every run of Ubuntu, Fedora and Debian on one rule" %></title>
+    <% description = content_for(:description) || "Phoronix Test Suite runs for Ubuntu, Fedora and Debian on x86_64 and arm64, every run drawn as a tick on one rule per test." %>
+    <meta name="description" content="<%= description %>">
+    <link rel="canonical" href="https://linuxbenchhub.vercel.app<%= request.path.chomp("/") %>/">
+    <meta name="theme-color" content="#0a0507">
     <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= content_for(:title) || "LinuxBenchHub" %>">
+    <meta property="og:description" content="<%= description %>">
     <meta property="og:image" content="/social-card.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LinuxBenchHub">
-    <meta name="twitter:description" content="VM benchmarks for Linux distros — Ubuntu, Fedora, Debian under identical virtual hardware.">
-    <meta name="twitter:image" content="/social-card.png">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400..700&display=swap">
-
+    <link rel="preload" href="/fonts/geist-100_900-normal.woff2" as="font" type="font/woff2" crossorigin>
     <script>
       (function () {
-        try {
-          var t = localStorage.getItem("theme");
-          if (t !== "light" && t !== "dark") {
-            t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-          }
-          document.documentElement.setAttribute("data-theme", t);
-        } catch (e) {}
+        var h = document.documentElement.classList;
+        h.add("js");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        h.add("motion", "intro");
+        setTimeout(function () { h.remove("intro"); }, 2500);
       })();
     </script>
-
     <%= stylesheet_link_tag :app %>
-    <%= yield :head %>
   </head>
 
   <body>
-    <div class="page">
-      <nav class="nav">
-        <div class="nav-brand">
-          <div class="nav-brand-marks">
-            <%= render "shared/hex_mark", size: 20 %>
-            <%= render "shared/tux_mark", size: 20 %>
-          </div>
-          <span>LinuxBenchHub</span>
-        </div>
-        <div class="nav-links">
-          <a href="/">Overview</a>
-          <% DistroBenchmark::DISTROS.each do |slug| %>
-            <%= link_to benchmark_path(distro: slug), class: "nav-distro" do %>
-              <%= render "shared/distro_mark", distro: slug, size: 18, css_class: "nav-distro-mark" %>
-              <%= DistroBenchmark.meta(slug)[:name] %>
-            <% end %>
-          <% end %>
-          <a href="https://github.com/Builder106/linux-bench-hub" target="_blank" rel="noreferrer" class="nav-github" aria-label="LinuxBenchHub on GitHub">
-            <%= render "shared/github_mark", size: 16, css_class: "nav-github-mark" %>
-            GitHub
-          </a>
-          <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
-            <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" fill="currentColor"/>
-              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-                <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
-                <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
-                <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
-                <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
-              </g>
-            </svg>
-            <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
-            </svg>
-          </button>
-        </div>
+    <a class="skip-link" href="#main">Skip to the stack</a>
+    <header class="corners">
+      <a class="wordmark" href="/">LinuxBenchHub</a>
+      <nav aria-label="Site">
+        <a class="utility" href="/compare/">The ledger</a>
+        <a class="utility" href="<%= Capture::REPO_URL %>">Source on GitHub</a>
       </nav>
+    </header>
+    <main id="main" tabindex="-1">
       <%= yield %>
-      <footer class="footer">
-        <div class="footer-brand">
-          <%= render "shared/hex_mark", size: 14 %>
-          <%= render "shared/tux_mark", size: 14 %>
-          <span>LINUXBENCHHUB | MIT</span>
-        </div>
-        <div>
-          BUILD 2026-05-19 |
-          <a href="https://github.com/Builder106" target="_blank" rel="noreferrer">@BUILDER106</a>
-        </div>
-      </footer>
-    </div>
-    <%= javascript_include_tag "theme" %>
+    </main>
+    <footer class="colophon">
+      <% captures.group_by(&:arch).each do |arch, group| %>
+        <p>
+          <%= arch %> runs: <%= group.map(&:cpu).uniq.to_sentence %>
+          (<%= group.map(&:threads).uniq.to_sentence %>) in <%= group.map(&:system_layer).uniq.to_sentence %>, captured
+          <%= group.map { |c| c.date.iso8601 }.uniq.to_sentence %>.
+        </p>
+      <% end %>
+      <p>
+        Phoronix Test Suite <%= captures.map(&:pts_version).uniq.to_sentence %>.
+        Code and data are MIT licensed. Type: Geist and Geist Mono.
+      </p>
+    </footer>
+    <%= javascript_include_tag "gsap/gsap.min", "gsap/Flip.min", "site", defer: true %>
   </body>
 </html>

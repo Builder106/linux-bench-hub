@@ -98,6 +98,8 @@ class DistroBenchmarkTest < ActiveSupport::TestCase
     test = parsed.sections.first.tests.first
 
     assert_equal "", parsed.version
+    assert_equal "Fedora", DistroBenchmark.load("fedora").meta[:name]
+    assert_equal "44", DistroBenchmark.load("fedora").version
     assert_equal "", test.description
     assert_equal "", test.app_version
     assert_equal "", test.args
