@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   private
 
   # Every page draws from the same six latest captures (three distros, two
-  # architectures), so the plate, the loupe and the footer always agree.
+  # architectures), so the combs, the ledger and the footer always agree.
   def captures
     @captures ||= Capture.all
   end

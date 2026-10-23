@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><%= content_for(:title) || "LinuxBenchHub: every run of Ubuntu, Fedora and Debian on one rule" %></title>
-    <% description = content_for(:description) || "Phoronix Test Suite runs for Ubuntu, Fedora and Debian on x86_64 and arm64, every run drawn as a tick on one rule per test." %>
+    <title><%= content_for(:title) || "LinuxBenchHub: same kernel, three userlands" %></title>
+    <% description = content_for(:description) || "Phoronix Test Suite runs for Ubuntu, Fedora and Debian in Docker on x86_64 and arm64, where all three share one kernel per machine and only userland differs." %>
     <meta name="description" content="<%= description %>">
     <link rel="canonical" href="https://linuxbenchhub.vercel.app<%= request.path.chomp("/") %>/">
     <meta name="theme-color" content="#0a0507">
@@ -29,7 +29,7 @@
   </head>
 
   <body>
-    <a class="skip-link" href="#main">Skip to the stack</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <header class="corners">
       <a class="wordmark" href="/">LinuxBenchHub</a>
       <nav aria-label="Site">
