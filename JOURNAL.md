@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-23: Run the required container check on PRs #incident #decision
+
+PR #26 did not auto-merge after its visible checks passed because the main ruleset still required `Build & Push to GHCR`, but that workflow only ran after a push to `main`. A pull request now runs the same two-platform Docker build under that required check name without registry credentials or a push. Publishing remains a separate job on `main` with package write permission scoped to that job.
+
 ## 2026-10-23: Narrow the R syntax CI setup #incident #fix
 
 PR #26's R syntax job timed out while `setup-r` was still installing packages; it never reached the repository's three R scripts. The setup step requested 172 packages, including fonts and developer tools that a syntax check does not use. The job now installs Ubuntu 24.04's `r-base-core` without recommended packages and allows ten minutes for a slow package mirror. The same Rails suite and all three R scripts passed on Linux ARM64 before the CI change was pushed.
