@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-10-27: Run Brakeman in the active CI workflow #ci #decision
+
+The root workflow now runs Brakeman in its Rails job. GitHub does not load the nested website workflow, so the security scan must run from the root workflow.
+
 ## 2026-10-23: Restore system-aware light and dark themes #decision
 
 The redesign fixed the page to dark even though the Rails app still carried an unused toggle script. The site now follows the system color scheme by default, lets visitors switch modes, and keeps an override in local storage. Neutral light tokens preserve contrast while the dark rendered comb cells retain their intended depth; the control and browser UI follow the active scheme.
