@@ -54,7 +54,7 @@ jobs:
           exit "$fail"
 
       - name: Brakeman security scan
-        run: bin/brakeman --no-pager
+        run: bundle exec brakeman --no-pager
 
       - name: Ruby dependency audit
         run: gem install bundler-audit && bundle-audit check --update
