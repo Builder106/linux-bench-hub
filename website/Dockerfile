@@ -68,6 +68,6 @@ USER 1000:1000
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
+# Start server via Thruster by default, this can be overridden at runtime
 EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]
