@@ -4,6 +4,10 @@ on:
   pull_request:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.markdownlint*'
 
 jobs:
   scan_ruby:
