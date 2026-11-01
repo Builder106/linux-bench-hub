@@ -2,17 +2,17 @@
 <!--Phoronix Test Suite v10.8.6-->
 <PhoronixTestSuite>
   <Generated>
-    <Title>2026-08-01-0859</Title>
-    <LastModified>2026-08-01 09:34:04</LastModified>
+    <Title>2026-11-01-1401</Title>
+    <LastModified>2026-11-01 15:04:55</LastModified>
     <TestClient>Phoronix Test Suite v10.8.6</TestClient>
     <Description>Docker testing on Fedora Linux 44 via the Phoronix Test Suite.</Description>
   </Generated>
   <System>
     <Identifier>ARMv8 Neoverse-N1</Identifier>
-    <Hardware>Processor: ARMv8 Neoverse-N1 (4 Cores), Motherboard: QEMU KVM Virtual Machine (1.6.6 BIOS), Memory: 24GB, Disk: 161GB BlockVolume, Graphics: virtio_gpudrmfb, Monitor: QEMU Monitor</Hardware>
-    <Software>OS: Fedora Linux 44, Kernel: 6.17.0-1018-oracle (aarch64), Compiler: GCC 16.1.1 20260515, File-System: overlayfs, Screen Resolution: 1280x800, System Layer: Docker</Software>
+    <Hardware>Processor: ARMv8 Neoverse-N1 (4 Cores), Motherboard: QEMU KVM Virtual Machine (1.6.6 BIOS), Memory: 24GB, Disk: 215GB BlockVolume, Graphics: virtio_gpudrmfb, Monitor: QEMU Monitor</Hardware>
+    <Software>OS: Fedora Linux 44, Kernel: 7.0.0-1013-oracle (aarch64), Compiler: GCC 16.2.1 20261029, File-System: overlayfs, Screen Resolution: 1280x800, System Layer: Docker</Software>
     <User></User>
-    <TimeStamp>2026-08-01 08:59:56</TimeStamp>
+    <TimeStamp>2026-11-01 14:01:04</TimeStamp>
     <TestClientVersion>10.8.6</TestClientVersion>
     <Notes></Notes>
     <JSON>{"compiler-configuration":"--build=aarch64-redhat-linux --disable-libquadmath --disable-libssp --disable-libunwind-exceptions --enable-__cxa_atexit --enable-bootstrap --enable-checking=release --enable-gnu-indirect-function --enable-gnu-unique-object --enable-initfini-array --enable-languages=c,c++,fortran,objc,obj-c++,ada,go,d,m2,cobol,algol68,lto --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --mandir=\/usr\/share\/man --with-build-config=bootstrap-lto --with-gcc-major-version-only --with-libstdcxx-zoneinfo=\/usr\/share\/zoneinfo --with-linker-hash-style=gnu","kernel-parameters":"libiscsi.debug_libiscsi_eh=1","kernel-extra-details":"Transparent Huge Pages: madvise","security":"gather_data_sampling: Not affected + ghostwrite: Not affected + indirect_target_selection: Not affected + itlb_multihit: Not affected + l1tf: Not affected + mds: Not affected + meltdown: Not affected + mmio_stale_data: Not affected + old_microcode: Not affected + reg_file_data_sampling: Not affected + retbleed: Not affected + spec_rstack_overflow: Not affected + spec_store_bypass: Mitigation of SSB disabled via prctl + spectre_v1: Mitigation of __user pointer sanitization + spectre_v2: Mitigation of CSV2 BHB + srbds: Not affected + tsa: Not affected + tsx_async_abort: Not affected + vmscape: Not affected"}</JSON>
@@ -29,9 +29,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>12822.2</Value>
-        <RawString>12915.1:12624.2:12927.4</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"384.37:399.87:368.48"}</JSON>
+        <Value>12476.6</Value>
+        <RawString>12290.5:12717.2:12422.2</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"398.64:382.04:414.26"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -47,9 +47,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>47448.7</Value>
-        <RawString>47382.1:47551:47413</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"384.37:399.87:368.48"}</JSON>
+        <Value>47093.2</Value>
+        <RawString>47128.4:47350.7:46800.5</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"398.64:382.04:414.26"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -65,9 +65,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>240.366</Value>
-        <RawString>240.699:238.731:241.669</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"240.94:238.97:241.90"}</JSON>
+        <Value>229.003</Value>
+        <RawString>212.119:213.388:228.593:246.86:236.633:236.931:251.933:220.01:214.558</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"212.35:213.62:228.83:247.12:236.87:237.21:252.17:220.25:214.79"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -83,9 +83,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>3813.301</Value>
-        <RawString>3716.317:3923.098:3762.538:3851.249</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -lhwloc -ldl -lm -pthread"},"test-run-times":"30.15:30.05:30.13:30.12"}</JSON>
+        <Value>4010.487</Value>
+        <RawString>4175.507:3716.76:3799.968:4158.679:4212.291:4153.323:4187.28:4168.995:4066.536:4198.383:4200.192:3797.47:3820.53:4001.131:3500.253</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -lhwloc -ldl -lm -pthread"},"test-run-times":"30.14:30.17:30.04:30.16:30.12:30.12:30.19:30.07:30.04:30.13:30.15:30.11:30.09:30.03:30.10"}</JSON>
       </Entry>
     </Data>
   </Result>

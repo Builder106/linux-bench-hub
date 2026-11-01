@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--Phoronix Test Suite v10.8.6-->
+<PhoronixTestSuite>
+  <Generated>
+    <Title>lbh-fedora-ci-2026-11-01</Title>
+    <LastModified>2026-11-01 13:31:29</LastModified>
+    <TestClient>Phoronix Test Suite v10.8.6</TestClient>
+    <Description>Docker testing on Fedora Linux 44 via the Phoronix Test Suite.</Description>
+  </Generated>
+  <System>
+    <Identifier>AMD EPYC 7763 64-Core</Identifier>
+    <Hardware>Processor: AMD EPYC 7763 64-Core (2 Cores / 4 Threads), Motherboard: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS), Memory: 16GB, Disk: 161GB Virtual Disk, Graphics: hyperv_drmdrmfb</Hardware>
+    <Software>OS: Fedora Linux 44, Kernel: 7.0.0-1017-azure (x86_64), Compiler: GCC 16.2.1 20261029, File-System: overlayfs, Screen Resolution: 1024x768, System Layer: Docker</Software>
+    <User></User>
+    <TimeStamp>2026-11-01 12:51:12</TimeStamp>
+    <TestClientVersion>10.8.6</TestClientVersion>
+    <Notes></Notes>
+    <JSON>{"compiler-configuration":"--build=x86_64-redhat-linux --disable-libssp --disable-libunwind-exceptions --enable-__cxa_atexit --enable-bootstrap --enable-cet --enable-checking=release --enable-gnu-indirect-function --enable-gnu-unique-object --enable-initfini-array --enable-languages=c,c++,fortran,objc,obj-c++,ada,go,d,m2,cobol,algol68,lto --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-multilib --enable-offload-defaulted --enable-offload-targets=nvptx-none,amdgcn-amdhsa --enable-plugin --enable-shared --enable-threads=posix --mandir=\/usr\/share\/man --with-arch_32=i686 --with-build-config=bootstrap-lto --with-gcc-major-version-only --with-libstdcxx-zoneinfo=\/usr\/share\/zoneinfo --with-linker-hash-style=gnu --with-tls=gnu2 --with-tune=generic --without-cuda-driver","cpu-microcode":"0xffffffff","kernel-extra-details":"Transparent Huge Pages: madvise","security":"gather_data_sampling: Not affected + ghostwrite: Not affected + indirect_target_selection: Not affected + itlb_multihit: Not affected + l1tf: Not affected + mds: Not affected + meltdown: Not affected + mmio_stale_data: Not affected + old_microcode: Not affected + reg_file_data_sampling: Not affected + retbleed: Not affected + spec_rstack_overflow: Vulnerable: Safe RET no microcode + spec_store_bypass: Vulnerable + spectre_v1: Mitigation of usercopy\/swapgs barriers and __user pointer sanitization + spectre_v2: Mitigation of Retpolines; STIBP: disabled; RSB filling; PBRSB-eIBRS: Not affected; BHI: Not affected + srbds: Not affected + tsa: Vulnerable: No microcode + tsx_async_abort: Not affected + vmscape: Not affected"}</JSON>
+  </System>
+  <Result>
+    <Identifier>pts/tinymembench-1.0.2</Identifier>
+    <Title>Tinymembench</Title>
+    <AppVersion>2018-05-28</AppVersion>
+    <Arguments></Arguments>
+    <Description>Standard Memcpy</Description>
+    <Scale>MB/s</Scale>
+    <Proportion>HIB</Proportion>
+    <DisplayFormat>BAR_GRAPH</DisplayFormat>
+    <Data>
+      <Entry>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>21463.0</Value>
+        <RawString>21193.5:21605.5:21589.9</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"406.11:382.78:428.94"}</JSON>
+      </Entry>
+    </Data>
+  </Result>
+  <Result>
+    <Identifier>pts/tinymembench-1.0.2</Identifier>
+    <Title>Tinymembench</Title>
+    <AppVersion>2018-05-28</AppVersion>
+    <Arguments></Arguments>
+    <Description>Standard Memset</Description>
+    <Scale>MB/s</Scale>
+    <Proportion>HIB</Proportion>
+    <DisplayFormat>BAR_GRAPH</DisplayFormat>
+    <Data>
+      <Entry>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>26674.0</Value>
+        <RawString>25861.4:27994:26166.5</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"406.11:382.78:428.94"}</JSON>
+      </Entry>
+    </Data>
+  </Result>
+  <Result>
+    <Identifier>pts/c-ray-2.0.0</Identifier>
+    <Title>C-Ray</Title>
+    <AppVersion>2.0</AppVersion>
+    <Arguments>-s 1920x1080 -r 16</Arguments>
+    <Description>Resolution: 1080p - Rays Per Pixel: 16</Description>
+    <Scale>Seconds</Scale>
+    <Proportion>LIB</Proportion>
+    <DisplayFormat>BAR_GRAPH</DisplayFormat>
+    <Data>
+      <Entry>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>353.038</Value>
+        <RawString>352.805:353.344:352.965</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"352.94:353.48:353.10"}</JSON>
+      </Entry>
+    </Data>
+  </Result>
+  <Result>
+    <Identifier>pts/aircrack-ng-1.3.0</Identifier>
+    <Title>Aircrack-ng</Title>
+    <AppVersion>1.7</AppVersion>
+    <Arguments></Arguments>
+    <Description></Description>
+    <Scale>k/s</Scale>
+    <Proportion>HIB</Proportion>
+    <DisplayFormat>BAR_GRAPH</DisplayFormat>
+    <Data>
+      <Entry>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>7512.232</Value>
+        <RawString>7489.244:7552.938:7494.514</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -lhwloc -ldl -lm -pthread"},"test-run-times":"30.10:30.17:30.07"}</JSON>
+      </Entry>
+    </Data>
+  </Result>
+</PhoronixTestSuite>

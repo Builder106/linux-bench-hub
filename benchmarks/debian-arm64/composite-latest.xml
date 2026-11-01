@@ -2,17 +2,17 @@
 <!--Phoronix Test Suite v10.8.6-->
 <PhoronixTestSuite>
   <Generated>
-    <Title>2026-08-01-0935</Title>
-    <LastModified>2026-08-01 10:16:20</LastModified>
+    <Title>2026-11-01-1506</Title>
+    <LastModified>2026-11-01 16:19:42</LastModified>
     <TestClient>Phoronix Test Suite v10.8.6</TestClient>
     <Description>Docker testing on Debian GNU/Linux 13 via the Phoronix Test Suite.</Description>
   </Generated>
   <System>
     <Identifier>ARMv8 Neoverse-N1</Identifier>
-    <Hardware>Processor: ARMv8 Neoverse-N1 (4 Cores), Motherboard: QEMU KVM Virtual Machine (1.6.6 BIOS), Memory: 24GB, Disk: 161GB BlockVolume, Graphics: virtio_gpudrmfb, Monitor: QEMU Monitor</Hardware>
-    <Software>OS: Debian GNU/Linux 13, Kernel: 6.17.0-1018-oracle (aarch64), Compiler: GCC 14.2.0, File-System: overlayfs, Screen Resolution: 1280x800, System Layer: Docker</Software>
+    <Hardware>Processor: ARMv8 Neoverse-N1 (4 Cores), Motherboard: QEMU KVM Virtual Machine (1.6.6 BIOS), Memory: 24GB, Disk: 215GB BlockVolume, Graphics: virtio_gpudrmfb, Monitor: QEMU Monitor</Hardware>
+    <Software>OS: Debian GNU/Linux 13, Kernel: 7.0.0-1013-oracle (aarch64), Compiler: GCC 14.2.0, File-System: overlayfs, Screen Resolution: 1280x800, System Layer: Docker</Software>
     <User>root</User>
-    <TimeStamp>2026-08-01 09:35:33</TimeStamp>
+    <TimeStamp>2026-11-01 15:06:53</TimeStamp>
     <TestClientVersion>10.8.6</TestClientVersion>
     <Notes></Notes>
     <JSON>{"compiler-configuration":"--build=aarch64-linux-gnu --disable-libquadmath --disable-libquadmath-support --disable-werror --enable-bootstrap --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-fix-cortex-a53-843419 --enable-gnu-unique-object --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2,rust --enable-libphobos-checking=release --enable-libstdcxx-backtrace --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-link-serialization=2 --enable-multiarch --enable-nls --enable-objc-gc=auto --enable-offload-defaulted --enable-offload-targets=nvptx-none=\/build\/reproducible-path\/gcc-14-14.2.0\/debian\/tmp-nvptx\/usr --enable-plugin --enable-shared --enable-threads=posix --host=aarch64-linux-gnu --program-prefix=aarch64-linux-gnu- --target=aarch64-linux-gnu --with-build-config=bootstrap-lto-lean --with-default-libstdcxx-abi=new --with-gcc-major-version-only --with-target-system-zlib=auto --without-cuda-driver -v","kernel-parameters":"libiscsi.debug_libiscsi_eh=1","kernel-extra-details":"Transparent Huge Pages: madvise","security":"gather_data_sampling: Not affected + ghostwrite: Not affected + indirect_target_selection: Not affected + itlb_multihit: Not affected + l1tf: Not affected + mds: Not affected + meltdown: Not affected + mmio_stale_data: Not affected + old_microcode: Not affected + reg_file_data_sampling: Not affected + retbleed: Not affected + spec_rstack_overflow: Not affected + spec_store_bypass: Mitigation of SSB disabled via prctl + spectre_v1: Mitigation of __user pointer sanitization + spectre_v2: Mitigation of CSV2 BHB + srbds: Not affected + tsa: Not affected + tsx_async_abort: Not affected + vmscape: Not affected"}</JSON>
@@ -29,9 +29,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>11919.6</Value>
-        <RawString>12081.7:11633.9:12043.1</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"387.47:398.43:399.70"}</JSON>
+        <Value>11724.7</Value>
+        <RawString>11787:11731.6:11655.4</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"412.93:416.81:417.06"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -47,9 +47,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>47470.9</Value>
-        <RawString>47519.7:47423.3:47469.6</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"387.47:398.43:399.70"}</JSON>
+        <Value>47116.5</Value>
+        <RawString>47114:47122:47113.6</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"412.93:416.81:417.06"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -65,9 +65,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>237.698</Value>
-        <RawString>237.107:238.025:237.961</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"237.33:238.26:238.18"}</JSON>
+        <Value>219.788</Value>
+        <RawString>243.185:239.571:211.829:212.885:212.175:212.571:212.222:223.44:213.373:232.041:211.528:212.634</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"243.45:239.80:212.07:213.12:212.41:212.80:212.45:223.67:213.60:232.28:211.75:212.86"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -83,9 +83,9 @@
     <Data>
       <Entry>
         <Identifier>ARMv8 Neoverse-N1</Identifier>
-        <Value>3699.635</Value>
-        <RawString>3287.725:3652.637:3723.387:3642.309:3345.511:4097.679:3697.419:3838.126:3638.606:4071.467:3598.347:3374.275:3671.583:3754.223:4101.228</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -ldl -lm -pthread"},"test-run-times":"30.03:30.21:30.04:30.07:30.09:30.22:30.04:30.09:30.12:30.10:30.10:30.04:30.09:30.11:30.07"}</JSON>
+        <Value>3923.162</Value>
+        <RawString>3793.307:4121.866:4061.443:4139.835:4111.687:3783.51:4131.299:3798.723:3094.819:4121.523:3825.387:4094.547</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -ldl -lm -pthread"},"test-run-times":"30.15:30.19:30.12:30.02:30.09:30.06:30.03:30.14:30.18:30.14:30.16:30.08"}</JSON>
       </Entry>
     </Data>
   </Result>
