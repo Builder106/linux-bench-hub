@@ -3,9 +3,17 @@ name: Build and Publish Container Image
 on:
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.markdownlint*'
   push:
     branches: [main]
     tags: ['v*.*.*']
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.markdownlint*'
   workflow_dispatch:
 
 concurrency:
