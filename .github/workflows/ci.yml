@@ -73,6 +73,29 @@ jobs:
       - name: Rubocop
         run: bundle exec rubocop --parallel --fail-level warning
 
+  workloads:
+    name: Workload dispatch (test + lint)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install capture test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ruby ruby-minitest ruby-rexml php-cli php-xml shellcheck
+
+      - name: Test workload dispatch and writeup generation
+        run: |
+          ruby test_workload_dispatch.rb
+          ruby test_workload_dispatcher.rb
+          ruby test_generate_writeup.rb
+
+      - name: Lint capture scripts
+        run: |
+          shellcheck .github/scripts/*.sh
+          php -l .github/scripts/validate-workloads.php
+
   r-syntax:
     name: R syntax
     runs-on: ubuntu-24.04
@@ -102,7 +125,7 @@ jobs:
 
   deploy:
     name: Trigger Vercel deploy
-    needs: [secrets, rails, r-syntax]
+    needs: [secrets, rails, workloads, r-syntax]
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
     runs-on: ubuntu-24.04
     steps:

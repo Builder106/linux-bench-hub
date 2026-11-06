@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<PhoronixTestSuite>
+  <SuiteInformation>
+    <Title>LinuxBenchHub Workloads</Title>
+    <Version>1.0.0</Version>
+    <TestType>System</TestType>
+    <Description>Fixed CPU, memory bandwidth, and file-based disk I/O workloads.</Description>
+    <Maintainer>LinuxBenchHub</Maintainer>
+  </SuiteInformation>
+  <Execute>
+    <Test>pts/c-ray-2.0.0</Test>
+    <Arguments>-s 1920x1080 -r 16</Arguments>
+    <Description>Resolution: 1080p - Rays Per Pixel: 16</Description>
+  </Execute>
+  <Execute>
+    <Test>pts/tinymembench-1.0.2</Test>
+  </Execute>
+  <Execute>
+    <Test>pts/aircrack-ng-1.3.0</Test>
+  </Execute>
+  <Execute>
+    <Test>pts/fio-2.1.0</Test>
+    <Arguments>read libaio 1 1m unused 1</Arguments>
+    <Description>Type: Sequential Read - Engine: Linux AIO - Direct: Yes - Block Size: 1MB - Jobs: 1</Description>
+  </Execute>
+  <Execute>
+    <Test>pts/fio-2.1.0</Test>
+    <Arguments>write libaio 1 1m unused 1</Arguments>
+    <Description>Type: Sequential Write - Engine: Linux AIO - Direct: Yes - Block Size: 1MB - Jobs: 1</Description>
+  </Execute>
+</PhoronixTestSuite>

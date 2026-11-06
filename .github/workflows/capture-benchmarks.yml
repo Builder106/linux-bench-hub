@@ -1,6 +1,6 @@
 name: Capture benchmarks
 
-# Monthly captures of pts/c-ray, pts/tinymembench, pts/aircrack-ng across the
+# Monthly captures of the pinned CPU, memory, crypto, and disk suite across the
 # three target distros. Each matrix entry runs inside a distro container on
 # the same ubuntu-latest runner so the underlying CPU is identical across
 # distros — the comparison is fair, but absolute numbers are virtualized
@@ -58,7 +58,7 @@ jobs:
               apt-get install -y --no-install-recommends \
                 ca-certificates curl git php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
-                libssl-dev zlib1g-dev \
+                libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
           - distro: fedora
             version: "44"
@@ -78,7 +78,7 @@ jobs:
                 ca-certificates curl git php-cli php-xml unzip findutils which \
                 make gcc gcc-c++ autoconf autoconf-archive automake libtool \
                 pkgconf-pkg-config gettext-devel bison flex hwloc-devel \
-                openssl-devel zlib-devel \
+                openssl-devel zlib-devel libaio-devel \
                 libnl3-devel libpcap-devel sqlite-devel pcre2-devel
           - distro: debian
             version: "13"
@@ -89,7 +89,7 @@ jobs:
               apt-get install -y --no-install-recommends \
                 ca-certificates curl git php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
-                libssl-dev zlib1g-dev \
+                libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
 
     container:
@@ -129,103 +129,15 @@ jobs:
         if: env.RUN_THIS_DISTRO == '1'
         uses: actions/checkout@v7
 
-      - name: Install Phoronix Test Suite
+      - name: Capture CPU, memory bandwidth, and disk I/O
         if: env.RUN_THIS_DISTRO == '1'
         shell: bash
         run: |
-          git clone --depth 1 https://github.com/phoronix-test-suite/phoronix-test-suite.git /tmp/pts
-          cd /tmp/pts
-          ./install-sh /opt/pts
-          ln -sf /opt/pts/bin/phoronix-test-suite /usr/local/bin/phoronix-test-suite
-          phoronix-test-suite version
-
-      - name: Seed phone-home opt-outs
-        if: env.RUN_THIS_DISTRO == '1'
-        shell: bash
-        run: |
-          install -d /root/.phoronix-test-suite
-          cp .github/scripts/pts-batch-config.xml /root/.phoronix-test-suite/user-config.xml
-
-      - name: Configure batch mode (non-interactive)
-        if: env.RUN_THIS_DISTRO == '1'
-        shell: bash
-        run: |
-          # PTS's `batch-setup` asks 7 yes/no questions. The seeded XML sets
-          # the same values, but PTS only treats batch mode as "configured"
-          # when its own writer flips the flag — piping answers here is the
-          # canonical CI-friendly way.
-          #   Q1 Save results when in batch mode  -> Y
-          #   Q2 Open browser after run            -> N
-          #   Q3 Auto upload to OpenBenchmarking   -> N
-          #   Q4 Prompt for test identifier        -> N
-          #   Q5 Prompt for test description       -> N
-          #   Q6 Prompt for saved results name     -> N
-          #   Q7 Run all test options              -> N
-          printf 'y\nn\nn\nn\nn\nn\nn\n' | phoronix-test-suite batch-setup
-
-      - name: Run pts/c-ray, pts/tinymembench, pts/aircrack-ng
-        if: env.RUN_THIS_DISTRO == '1'
-        shell: bash
-        env:
-          TEST_RESULTS_NAME: ${{ env.RESULT_NAME }}-${{ env.RUN_DATE }}
-        run: |
-          # batch-setup silences identifier/description prompts but per-test
-          # option menus still ask. Feed the historical bare-metal answers
-          # (see benchmarks/ubuntu/CPU/.../composite.xml: -s 1920x1080 -r 16)
-          # so CI captures match the existing dataset.
-          #   c-ray resolution menu     -> 1   (1080p)
-          #   c-ray rays-per-pixel free -> 16
-          # tinymembench and aircrack-ng have no further interactive prompts.
-          printf '1\n16\n' | phoronix-test-suite batch-benchmark pts/c-ray pts/tinymembench pts/aircrack-ng
-
-      - name: Surface any per-test install failures
-        if: env.RUN_THIS_DISTRO == '1'
-        shell: bash
-        run: |
-          # PTS skips a test whose build fails and proceeds with the rest, so
-          # the job conclusion can be 'success' with a missing benchmark. Dump
-          # any install-failed.log so partial captures are easy to diagnose.
-          shopt -s nullglob
-          fails=(/var/lib/phoronix-test-suite/installed-tests/pts/*/install-failed.log)
-          if [ ${#fails[@]} -eq 0 ]; then
-            echo "All requested tests installed cleanly."
-            exit 0
-          fi
-          for log in "${fails[@]}"; do
-            test=$(basename "$(dirname "$log")")
-            echo "::warning::pts/$test failed to install — captured composite will be incomplete"
-            echo "--- $log ---"
-            cat "$log"
-            echo "--- end $log ---"
-          done
-
-      - name: Stage composite.xml
-        if: env.RUN_THIS_DISTRO == '1'
-        shell: bash
-        run: |
-          # PTS keeps user-config.xml under $HOME/.phoronix-test-suite/ but
-          # writes tests and results to /var/lib/phoronix-test-suite/ in
-          # system-mode installs (which is what install-sh produces).
-          composite=$(find /var/lib/phoronix-test-suite /root/.phoronix-test-suite \
-                       -name composite.xml -print -quit 2>/dev/null)
-          if [ -z "$composite" ]; then
-            echo "::error::No composite.xml produced — benchmark run failed."
-            echo "=== Debug: PTS data dirs ==="
-            for d in /var/lib/phoronix-test-suite /root/.phoronix-test-suite; do
-              echo "--- $d ---"
-              ls -la "$d" 2>&1 || echo "(missing)"
-              [ -d "$d/test-results" ] && ls -la "$d/test-results/" 2>&1
-            done
-            exit 1
-          fi
-          echo "Found composite at: $composite"
+          bash .github/scripts/container-capture.sh /tmp/lbh-output
           captures="benchmarks/${{ matrix.distro }}/captures"
           mkdir -p "$captures"
-          cp "$composite" "$captures/composite-${RUN_DATE}.xml"
-          # Also overwrite the canonical latest pointer so the dashboard and
-          # the R parser always have a stable path.
-          cp "$composite" "benchmarks/${{ matrix.distro }}/composite-latest.xml"
-          echo "Saved $captures/composite-${RUN_DATE}.xml and composite-latest.xml"
+          cp /tmp/lbh-output/composite.xml "$captures/composite-${RUN_DATE}.xml"
+          cp /tmp/lbh-output/composite.xml "benchmarks/${{ matrix.distro }}/composite-latest.xml"
 
       - name: Upload artifact
         if: env.RUN_THIS_DISTRO == '1'
@@ -273,7 +185,7 @@ jobs:
               apt-get install -y --no-install-recommends \
                 ca-certificates curl git php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
-                libssl-dev zlib1g-dev \
+                libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
           - distro: fedora
             version: "44"
@@ -283,7 +195,7 @@ jobs:
                 ca-certificates curl git php-cli php-xml unzip findutils which \
                 make gcc gcc-c++ autoconf autoconf-archive automake libtool \
                 pkgconf-pkg-config gettext-devel bison flex hwloc-devel \
-                openssl-devel zlib-devel \
+                openssl-devel zlib-devel libaio-devel \
                 libnl3-devel libpcap-devel sqlite-devel pcre2-devel
           - distro: debian
             version: "13"
@@ -294,7 +206,7 @@ jobs:
               apt-get install -y --no-install-recommends \
                 ca-certificates curl git php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
-                libssl-dev zlib1g-dev \
+                libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
     # Scheduled runs always include arm64, for every distro. Manual dispatches
     # honour the include_arm64 toggle; the per-distro filter is applied below
@@ -364,6 +276,9 @@ jobs:
             /tmp/pkg-install.sh \
             .github/scripts/container-capture.sh \
             .github/scripts/pts-batch-config.xml \
+            .github/scripts/run-workloads.sh \
+            .github/scripts/workload-suite.xml \
+            .github/scripts/validate-workloads.php \
             ubuntu@"$OCI_AMPERE_HOST":"$run_dir/"
 
       - name: Run ${{ matrix.distro }} capture in a container on the Ampere host
@@ -381,12 +296,10 @@ jobs:
               -o TCPKeepAlive=yes \
               -i ~/.ssh/lbh-ampere ubuntu@"$OCI_AMPERE_HOST" \
               "set -e; docker run --rm \
-                 -v $run_dir/pkg-install.sh:/pkg-install.sh:ro \
-                 -v $run_dir/container-capture.sh:/container-capture.sh:ro \
-                 -v $run_dir/pts-batch-config.xml:/pts-batch-config.xml:ro \
+                 -v $run_dir:/runner:ro \
                  -v $out_dir:/output \
                  ${{ matrix.image }} \
-                 bash -c 'bash /pkg-install.sh && bash /container-capture.sh'"
+                 bash -c 'bash /runner/pkg-install.sh && bash /runner/container-capture.sh'"
 
       - name: Pull composite back from the VM
         if: env.RUN_THIS_DISTRO == '1'
@@ -486,7 +399,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet HEAD@{1} HEAD 2>/dev/null; then
+          if git diff --quiet 'HEAD@{1}' HEAD 2>/dev/null; then
             echo "No new commit was created."
             exit 0
           fi

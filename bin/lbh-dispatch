@@ -1,0 +1,134 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+
+require "optparse"
+require "linux_bench_hub/workload_dispatch"
+
+options = {
+  workloads: %i[cpu memory disk_io],
+  target: :local,
+  distro: "ubuntu",
+  output_dir: "captures",
+  run_id: nil,
+  dry_run: false,
+  check_only: false,
+  list_workloads: false
+}
+
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: bin/lbh-dispatch [options]"
+  opts.separator ""
+  opts.separator "Automated Workload Dispatch: Reproducible benchmark pipelines for CPU, memory bandwidth, and disk I/O."
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on("-w", "--workloads LIST", "Comma-separated workloads to run: cpu, memory, disk_io, all (default: all)") do |val|
+    if val.downcase == "all"
+      options[:workloads] = %i[cpu memory disk_io]
+    else
+      options[:workloads] = val.split(",").map(&:strip).map(&:to_sym)
+    end
+  end
+
+  opts.on("-t", "--target TARGET", "Execution target: local, docker, ssh, simulate (default: local)") do |val|
+    options[:target] = val.to_sym
+  end
+
+  opts.on("-d", "--distro DISTRO", "Target Linux distribution for container dispatch: ubuntu, fedora, debian (default: ubuntu)") do |val|
+    options[:distro] = val
+  end
+
+  opts.on("-o", "--output DIR", "Output directory for captured artifacts (default: captures)") do |val|
+    options[:output_dir] = val
+  end
+
+  opts.on("-n", "--name ID", "Custom run identifier") do |val|
+    options[:run_id] = val
+  end
+
+  opts.on("-s", "--simulate", "--dry-run", "Run in simulated mode without invoking live benchmarks") do
+    options[:dry_run] = true
+    options[:target] = :simulated
+  end
+
+  opts.on("-l", "--list", "List available benchmark workloads and exit") do
+    options[:list_workloads] = true
+  end
+
+  opts.on("-c", "--check", "Run preflight environment verification and exit") do
+    options[:check_only] = true
+  end
+
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit 0
+  end
+end
+
+parser.parse!(ARGV)
+
+if options[:list_workloads]
+  puts "Available LinuxBenchHub Benchmark Workloads:"
+  puts ""
+  printf "%-10s %-25s %-25s %-10s %-8s\n", "Category", "Name", "Identifier", "Scale", "Optimal"
+  puts "-" * 82
+  LinuxBenchHub::WorkloadDispatch::Workload.all.each do |w|
+    printf "%-10s %-25s %-25s %-10s %-8s\n",
+           w.category,
+           w.name,
+           w.test_identifier,
+           w.unit,
+           w.lower_is_better? ? "Lower" : "Higher"
+  end
+  exit 0
+end
+
+pipeline = LinuxBenchHub::WorkloadDispatch::Pipeline.standard(
+  categories: options[:workloads],
+  output_dir: options[:output_dir]
+)
+
+target = LinuxBenchHub::WorkloadDispatch.target_for(
+  options[:target],
+  distro: options[:distro]
+)
+
+if options[:check_only]
+  puts "Running preflight checks for target '#{target.name}'..."
+  pre = target.preflight_check(pipeline)
+  if pre.ok?
+    puts "✓ Preflight checks passed cleanly."
+    exit 0
+  else
+    puts "✗ Preflight checks failed:"
+    pre.errors.each { |e| puts "  - Error: #{e}" }
+    pre.warnings.each { |w| puts "  - Warning: #{w}" }
+    exit 1
+  end
+end
+
+puts "=========================================================="
+puts " LinuxBenchHub Automated Workload Dispatcher"
+puts " Pipeline: #{pipeline.name}"
+puts " Workloads: #{pipeline.categories.join(', ')}"
+puts " Target: #{target.name} (#{target.target_type})"
+puts " Output: #{pipeline.output_dir}"
+puts "=========================================================="
+
+dispatcher = LinuxBenchHub::WorkloadDispatch::Dispatcher.new(logger: $stdout)
+result = dispatcher.dispatch(pipeline, target, run_id: options[:run_id])
+
+puts ""
+puts "Dispatch execution finished."
+puts "Status: #{result.success? ? 'SUCCESS' : 'FAILED'}"
+puts "Manifest: #{result.manifest_path}"
+puts "Artifacts directory: #{result.output_dir}"
+
+if result.manifest
+  puts ""
+  puts result.manifest.summary_markdown
+end
+
+exit(result.success? ? 0 : 1)
