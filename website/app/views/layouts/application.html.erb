@@ -29,12 +29,18 @@
     <title><%= content_for(:title) || "LinuxBenchHub: same kernel, three userlands" %></title>
     <% description = content_for(:description) || "Phoronix Test Suite runs for Ubuntu, Fedora and Debian in Docker on x86_64 and arm64, where all three share one kernel per machine and only userland differs." %>
     <meta name="description" content="<%= description %>">
-    <link rel="canonical" href="https://linuxbenchhub.vercel.app<%= request.path.chomp("/") %>/">
+    <% site_url = "https://linuxbenchhub.vercel.app" %>
+    <% page_url = "#{site_url}#{request.path.chomp("/")}/" %>
+    <link rel="canonical" href="<%= page_url %>">
     <meta property="og:type" content="website">
     <meta property="og:title" content="<%= content_for(:title) || "LinuxBenchHub" %>">
     <meta property="og:description" content="<%= description %>">
-    <meta property="og:image" content="/social-card.png">
+    <meta property="og:url" content="<%= page_url %>">
+    <meta property="og:image" content="<%= site_url %>/social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="<%= site_url %>/social-card.png">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="preload" href="/fonts/geist-100_900-normal.woff2" as="font" type="font/woff2" crossorigin>

@@ -18,4 +18,12 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".kernel-caption code", "Linux 6.17.0-1022-azure"
     assert_select "footer.colophon", text: /x86_64 runs: AMD EPYC 9V74/
   end
+
+  test "social preview tags use absolute URLs" do
+    get root_url
+    assert_select "meta[property='og:url'][content='https://linuxbenchhub.vercel.app/']"
+    assert_select "meta[property='og:image'][content='https://linuxbenchhub.vercel.app/social-card.png']"
+    assert_select "meta[name='twitter:card'][content='summary_large_image']"
+    assert_select "meta[name='twitter:image'][content='https://linuxbenchhub.vercel.app/social-card.png']"
+  end
 end
