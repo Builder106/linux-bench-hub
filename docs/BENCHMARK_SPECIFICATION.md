@@ -56,3 +56,13 @@ The automated workload dispatch system (`bin/lbh-dispatch` and `lib/linux_bench_
 - **Multi-Target Execution**: Supports native local execution (`LocalTarget`), containerized runs (`DockerTarget`), remote cloud execution (`SshTarget`), and validation runs (`SimulatedTarget`).
 - **Telemetry & Manifests**: Every run records an atomic `manifest.json` capturing execution duration, kernel details, target environment, per-workload metrics (mean and standard deviation), and generated `composite.xml` artifacts.
 - **Specification**: See [`docs/specs/workload_dispatch.md`](specs/workload_dispatch.md) for full technical details.
+
+## 5. Deterministic Hardware Telemetry & Thermal Monitoring
+
+The hardware telemetry engine (`lib/linux_bench_hub/hardware_telemetry/` and `bin/lbh-telemetry`) monitors kernel performance counters, CPU frequency scaling, and thermal throttling registers to guarantee benchmark determinism.
+
+- **Thermal Throttling Detection**: Reads `/sys/devices/system/cpu/cpu*/thermal_throttle/` to trap package and core throttling events. Any throttle count delta trips `throttling_detected: true` and invalidates run determinism (`deterministic: false`).
+- **Thermal Zones & Headroom**: Tracks temperatures and calculates margins to critical trip points across `/sys/class/thermal/thermal_zone*/`.
+- **Low-Overhead Performance Counters**: Computes context switch rates, process creation rates, page fault rates, and CPU utilization tick breakdowns from `/proc/stat` and `/proc/vmstat` with sub-millisecond precision and negligible CPU overhead.
+- **Artifacts**: Records atomic `telemetry.json` artifacts alongside `manifest.json` and embeds formatted hardware telemetry sections in benchmark summary writeups.
+- **Specification**: See [`docs/specs/hardware_telemetry.md`](specs/hardware_telemetry.md) for full technical details.
