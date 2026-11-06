@@ -129,7 +129,7 @@ class HardwareTelemetryRegressionTest < Minitest::Test
     end
     sampler = HT::Sampler.new(source, interval: 60, max_samples: 2)
     5.times { |i| sampler.add_sample(sample_index: i) }
-    assert_equal [3, 4], sampler.samples.map { |s| s[:sample_index] }
+    assert_equal [ 3, 4 ], sampler.samples.map { |s| s[:sample_index] }
     sampler.start
     Timeout.timeout(1) { sampler.stop }
     refute sampler.running?
@@ -163,7 +163,7 @@ class HardwareTelemetryRegressionTest < Minitest::Test
   end
 
   def test_remote_targets_are_not_measured_on_the_dispatch_host
-    [:ssh, :docker].each do |type|
+    [ :ssh, :docker ].each do |type|
       target = WD::SimulatedTarget.new
       target.define_singleton_method(:target_type) { type }
       result = WD::Dispatcher.new.dispatch(WD::Pipeline.standard(output_dir: @root), target, run_id: type.to_s)
@@ -175,7 +175,7 @@ class HardwareTelemetryRegressionTest < Minitest::Test
   end
 
   def test_invalid_polling_intervals_fail_before_execution
-    [-1, 0.01, Float::INFINITY, Float::NAN, "invalid"].each do |value|
+    [ -1, 0.01, Float::INFINITY, Float::NAN, "invalid" ].each do |value|
       assert_raises(ArgumentError) { collector(interval: value) }
       assert_raises(ArgumentError) { WD::Pipeline.standard(telemetry_interval: value) }
     end

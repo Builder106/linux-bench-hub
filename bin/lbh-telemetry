@@ -4,7 +4,6 @@
 $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
 
 require "optparse"
-require "open3"
 require "linux_bench_hub/hardware_telemetry"
 
 options = {
@@ -118,7 +117,7 @@ when :check
   end
 
 when :monitor
-  puts "Monitoring hardware telemetry for #{options[:duration]}s (interval: #{options[:interval]}s)..."
+  $stderr.puts "Monitoring hardware telemetry for #{options[:duration]}s (interval: #{options[:interval]}s)..."
   collector = LinuxBenchHub::HardwareTelemetry.collector(**telemetry_opts)
   begin
     collector.start
@@ -138,22 +137,25 @@ when :monitor
 
 when :exec
   cmd = options[:exec_cmd]
-  puts "Executing command under hardware telemetry: #{cmd}"
+  $stderr.puts "Executing command under hardware telemetry: #{cmd}"
   collector = LinuxBenchHub::HardwareTelemetry.collector(**telemetry_opts)
   begin
     collector.start
-    stdout, stderr, status = Open3.capture3(cmd)
+    system(cmd, out: options[:format] == :json ? $stderr : $stdout, err: $stderr)
+    status = $?
   ensure
     report = collector.stop
   end
-  $stdout.write(stdout)
-  $stderr.write(stderr)
 
-  puts ""
-  puts "Command completed with exit code #{status.exitstatus}"
-  puts "Deterministic: #{report.deterministic? ? 'YES' : 'NO'}"
-  puts ""
-  puts report.summary_markdown
+  if options[:format] == :json
+    puts report.to_json unless options[:output_path]
+  else
+    puts ""
+    puts "Command completed with exit code #{status.exitstatus}"
+    puts "Deterministic: #{report.deterministic?.nil? ? 'UNVERIFIED' : (report.deterministic? ? 'YES' : 'NO')}"
+    puts ""
+    puts report.summary_markdown
+  end
 
   if options[:output_path]
     File.write(options[:output_path], report.to_json)

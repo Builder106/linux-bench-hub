@@ -79,7 +79,7 @@ module LinuxBenchHub
           sample = @collector.capture_sample(index: index, elapsed: elapsed)
           add_sample(sample) if sample
           # Skip missed deadlines instead of producing a burst of catch-up reads.
-          index = [index, (elapsed / @interval).floor].max
+          index = [ index, (elapsed / @interval).floor ].max
         end
       ensure
         @mutex.synchronize { @running = false }

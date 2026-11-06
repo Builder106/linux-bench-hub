@@ -19,7 +19,7 @@ module LinuxBenchHub
       def initialize(mode: :auto, interval: 1.0, procfs_root: "/proc", sysfs_root: "/sys",
                      simulate_throttling: false, logger: nil, perf: true, perf_executable: "perf")
         @mode = mode.to_sym
-        raise ArgumentError, "Unknown telemetry mode: #{@mode}" unless [:auto, :native, :simulated, :unavailable].include?(@mode)
+        raise ArgumentError, "Unknown telemetry mode: #{@mode}" unless [ :auto, :native, :simulated, :unavailable ].include?(@mode)
 
         @interval = Float(interval)
         unless @interval.finite? && (@interval.zero? || @interval >= 0.1)
@@ -31,7 +31,7 @@ module LinuxBenchHub
         @thermal_monitor = ThermalMonitor.new(sysfs_root: @sysfs_root)
         @counters = Counters.new(procfs_root: @procfs_root, sysfs_root: @sysfs_root)
         @simulated_provider = SimulatedProvider.new(simulate_throttling: simulate_throttling)
-        @perf = PerfCounters.new(executable: perf_executable) if perf && ![:simulated, :unavailable].include?(@mode)
+        @perf = PerfCounters.new(executable: perf_executable) if perf && ![ :simulated, :unavailable ].include?(@mode)
       end
 
       def start
@@ -43,7 +43,7 @@ module LinuxBenchHub
         @last_thermal = @initial_snapshot.thermal
         @observed_throttling = false
         @perf&.start
-        if @interval.positive? && ![:simulated, :unavailable].include?(@mode)
+        if @interval.positive? && ![ :simulated, :unavailable ].include?(@mode)
           @sampler = Sampler.new(self, interval: @interval)
           @sampler.start
         end
@@ -62,7 +62,7 @@ module LinuxBenchHub
       def capture_sample(index: nil, elapsed: 0.0)
         thermal = @thermal_monitor.read_state
         peak = thermal[:max_temp_c]
-        @peak_temp = [@peak_temp, peak].compact.max
+        @peak_temp = [ @peak_temp, peak ].compact.max
         delta = @thermal_monitor.compute_delta(@last_thermal, thermal)
         @observed_throttling ||= delta[:throttling_detected]
         @last_thermal = thermal
@@ -87,16 +87,16 @@ module LinuxBenchHub
         end
 
         thermal = @thermal_monitor.compute_delta(@initial_snapshot.thermal, @final_snapshot.thermal, samples)
-        thermal[:peak_celsius] = [thermal[:peak_celsius], @peak_temp].compact.max
+        thermal[:peak_celsius] = [ thermal[:peak_celsius], @peak_temp ].compact.max
         thermal[:throttling_detected] ||= @observed_throttling
         if thermal[:peak_celsius] && thermal[:critical_temp_celsius]
           thermal[:headroom_celsius] = thermal[:critical_temp_celsius] - thermal[:peak_celsius]
         end
         counters = if @initial_snapshot.cpu_stats.empty? || @final_snapshot.cpu_stats.empty?
                      {}
-                   else
+        else
                      @counters.compute_delta(@initial_snapshot, @final_snapshot, duration)
-                   end
+        end
         counters[:perf_counters] = pmu if pmu
         notes = []
         notes << "Thermal throttling observed during this run" if thermal[:throttling_detected]
@@ -105,9 +105,9 @@ module LinuxBenchHub
         notes << "Remote target telemetry requires collection on the target host" if @mode == :unavailable
         deterministic = if thermal[:throttling_detected]
                           false
-                        elsif thermal[:throttling_available] && counters.key?(:cpu_utilization)
+        elsif thermal[:throttling_available] && counters.key?(:cpu_utilization)
                           true
-                        end
+        end
         @report = Report.new(duration_seconds: duration, sample_count: samples.size,
                              deterministic: deterministic, throttling_detected: thermal[:throttling_detected],
                              determinism_notes: notes, thermal: thermal, counters: counters,
@@ -122,7 +122,7 @@ module LinuxBenchHub
         ensure
           report = collector.stop
         end
-        [result, report]
+        [ result, report ]
       end
     end
   end

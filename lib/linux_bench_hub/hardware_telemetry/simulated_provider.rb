@@ -28,7 +28,7 @@ module LinuxBenchHub
 
       # Generates a complete Report for a simulated execution run.
       def generate_report(duration: 10.0, sample_count: 10)
-        dur = [duration.to_f, 0.1].max
+        dur = [ duration.to_f, 0.1 ].max
 
         if @simulate_throttling
           build_throttled_report(dur, sample_count)
@@ -50,12 +50,12 @@ module LinuxBenchHub
           },
           vm_stats: { pgfault: 2_500_000, pgmajfault: 4_500, pgpgin: 100_000, pgpgout: 200_000 },
           cpu_freq: {
-            cores: [3200.0, 3200.0, 3200.0, 3200.0],
+            cores: [ 3200.0, 3200.0, 3200.0, 3200.0 ],
             min_mhz: 3200.0, max_mhz: 3200.0, avg_mhz: 3200.0, governor: "performance"
           },
           thermal: {
-            zones: [{ id: "thermal_zone0", type: "x86_pkg_temp", temp_c: 42.5,
-                      trip_points: [{ index: 0, type: "critical", temp_c: 100.0 }] }],
+            zones: [ { id: "thermal_zone0", type: "x86_pkg_temp", temp_c: 42.5,
+                      trip_points: [ { index: 0, type: "critical", temp_c: 100.0 } ] } ],
             package_throttle_count: 0,
             core_throttle_count: 0,
             package_throttle_time_ms: 0,
@@ -88,14 +88,14 @@ module LinuxBenchHub
           core_throttle = 8
           pkg_time = 420
           core_time = 240
-          cores = [1400.0, 1400.0, 1400.0, 1400.0]
+          cores = [ 1400.0, 1400.0, 1400.0, 1400.0 ]
         else
           final_temp = 68.4
           pkg_throttle = 0
           core_throttle = 0
           pkg_time = 0
           core_time = 0
-          cores = [3200.0, 3200.0, 3200.0, 3200.0]
+          cores = [ 3200.0, 3200.0, 3200.0, 3200.0 ]
         end
 
         Snapshot.new(
@@ -118,8 +118,8 @@ module LinuxBenchHub
             governor: "performance"
           },
           thermal: {
-            zones: [{ id: "thermal_zone0", type: "x86_pkg_temp", temp_c: final_temp,
-                      trip_points: [{ index: 0, type: "critical", temp_c: 100.0 }] }],
+            zones: [ { id: "thermal_zone0", type: "x86_pkg_temp", temp_c: final_temp,
+                      trip_points: [ { index: 0, type: "critical", temp_c: 100.0 } ] } ],
             package_throttle_count: pkg_throttle,
             core_throttle_count: core_throttle,
             package_throttle_time_ms: pkg_time,
@@ -159,7 +159,7 @@ module LinuxBenchHub
             mean_celsius: 58.6,
             critical_temp_celsius: 100.0,
             headroom_celsius: 31.6,
-            zones: [{ id: "thermal_zone0", type: "x86_pkg_temp", initial_celsius: 42.5, final_celsius: 67.2 }]
+            zones: [ { id: "thermal_zone0", type: "x86_pkg_temp", initial_celsius: 42.5, final_celsius: 67.2 } ]
           },
           counters: {
             context_switches_total: (dur * 2450).to_i,
@@ -223,7 +223,7 @@ module LinuxBenchHub
             mean_celsius: 88.4,
             critical_temp_celsius: 100.0,
             headroom_celsius: 0.0,
-            zones: [{ id: "thermal_zone0", type: "x86_pkg_temp", initial_celsius: 55.0, final_celsius: 99.8 }]
+            zones: [ { id: "thermal_zone0", type: "x86_pkg_temp", initial_celsius: 55.0, final_celsius: 99.8 } ]
           },
           counters: {
             context_switches_total: (dur * 1800).to_i,
@@ -262,7 +262,7 @@ module LinuxBenchHub
       end
 
       def generate_sample_series(duration, count, start_temp, peak_temp, target_freq)
-        cnt = [count.to_i, 0].max
+        cnt = [ count.to_i, 0 ].max
         return [] if cnt.zero?
         interval = duration / cnt.to_f
         temp_step = (peak_temp - start_temp) / cnt.to_f

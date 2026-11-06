@@ -47,7 +47,7 @@ module LinuxBenchHub
       end
 
       def read_throttle_counters
-        readings = METRICS.to_h { |key, _| [key, {}] }
+        readings = METRICS.to_h { |key, _| [ key, {} ] }
         Dir.glob(@sysfs_root.join("devices/system/cpu/cpu[0-9]*").to_s).sort.each do |path|
           dir = Pathname.new(path)
           package = read_file(dir.join("topology/physical_package_id"))
@@ -61,12 +61,12 @@ module LinuxBenchHub
           end
         end
         readings.to_h do |key, values|
-          [key, aggregate(values, key)]
+          [ key, aggregate(values, key) ]
         end.merge(throttle_readings: readings)
       end
 
       def compute_delta(initial_state, final_state, samples = [])
-        states = [initial_state] + samples.filter_map { |sample| sample[:thermal_state] } + [final_state]
+        states = [ initial_state ] + samples.filter_map { |sample| sample[:thermal_state] } + [ final_state ]
         deltas = METRICS.to_h do |key, _|
           baseline = initial_state.dig(:throttle_readings, key) || {}
           totals = {}
@@ -86,9 +86,9 @@ module LinuxBenchHub
             end
             previous = current
           end
-          [key, aggregate(totals, key)]
+          [ key, aggregate(totals, key) ]
         end
-        supported = [:package_throttle_count, :core_throttle_count].any? do |key|
+        supported = [ :package_throttle_count, :core_throttle_count ].any? do |key|
           initial = initial_state.dig(:throttle_readings, key) || {}
           final = final_state.dig(:throttle_readings, key) || {}
           readings = states.select { |state| state.key?(:throttle_readings) }.map { |state| state.dig(:throttle_readings, key) || {} }

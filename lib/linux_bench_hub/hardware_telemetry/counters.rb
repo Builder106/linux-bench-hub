@@ -128,25 +128,25 @@ module LinuxBenchHub
       # Computes counter deltas, per-second rates, and CPU utilization breakdown
       # between initial and final snapshots.
       def compute_delta(initial_snapshot, final_snapshot, duration_seconds)
-        dur = [duration_seconds.to_f, 0.001].max
+        dur = [ duration_seconds.to_f, 0.001 ].max
         init_cpu = initial_snapshot.cpu_stats || {}
         fin_cpu = final_snapshot.cpu_stats || {}
         init_vm = initial_snapshot.vm_stats || {}
         fin_vm = final_snapshot.vm_stats || {}
 
         # Context switches
-        ctxt_delta = [0, (fin_cpu[:ctxt] || 0) - (init_cpu[:ctxt] || 0)].max
+        ctxt_delta = [ 0, (fin_cpu[:ctxt] || 0) - (init_cpu[:ctxt] || 0) ].max
         ctxt_rate = (ctxt_delta / dur).round(1)
 
         # Page faults
-        pgfault_delta = [0, (fin_vm[:pgfault] || 0) - (init_vm[:pgfault] || 0)].max
+        pgfault_delta = [ 0, (fin_vm[:pgfault] || 0) - (init_vm[:pgfault] || 0) ].max
         pgfault_rate = (pgfault_delta / dur).round(1)
 
-        pgmajfault_delta = [0, (fin_vm[:pgmajfault] || 0) - (init_vm[:pgmajfault] || 0)].max
+        pgmajfault_delta = [ 0, (fin_vm[:pgmajfault] || 0) - (init_vm[:pgmajfault] || 0) ].max
         pgmajfault_rate = (pgmajfault_delta / dur).round(1)
 
         # Process creations (forks)
-        procs_delta = [0, (fin_cpu[:processes] || 0) - (init_cpu[:processes] || 0)].max
+        procs_delta = [ 0, (fin_cpu[:processes] || 0) - (init_cpu[:processes] || 0) ].max
         procs_rate = (procs_delta / dur).round(1)
 
         # CPU Utilization Breakdown
@@ -199,12 +199,12 @@ module LinuxBenchHub
       end
 
       def compute_cpu_utilization(init, fin)
-        user_ticks = [0, ((fin[:user] || 0) + (fin[:nice] || 0)) - ((init[:user] || 0) + (init[:nice] || 0))].max
-        system_ticks = [0, ((fin[:system] || 0) + (fin[:irq] || 0) + (fin[:softirq] || 0)) -
-                           ((init[:system] || 0) + (init[:irq] || 0) + (init[:softirq] || 0))].max
-        idle_ticks = [0, (fin[:idle] || 0) - (init[:idle] || 0)].max
-        iowait_ticks = [0, (fin[:iowait] || 0) - (init[:iowait] || 0)].max
-        steal_ticks = [0, (fin[:steal] || 0) - (init[:steal] || 0)].max
+        user_ticks = [ 0, ((fin[:user] || 0) + (fin[:nice] || 0)) - ((init[:user] || 0) + (init[:nice] || 0)) ].max
+        system_ticks = [ 0, ((fin[:system] || 0) + (fin[:irq] || 0) + (fin[:softirq] || 0)) -
+                           ((init[:system] || 0) + (init[:irq] || 0) + (init[:softirq] || 0)) ].max
+        idle_ticks = [ 0, (fin[:idle] || 0) - (init[:idle] || 0) ].max
+        iowait_ticks = [ 0, (fin[:iowait] || 0) - (init[:iowait] || 0) ].max
+        steal_ticks = [ 0, (fin[:steal] || 0) - (init[:steal] || 0) ].max
 
         total_ticks = user_ticks + system_ticks + idle_ticks + iowait_ticks + steal_ticks
         if total_ticks.positive?
@@ -243,10 +243,10 @@ module LinuxBenchHub
         init = (init_perf || {}).transform_keys(&:to_sym)
         fin = (fin_perf || {}).transform_keys(&:to_sym)
 
-        cycles = [0, (fin[:cycles] || 0) - (init[:cycles] || 0)].max
-        instructions = [0, (fin[:instructions] || 0) - (init[:instructions] || 0)].max
-        cache_misses = [0, (fin[:cache_misses] || 0) - (init[:cache_misses] || 0)].max
-        cache_refs = [0, (fin[:cache_references] || 0) - (init[:cache_references] || 0)].max
+        cycles = [ 0, (fin[:cycles] || 0) - (init[:cycles] || 0) ].max
+        instructions = [ 0, (fin[:instructions] || 0) - (init[:instructions] || 0) ].max
+        cache_misses = [ 0, (fin[:cache_misses] || 0) - (init[:cache_misses] || 0) ].max
+        cache_refs = [ 0, (fin[:cache_references] || 0) - (init[:cache_references] || 0) ].max
 
         ipc = cycles.positive? ? (instructions.to_f / cycles).round(2) : nil
         cache_miss_rate = cache_refs.positive? ? ((cache_misses.to_f / cache_refs) * 100.0).round(2) : nil

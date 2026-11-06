@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared by every distro/architecture. Requires PTS, PHP XML, and build deps.
+# Shared by every distro/architecture. Requires Ruby, PTS, PHP XML, and build deps.
 set -euo pipefail
 
 scripts_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
@@ -29,7 +29,8 @@ php -r '
 
 printf 'y\nn\nn\nn\nn\nn\nn\n' | phoronix-test-suite batch-setup
 # All options are in the suite; stdin is closed so new prompts cannot hang CI.
-timeout 120m phoronix-test-suite batch-benchmark local/lbh-workloads </dev/null
+ruby "$scripts_dir/../../bin/lbh-telemetry" --json --output "$run_root/telemetry.json" \
+  --exec 'timeout 120m phoronix-test-suite batch-benchmark local/lbh-workloads' </dev/null
 
 composite="$run_root/test-results/$TEST_RESULTS_NAME/composite.xml"
 php "$scripts_dir/validate-workloads.php" "$composite"
@@ -37,8 +38,12 @@ php "$scripts_dir/validate-workloads.php" "$composite"
 # Publish only the validated result, atomically on the destination filesystem.
 mkdir -p "$output_dir"
 staged=$(mktemp "$output_dir/.composite.XXXXXXXX")
-trap 'rm -rf -- "$run_root"; rm -f -- "$staged"' EXIT
+staged_telemetry=$(mktemp "$output_dir/.telemetry.XXXXXXXX")
+trap 'rm -rf -- "$run_root"; rm -f -- "$staged" "$staged_telemetry"' EXIT
 cp "$composite" "$staged"
 chmod 644 "$staged"
+cp "$run_root/telemetry.json" "$staged_telemetry"
+chmod 644 "$staged_telemetry"
+mv -f -- "$staged_telemetry" "$output_dir/telemetry.json"
 mv -f -- "$staged" "$output_dir/composite.xml"
 echo "Saved $output_dir/composite.xml"

@@ -147,7 +147,7 @@ module LinuxBenchHub
 
       def symbolize(value)
         case value
-        when Hash then value.to_h { |key, item| [key.to_sym, symbolize(item)] }
+        when Hash then value.to_h { |key, item| [ key.to_sym, symbolize(item) ] }
         when Array then value.map { |item| symbolize(item) }
         else value
         end

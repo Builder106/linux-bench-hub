@@ -125,7 +125,7 @@ class HardwareTelemetryTest < Minitest::Test
       package_throttle_time_ms: 100,
       core_throttle_time_ms: 40,
       mean_temp_c: 45.0, max_temp_c: 45.0,
-      zones: [{ id: "z0", type: "x86_pkg", temp_c: 45.0, trip_points: [{ type: "critical", temp_c: 100.0 }] }]
+      zones: [ { id: "z0", type: "x86_pkg", temp_c: 45.0, trip_points: [ { type: "critical", temp_c: 100.0 } ] } ]
     }
 
     final = {
@@ -134,15 +134,15 @@ class HardwareTelemetryTest < Minitest::Test
       package_throttle_time_ms: 220, # +120ms
       core_throttle_time_ms: 100,    # +60ms
       mean_temp_c: 98.2, max_temp_c: 98.2,
-      zones: [{ id: "z0", type: "x86_pkg", temp_c: 98.2, trip_points: [{ type: "critical", temp_c: 100.0 }] }]
+      zones: [ { id: "z0", type: "x86_pkg", temp_c: 98.2, trip_points: [ { type: "critical", temp_c: 100.0 } ] } ]
     }
 
-    [initial, final].each do |state|
+    [ initial, final ].each do |state|
       state[:throttle_readings] = LinuxBenchHub::HardwareTelemetry::ThermalMonitor::METRICS.to_h do |key, _|
-        [key, { "cpu0" => { value: state[key], package: "0" } }]
+        [ key, { "cpu0" => { value: state[key], package: "0" } } ]
       end
     end
-    delta = monitor.compute_delta(initial, final, [{ thermal_state: { max_temp_c: 85.0 } }, { thermal_state: { max_temp_c: 99.5 } }])
+    delta = monitor.compute_delta(initial, final, [ { thermal_state: { max_temp_c: 85.0 } }, { thermal_state: { max_temp_c: 99.5 } } ])
 
     assert delta[:throttling_detected]
     assert_equal 4, delta[:package_throttle_delta]

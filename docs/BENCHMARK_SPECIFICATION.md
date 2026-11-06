@@ -59,10 +59,10 @@ The automated workload dispatch system (`bin/lbh-dispatch` and `lib/linux_bench_
 
 ## 5. Deterministic Hardware Telemetry & Thermal Monitoring
 
-The hardware telemetry engine (`lib/linux_bench_hub/hardware_telemetry/` and `bin/lbh-telemetry`) monitors kernel performance counters, CPU frequency scaling, and thermal throttling registers to guarantee benchmark determinism.
+The hardware telemetry engine (`lib/linux_bench_hub/hardware_telemetry/` and `bin/lbh-telemetry`) records host-wide kernel counters, optional PMU events, frequencies, and thermal throttling observations. It assesses thermal stability without guaranteeing repeatable benchmark timings.
 
-- **Thermal Throttling Detection**: Reads `/sys/devices/system/cpu/cpu*/thermal_throttle/` to trap package and core throttling events. Any throttle count delta trips `throttling_detected: true` and invalidates run determinism (`deterministic: false`).
-- **Thermal Zones & Headroom**: Tracks temperatures and calculates margins to critical trip points across `/sys/class/thermal/thermal_zone*/`.
-- **Low-Overhead Performance Counters**: Computes context switch rates, process creation rates, page fault rates, and CPU utilization tick breakdowns from `/proc/stat` and `/proc/vmstat` with sub-millisecond precision and negligible CPU overhead.
-- **Artifacts**: Records atomic `telemetry.json` artifacts alongside `manifest.json` and embeds formatted hardware telemetry sections in benchmark summary writeups.
-- **Specification**: See [`docs/specs/hardware_telemetry.md`](specs/hardware_telemetry.md) for full technical details.
+- **Thermal evidence**: Tracks counter and duration increases, hottest-zone temperature peaks, and exposed critical trips. Missing sensors and reset counters yield an unverified verdict rather than a fabricated clean run.
+- **Counters**: Computes scheduler, fault, and CPU tick deltas from procfs. Optional `perf stat` collects cycles, instructions, cache references, and cache misses when permissions and hardware allow it.
+- **Artifacts**: Ruby dispatches emit `telemetry.json` plus manifest and Markdown sections. The shared monthly capture runner collects inside each benchmark container; both architecture matrices archive dated JSON and `telemetry-latest.json` alongside validated XML. Capture failures preserve prior output.
+- **Scope**: Samples are bounded and use a configurable one-second default interval. Reports label native, simulated, and unavailable collection. Remote Ruby dispatches require target-side collection; the orchestrator's counters are never presented as remote measurements.
+- **Specification**: See [`docs/specs/hardware_telemetry.md`](specs/hardware_telemetry.md) for availability semantics, limitations, and CLI usage.

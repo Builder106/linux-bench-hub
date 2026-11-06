@@ -6,6 +6,7 @@ require "open3"
 require "tmpdir"
 require "fileutils"
 require "yaml"
+require "json"
 
 class WorkloadDispatchTest < Minitest::Test
   ROOT = File.expand_path(__dir__)
@@ -146,17 +147,26 @@ class WorkloadDispatchTest < Minitest::Test
     assert_equal 0o644, File.stat(File.join(@output, "composite.xml")).mode & 0o777
     refute Dir.exist?(File.read(@log))
     refute Dir.glob(File.join(@output, ".composite.*")).any?
+    telemetry_path = File.join(@output, "telemetry.json")
+    telemetry = JSON.parse(File.read(telemetry_path))
+    assert_equal "native", telemetry.fetch("source")
+    assert_equal "host", telemetry.fetch("scope")
+    assert_equal 0o644, File.stat(telemetry_path).mode & 0o777
+    refute Dir.glob(File.join(@output, ".telemetry.*")).any?
   end
 
   def test_failed_missing_and_partial_dispatch_preserve_previous_output
     FileUtils.mkdir_p(@output)
     previous = File.join(@output, "composite.xml")
     File.write(previous, "previous capture")
+    previous_telemetry = File.join(@output, "telemetry.json")
+    File.write(previous_telemetry, "previous telemetry")
     %w[failure missing partial].each do |mode|
       @document.root.delete_element(@document.root.get_elements("Result").last) if mode == "partial"
       _stdout, stderr, status = run_dispatch(mode)
       refute status.success?, stderr
       assert_equal "previous capture", File.read(previous)
+      assert_equal "previous telemetry", File.read(previous_telemetry)
       refute Dir.exist?(File.read(@log))
     end
   end
@@ -167,7 +177,12 @@ class WorkloadDispatchTest < Minitest::Test
       job = workflow.fetch("jobs").fetch(job_name)
       matrix = job.fetch("strategy").fetch("matrix").fetch("include")
       assert_equal %w[debian fedora ubuntu], matrix.map { |row| row.fetch("distro") }.sort
-      matrix.each { |row| assert_match(/libaio-(dev|devel)\b/, row.fetch("pkg_install")) }
+      matrix.each do |row|
+        assert_match(/libaio-(dev|devel)\b/, row.fetch("pkg_install"))
+        assert_match(/\bruby\b/, row.fetch("pkg_install"))
+      end
+      artifact = job.fetch("steps").find { |step| step["name"] == "Upload artifact" }
+      assert_includes artifact.fetch("with").fetch("path"), "telemetry-latest.json"
       assert_includes job.fetch("steps").filter_map { |step| step["run"] }.join("\n"), "container-capture.sh"
     end
   end

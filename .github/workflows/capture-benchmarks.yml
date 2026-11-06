@@ -56,7 +56,7 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update
               apt-get install -y --no-install-recommends \
-                ca-certificates curl git php-cli php-xml php-zip unzip \
+                ca-certificates curl git ruby php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
                 libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
@@ -75,7 +75,7 @@ jobs:
               # on F44; automake/autoconf-archive/gettext-devel already cover
               # the install-sh-bootstrapping role it used to fill.
               dnf install -y --setopt=install_weak_deps=False \
-                ca-certificates curl git php-cli php-xml unzip findutils which \
+                ca-certificates curl git ruby php-cli php-xml unzip findutils which \
                 make gcc gcc-c++ autoconf autoconf-archive automake libtool \
                 pkgconf-pkg-config gettext-devel bison flex hwloc-devel \
                 openssl-devel zlib-devel libaio-devel \
@@ -87,7 +87,7 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update
               apt-get install -y --no-install-recommends \
-                ca-certificates curl git php-cli php-xml php-zip unzip \
+                ca-certificates curl git ruby php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
                 libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
@@ -138,6 +138,8 @@ jobs:
           mkdir -p "$captures"
           cp /tmp/lbh-output/composite.xml "$captures/composite-${RUN_DATE}.xml"
           cp /tmp/lbh-output/composite.xml "benchmarks/${{ matrix.distro }}/composite-latest.xml"
+          cp /tmp/lbh-output/telemetry.json "$captures/telemetry-${RUN_DATE}.json"
+          cp /tmp/lbh-output/telemetry.json "benchmarks/${{ matrix.distro }}/telemetry-latest.json"
 
       - name: Upload artifact
         if: env.RUN_THIS_DISTRO == '1'
@@ -147,6 +149,8 @@ jobs:
           path: |
             benchmarks/${{ matrix.distro }}/captures/composite-${{ env.RUN_DATE }}.xml
             benchmarks/${{ matrix.distro }}/composite-latest.xml
+            benchmarks/${{ matrix.distro }}/captures/telemetry-${{ env.RUN_DATE }}.json
+            benchmarks/${{ matrix.distro }}/telemetry-latest.json
           retention-days: 365
 
   # arm64 captures run on a real Ampere VM (Oracle Cloud Always-Free), not in
@@ -183,7 +187,7 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update
               apt-get install -y --no-install-recommends \
-                ca-certificates curl git php-cli php-xml php-zip unzip \
+                ca-certificates curl git ruby php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
                 libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
@@ -192,7 +196,7 @@ jobs:
             image: fedora:44
             pkg_install: |
               dnf install -y --setopt=install_weak_deps=False \
-                ca-certificates curl git php-cli php-xml unzip findutils which \
+                ca-certificates curl git ruby php-cli php-xml unzip findutils which \
                 make gcc gcc-c++ autoconf autoconf-archive automake libtool \
                 pkgconf-pkg-config gettext-devel bison flex hwloc-devel \
                 openssl-devel zlib-devel libaio-devel \
@@ -204,7 +208,7 @@ jobs:
               export DEBIAN_FRONTEND=noninteractive
               apt-get update
               apt-get install -y --no-install-recommends \
-                ca-certificates curl git php-cli php-xml php-zip unzip \
+                ca-certificates curl git ruby php-cli php-xml php-zip unzip \
                 build-essential autoconf automake libtool pkg-config shtool \
                 libssl-dev zlib1g-dev libaio-dev \
                 libnl-3-dev libnl-genl-3-dev libpcap-dev libsqlite3-dev libpcre2-dev
@@ -271,15 +275,19 @@ jobs:
           run_dir="/home/ubuntu/platform/build/linux-bench-hub/runner/${{ matrix.distro }}"
           out_dir="/home/ubuntu/platform/build/linux-bench-hub/captures/${{ matrix.distro }}"
           ssh -i ~/.ssh/lbh-ampere ubuntu@"$OCI_AMPERE_HOST" \
-            "mkdir -p $run_dir $out_dir"
+            "mkdir -p $run_dir/.github/scripts $out_dir"
           scp -i ~/.ssh/lbh-ampere \
             /tmp/pkg-install.sh \
+            ubuntu@"$OCI_AMPERE_HOST":"$run_dir/"
+          scp -i ~/.ssh/lbh-ampere -r bin lib \
+            ubuntu@"$OCI_AMPERE_HOST":"$run_dir/"
+          scp -i ~/.ssh/lbh-ampere \
             .github/scripts/container-capture.sh \
             .github/scripts/pts-batch-config.xml \
             .github/scripts/run-workloads.sh \
             .github/scripts/workload-suite.xml \
             .github/scripts/validate-workloads.php \
-            ubuntu@"$OCI_AMPERE_HOST":"$run_dir/"
+            ubuntu@"$OCI_AMPERE_HOST":"$run_dir/.github/scripts/"
 
       - name: Run ${{ matrix.distro }} capture in a container on the Ampere host
         if: env.RUN_THIS_DISTRO == '1'
@@ -299,7 +307,7 @@ jobs:
                  -v $run_dir:/runner:ro \
                  -v $out_dir:/output \
                  ${{ matrix.image }} \
-                 bash -c 'bash /runner/pkg-install.sh && bash /runner/container-capture.sh'"
+                 bash -c 'bash /runner/pkg-install.sh && bash /runner/.github/scripts/container-capture.sh'"
 
       - name: Pull composite back from the VM
         if: env.RUN_THIS_DISTRO == '1'
@@ -311,6 +319,10 @@ jobs:
             "$dest/composite-latest.xml"
           # Keep the dated archive too — matches the x86 captures/ layout.
           cp "$dest/composite-latest.xml" "$dest/captures/composite-${RUN_DATE}.xml"
+          scp -i ~/.ssh/lbh-ampere \
+            ubuntu@"$OCI_AMPERE_HOST":/home/ubuntu/platform/build/linux-bench-hub/captures/${{ matrix.distro }}/telemetry.json \
+            "$dest/telemetry-latest.json"
+          cp "$dest/telemetry-latest.json" "$dest/captures/telemetry-${RUN_DATE}.json"
           ls -la "$dest/"
 
       - name: Upload artifact
@@ -321,6 +333,8 @@ jobs:
           path: |
             benchmarks/${{ matrix.distro }}-arm64/composite-latest.xml
             benchmarks/${{ matrix.distro }}-arm64/captures/composite-${{ env.RUN_DATE }}.xml
+            benchmarks/${{ matrix.distro }}-arm64/telemetry-latest.json
+            benchmarks/${{ matrix.distro }}-arm64/captures/telemetry-${{ env.RUN_DATE }}.json
           retention-days: 365
 
   # Unified publish point for all captures (x86 and arm64). Each capture job only
@@ -371,6 +385,8 @@ jobs:
             mkdir -p "$dest/captures"
             find "$dir/captures" -maxdepth 1 -name 'composite-*.xml' -exec cp {} "$dest/captures/" \;
             cp "$dir/composite-latest.xml" "$dest/composite-latest.xml"
+            find "$dir/captures" -maxdepth 1 -name 'telemetry-*.json' -exec cp {} "$dest/captures/" \;
+            cp "$dir/telemetry-latest.json" "$dest/telemetry-latest.json"
             git add "$dest/"
           done
 
@@ -385,6 +401,8 @@ jobs:
             mkdir -p "$dest/captures"
             find "$dir/captures" -maxdepth 1 -name 'composite-*.xml' -exec cp {} "$dest/captures/" \;
             cp "$dir/composite-latest.xml" "$dest/composite-latest.xml"
+            find "$dir/captures" -maxdepth 1 -name 'telemetry-*.json' -exec cp {} "$dest/captures/" \;
+            cp "$dir/telemetry-latest.json" "$dest/telemetry-latest.json"
             git add "$dest/"
           done
 

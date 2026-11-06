@@ -1,132 +1,57 @@
-# Deterministic Hardware Telemetry Technical Specification
+# Deterministic Hardware Telemetry
 
-## Overview
+The Ruby dispatcher and `bin/lbh-telemetry` collect host-wide observations around a workload. They read counters without changing governors, kernel settings, sensor configuration, or privileges. No frontend changes are involved.
 
-The Deterministic Hardware Telemetry engine (`lib/linux_bench_hub/hardware_telemetry/` and `bin/lbh-telemetry`) provides low-overhead, high-fidelity monitoring of hardware performance counters, CPU frequency scaling, and thermal throttling events during benchmark execution.
+## Scope and acceptance
 
-Thermal throttling and dynamic frequency scaling are the primary drivers of non-deterministic performance regression in Linux benchmark pipelines. Unmitigated thermal trips silently distort execution times, inflate benchmark variance (standard deviation), and corrupt cross-distro comparisons. This telemetry subsystem establishes deterministic verification guarantees: if hardware throttling occurs during a benchmark run, the run is flagged as non-deterministic (`deterministic: false`), the throttle duration and event counts are recorded in `telemetry.json`, and regression analyzers are alerted.
+The v1.1 workload dispatcher is the prerequisite. This milestone adds baseline/final kernel counter deltas, bounded periodic thermal observations, optional native PMU counts, structured artifacts, and tests for throttling, unavailable sensors, and collector cleanup. It preserves benchmark exit status and the existing `composite.xml` contract.
 
-## Architecture & Data Flow
+A telemetry report is evidence about its collection host and interval. It does not guarantee repeatable timings, identical hardware, absence of power limits, or workload-exclusive measurements. Background activity contributes to host-wide counters. Polling can miss temperature excursions between samples; supported lifetime throttle counters preserve event evidence between reads.
 
-The telemetry system utilizes a dual-phase snapshot model augmented by an optional, non-blocking background sampler. Baseline and final snapshots capture exact counter deltas with sub-millisecond precision, while sysfs and procfs readers incur negligible overhead (<0.1% CPU utilization).
+## Sources and overhead
 
-```
-                     +---------------------------------------+
-                     |         Benchmark Dispatcher          |
-                     +-------------------+-------------------+
-                                         |
-                       Collector.start   |   Collector.stop
-                                         v
-            +---------------------------------------------------------+
-            |               HardwareTelemetry::Collector              |
-            +----------------------------+----------------------------+
-                                         |
-                 +-----------------------+-----------------------+
-                 |                       |                       |
-                 v                       v                       v
-         +---------------+       +---------------+       +---------------+
-         | ThermalMonitor|       |    Counters   |       |    Sampler    |
-         | (Sysfs Zones, |       | (Procfs Stat, |       | (Non-blocking |
-         |  Throttling)  |       |  Vmstat, Freq)|       |  Time-Series) |
-         +-------+-------+       +-------+-------+       +-------+-------+
-                 |                       |                       |
-                 +-----------------------+-----------------------+
-                                         |
-                                         v
-                     +---------------------------------------+
-                     |       Determinism Verifier &          |
-                     |         Report Generator              |
-                     +-------------------+-------------------+
-                                         |
-                                         v
-                     +---------------------------------------+
-                     |           Output Artifacts            |
-                     | - telemetry.json                      |
-                     | - manifest.json (hardware_telemetry)  |
-                     | - summary.md (telemetry tables)       |
-                     +---------------------------------------+
-```
+- `/proc/stat`: CPU tick deltas, context switches, and process creation.
+- `/proc/vmstat`: total page faults and major page faults.
+- Sysfs cpufreq, with `/proc/cpuinfo` fallback: observed frequency endpoints and governor. Frequency differences across cores are not proof of thermal throttling.
+- Sysfs thermal zones: millidegree temperatures and exposed critical trips. Peaks use the hottest zone, including intermediate observations. Headroom is unavailable when no critical trip is exposed.
+- Sysfs CPU thermal throttle counters: count and duration deltas. Package deltas are deduplicated using physical package IDs. Core counts are summed per logical CPU. Missing, malformed, reset, or disappearing counters are not treated as measured zeroes.
+- Optional `perf stat -a`: cycles, instructions, cache references, and cache misses. One process counts events for the session without recording stacks or traces. Missing perf, denied access, and unsupported events appear as unavailable; no permissions are elevated. Set `perf: false` in collector options to disable it.
 
-## Telemetry Metrics & Data Sources
+The default poll period is one second; periods below 0.1 seconds and non-finite values are rejected. Zero disables periodic polling while retaining endpoint observations and PMU counting. Storage retains at most 3,600 recent samples; aggregate peak temperature and observed throttling persist for the whole session. Elapsed time uses a monotonic clock. Stop wakes the sampler immediately, reaps perf, and runs even if the workload raises. Overhead depends on CPU/sensor count and host load; there is no fixed percentage guarantee.
 
-### 1. Thermal Throttling Registers
-- **Interface**: `/sys/devices/system/cpu/cpu*/thermal_throttle/`
-- **Counters**:
-  - `package_throttle_count`: Increments whenever the CPU package temperature exceeds the throttling threshold. Deduplicated across logical cores on identical physical sockets.
-  - `core_throttle_count`: Increments whenever an individual CPU core is throttled. Summed across all cores.
-  - `package_throttle_total_time_ms` / `core_throttle_total_time_ms`: Cumulative hardware duration spent under thermal throttling.
-- **Delta Calculation**:
-  $$\Delta_{\text{pkg}} = \max(0, C_{\text{final}} - C_{\text{initial}})$$
-  $$\text{Throttling Detected} \iff \Delta_{\text{pkg}} > 0 \lor \Delta_{\text{core}} > 0$$
+Linux documents the broadcast package counters and cumulative throttle durations in its [thermal throttle interface](https://kernel.googlesource.com/pub/scm/linux/kernel/git/jirislaby/linux/+/refs/heads/devel/Documentation/admin-guide/thermal/intel_thermal_throttle.rst). PMU counting follows the [perf stat interface](https://www.man7.org/linux/man-pages/man1/perf-stat.1.html).
 
-### 2. Thermal Zones & Headroom
-- **Interface**: `/sys/class/thermal/thermal_zone*/`
-- **Readings**:
-  - `temp`: Millidegree Celsius reading converted to floating-point Celsius ($T / 1000.0$).
-  - `type`: Zone identification string (e.g. `x86_pkg_temp`, `acpitz`, `soc_dts0`).
-  - `trip_point_*_temp` & `type`: Critical threshold temperatures ($T_{\text{crit}}$).
-- **Thermal Headroom**:
-  $$\text{Headroom} = \max(0.0, T_{\text{crit}} - T_{\text{peak}})$$
+## Reports and integration
 
-### 3. Kernel Scheduler & System Counters
-- **Interface**: `/proc/stat`
-- **Metrics**:
-  - `ctxt`: Cumulative context switches. Emits total delta and rate per second ($\Delta_{\text{ctxt}} / \Delta_t$).
-  - `processes`: Cumulative fork and process creation operations.
-  - CPU utilization ticks: user, nice, system, idle, iowait, irq, softirq, steal. Emits percentage breakdown over the run duration.
+`telemetry.json`, the manifest's `hardware_telemetry`, and `summary.md` record:
 
-### 4. Virtual Memory Counters
-- **Interface**: `/proc/vmstat`
-- **Metrics**:
-  - `pgfault`: Minor page faults. Emits total and per-second fault rates.
-  - `pgmajfault`: Major page faults (disk I/O paging events). Emits total and per-second rates.
+- `source`: `native`, `simulated`, or `unavailable`; `scope`: `host`.
+- `deterministic`: `false` when throttle counts or throttle duration increase; `true` when supported counters remain stable and kernel counters are readable; `null` when evidence is insufficient. The field assesses observed thermal stability only.
+- `throttling_detected`, explanatory notes, thermal deltas, kernel counters, PMU availability and values, and bounded samples.
 
-### 5. CPU Frequency Scaling
-- **Interface**: `/sys/devices/system/cpu/cpu*/cpufreq/` (with fallback to `/proc/cpuinfo`)
-- **Metrics**: Current operating frequencies across cores in MHz, active governor (`performance`, `powersave`, `schedutil`), and average/min/max frequency range.
+Telemetry is enabled by default in `bin/lbh-dispatch`. A simulated target always uses explicitly labeled synthetic readings. Docker and SSH dispatch return unavailable telemetry rather than attaching the orchestrator's hardware to another target. For those runs, execute `lbh-telemetry` on the benchmark host or inside its container; visibility still depends on that environment. The shared monthly shell capture runner invokes the standalone telemetry tool inside each distro container around the timed PTS workload. Ruby is installed in all six matrix entries. Both matrices archive dated telemetry JSON and `telemetry-latest.json` alongside their XML, without changing the XML schema or git publication rules. Failed or invalid captures preserve both previous output files. Each file is replaced atomically; the pair is not a filesystem transaction.
 
-## Determinism Verification Rules
+A throttled benchmark retains its execution success/failure status and measured XML; its manifest flags the thermal evidence separately. Consumers must inspect `deterministic` and `source` before comparing results. With telemetry disabled, no telemetry artifact is generated and the manifest's verdict is unknown.
 
-A benchmark dispatch is classified as `deterministic: true` if and only if all the following conditions hold:
-
-1. **Zero Thermal Throttling Events**: $\Delta_{\text{package\_throttle}} = 0$ and $\Delta_{\text{core\_throttle}} = 0$.
-2. **Frequency Stability Under Load**: Core frequencies do not collapse by $>40\%$ while operating at peak temperatures exceeding $85^\circ\text{C}$.
-
-When a determinism violation occurs:
-- The manifest marks `deterministic: false` and `throttling_detected: true`.
-- Explanatory notes are recorded in `determinism_notes` (e.g., `"Thermal throttling detected: 14 package events, 8 core events (420ms total)"`).
-- The markdown summary highlights the regression warning.
-
-## CLI Tooling
-
-### Standalone Telemetry Tool (`bin/lbh-telemetry`)
+## Usage
 
 ```bash
-# Instantaneous snapshot of thermal state, frequencies, and counters
-bin/lbh-telemetry --check
-
-# JSON output
+# Snapshot (does not start perf)
 bin/lbh-telemetry --check --json
 
-# Run a live 5-second sampling monitor
-bin/lbh-telemetry --monitor 5 --interval 0.5
+# Sample locally and save a report
+bin/lbh-telemetry --monitor 5 --interval 1 --json --output /tmp/telemetry.json
 
-# Wrap command execution in telemetry monitoring
-bin/lbh-telemetry --exec "sysbench cpu run"
+# Preserve the wrapped command's exit status
+bin/lbh-telemetry --exec 'sysbench cpu run' --output /tmp/telemetry.json
 
-# Simulated mode with synthetic throttling
-bin/lbh-telemetry --simulate --simulate-throttle --json
+# Exercise dispatch artifacts without accessing real hardware
+bin/lbh-dispatch --simulate --output /tmp/lbh-captures
+bin/lbh-dispatch --simulate --simulate-throttle --output /tmp/lbh-captures
+
+# Disable collection, or choose endpoint-only collection
+bin/lbh-dispatch --no-telemetry
+bin/lbh-dispatch --telemetry-interval 0
 ```
 
-### Dispatcher Integration (`bin/lbh-dispatch`)
-
-```bash
-# Preflight hardware telemetry diagnostic
-bin/lbh-dispatch --telemetry-check
-
-# Standard dispatch with automated hardware telemetry enabled (default)
-bin/lbh-dispatch --simulate --output captures/
-
-# Dispatch with simulated throttling to verify non-determinism handling
-bin/lbh-dispatch --simulate --simulate-throttle --output captures/
-```
+Run `ruby test_hardware_telemetry.rb` and `ruby test_hardware_telemetry_regression.rb` for fixture-based reader, lifecycle, PMU, CLI, and manifest checks without privileged hardware access.
