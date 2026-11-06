@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-11-06: Move Rails to 8.1.4.1 to clear the dependency audit #ci #incident
+
+The Ruby dependency audit began failing on 2026-11-05 with advisories against Rails 8.1.4 (Active Storage, Active Support). CI stayed red on every push after that, and the deploy job is skipped when CI fails, so nothing shipped. The Gemfile pin `~> 8.1.4` already allows the fix, so this is a lockfile-only update to 8.1.4.1. The audit, tests, rubocop and brakeman pass on it.
+
 ## 2026-11-06: Make the social preview tags absolute #fix
 
 The layout set `og:image` to `/social-card.png`, a relative path that link preview crawlers don't resolve, and had no `og:url` or `twitter:image`. It now builds absolute URLs from one `site_url` and adds the missing tags and the image size. A controller test pins them. The committed `website/export/` pages were updated to match. An `export:static` run in development adds template-name comments to every page, so the nine pages were patched in place instead, and each was checked against a fresh render with whitespace and comments ignored.
