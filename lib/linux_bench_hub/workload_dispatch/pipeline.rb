@@ -8,7 +8,8 @@ module LinuxBenchHub
     # Configured sequence of workloads to be executed together as a reproducible pipeline.
     class Pipeline
       attr_reader :name, :workloads, :output_dir, :results_name,
-                  :environment_variables, :pts_config_path, :timeout_seconds
+                  :environment_variables, :pts_config_path, :timeout_seconds,
+                  :telemetry, :telemetry_interval, :telemetry_options
 
       def initialize(name: "LBH Standard Benchmark Pipeline",
                      workloads: [],
@@ -16,7 +17,10 @@ module LinuxBenchHub
                      results_name: nil,
                      environment_variables: {},
                      pts_config_path: nil,
-                     timeout_seconds: 7200)
+                     timeout_seconds: 7200,
+                     telemetry: true,
+                     telemetry_interval: 1.0,
+                     telemetry_options: {})
         @name = name.to_s
         @workloads = resolve_workloads(workloads)
         @output_dir = Pathname.new(output_dir)
@@ -24,6 +28,16 @@ module LinuxBenchHub
         @environment_variables = (environment_variables || {}).transform_keys(&:to_s)
         @pts_config_path = pts_config_path ? Pathname.new(pts_config_path) : nil
         @timeout_seconds = timeout_seconds.to_i
+        @telemetry = telemetry.nil? ? true : !!telemetry
+        @telemetry_interval = Float(telemetry_interval)
+        unless @telemetry_interval.finite? && (@telemetry_interval.zero? || @telemetry_interval >= 0.1)
+          raise ArgumentError, "telemetry_interval must be zero or finite and at least 0.1s"
+        end
+        @telemetry_options = (telemetry_options || {}).transform_keys(&:to_sym)
+      end
+
+      def telemetry_enabled?
+        @telemetry
       end
 
       # Factory method for a standard three-tier pipeline covering CPU, Memory, and Disk I/O.

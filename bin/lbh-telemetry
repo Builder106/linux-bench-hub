@@ -1,0 +1,164 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+
+require "optparse"
+require "open3"
+require "linux_bench_hub/hardware_telemetry"
+
+options = {
+  mode: :check,
+  duration: 5.0,
+  interval: 1.0,
+  exec_cmd: nil,
+  format: :markdown,
+  output_path: nil,
+  simulated: false,
+  simulate_throttling: false
+}
+
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: bin/lbh-telemetry [options]"
+  opts.separator ""
+  opts.separator "Deterministic Hardware Telemetry: Low-overhead hardware counters and thermal throttling monitoring."
+  opts.separator ""
+  opts.separator "Options:"
+
+  opts.on("-c", "--check", "Read instantaneous hardware counters and thermal state (default)") do
+    options[:mode] = :check
+  end
+
+  opts.on("-m", "--monitor [SECONDS]", Float, "Run a live hardware telemetry sampling session (default: 5.0s)") do |val|
+    options[:mode] = :monitor
+    options[:duration] = val if val && val.positive?
+  end
+
+  opts.on("-e", "--exec COMMAND", "Wrap command execution in deterministic hardware telemetry monitoring") do |cmd|
+    options[:mode] = :exec
+    options[:exec_cmd] = cmd
+  end
+
+  opts.on("-i", "--interval SECONDS", Float, "Sampling interval in seconds (default: 1.0s)") do |val|
+    options[:interval] = val
+  end
+
+  opts.on("-s", "--simulate", "Run in deterministic simulated mode") do
+    options[:simulated] = true
+  end
+
+  opts.on("--simulate-throttle", "Simulate thermal throttling in simulated mode") do
+    options[:simulated] = true
+    options[:simulate_throttling] = true
+  end
+
+  opts.on("-j", "--json", "Output results as JSON instead of Markdown") do
+    options[:format] = :json
+  end
+
+  opts.on("-o", "--output PATH", "Save output report to file path") do |path|
+    options[:output_path] = path
+  end
+
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit 0
+  end
+end
+
+parser.parse!(ARGV)
+
+collector_mode = options[:simulated] ? :simulated : :auto
+telemetry_opts = {
+  mode: collector_mode,
+  interval: options[:interval],
+  simulate_throttling: options[:simulate_throttling]
+}
+
+case options[:mode]
+when :check
+  snap = LinuxBenchHub::HardwareTelemetry.snapshot(**telemetry_opts)
+  if options[:format] == :json
+    out = JSON.pretty_generate(snap.to_h)
+  else
+    th = snap.thermal
+    cf = snap.cpu_freq
+    cp = snap.cpu_stats
+    vm = snap.vm_stats
+
+    out = [
+      "# Hardware Telemetry Snapshot: #{snap.timestamp.iso8601}",
+      "",
+      "## Thermal State",
+      "- **Zones Discovered**: #{th[:zones]&.size || 0}",
+      "- **Mean Temperature**: #{th[:mean_temp_c] ? "#{th[:mean_temp_c]}°C" : 'N/A'}",
+      "- **Peak Temperature**: #{th[:max_temp_c] ? "#{th[:max_temp_c]}°C" : 'N/A'}",
+      "- **Package Throttles**: #{th[:package_throttle_count]} (#{th[:package_throttle_time_ms]}ms)",
+      "- **Core Throttles**: #{th[:core_throttle_count]} (#{th[:core_throttle_time_ms]}ms)",
+      "",
+      "## CPU Frequencies",
+      "- **Governor**: #{cf[:governor]}",
+      "- **Average Frequency**: #{cf[:avg_mhz] ? "#{cf[:avg_mhz]} MHz" : 'N/A'}",
+      "- **Range**: #{cf[:min_mhz] || 'N/A'} - #{cf[:max_mhz] || 'N/A'} MHz",
+      "",
+      "## Kernel Performance Counters",
+      "- **Context Switches**: #{cp[:ctxt]}",
+      "- **Page Faults**: #{vm[:pgfault]}",
+      "- **Major Page Faults**: #{vm[:pgmajfault]}",
+      "- **Processes Created**: #{cp[:processes]}",
+      "- **Running / Blocked**: #{cp[:procs_running]} / #{cp[:procs_blocked]}"
+    ].join("\n") + "\n"
+  end
+
+  if options[:output_path]
+    File.write(options[:output_path], out)
+    puts "Wrote snapshot to #{options[:output_path]}"
+  else
+    puts out
+  end
+
+when :monitor
+  puts "Monitoring hardware telemetry for #{options[:duration]}s (interval: #{options[:interval]}s)..."
+  collector = LinuxBenchHub::HardwareTelemetry.collector(**telemetry_opts)
+  begin
+    collector.start
+    sleep(options[:duration])
+  ensure
+    report = collector.stop
+  end
+
+  out = options[:format] == :json ? report.to_json : report.summary_markdown
+
+  if options[:output_path]
+    File.write(options[:output_path], out)
+    puts "Wrote telemetry report to #{options[:output_path]}"
+  else
+    puts out
+  end
+
+when :exec
+  cmd = options[:exec_cmd]
+  puts "Executing command under hardware telemetry: #{cmd}"
+  collector = LinuxBenchHub::HardwareTelemetry.collector(**telemetry_opts)
+  begin
+    collector.start
+    stdout, stderr, status = Open3.capture3(cmd)
+  ensure
+    report = collector.stop
+  end
+  $stdout.write(stdout)
+  $stderr.write(stderr)
+
+  puts ""
+  puts "Command completed with exit code #{status.exitstatus}"
+  puts "Deterministic: #{report.deterministic? ? 'YES' : 'NO'}"
+  puts ""
+  puts report.summary_markdown
+
+  if options[:output_path]
+    File.write(options[:output_path], report.to_json)
+    puts "Saved report to #{options[:output_path]}"
+  end
+
+  exit(status.exitstatus || 128 + status.termsig)
+end

@@ -34,7 +34,8 @@ module LinuxBenchHub
         run_id = options.delete(:run_id)
         logger = options.delete(:logger)
 
-        pipeline_keys = %i[name output_dir results_name environment_variables pts_config_path timeout_seconds]
+        pipeline_keys = %i[name output_dir results_name environment_variables pts_config_path
+                         timeout_seconds telemetry telemetry_interval telemetry_options]
         pipeline_opts = options.slice(*pipeline_keys)
         target_opts = options.except(*pipeline_keys)
 

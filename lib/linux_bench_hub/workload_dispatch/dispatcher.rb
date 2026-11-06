@@ -7,15 +7,25 @@ require_relative "workload"
 require_relative "pipeline"
 require_relative "target"
 require_relative "manifest"
+require_relative "../hardware_telemetry"
 
 module LinuxBenchHub
   module WorkloadDispatch
     # Struct returned by Dispatcher#dispatch.
     DispatchResult = Struct.new(:success, :manifest, :execution_result,
                                 :output_dir, :composite_xml_path, :manifest_path,
+                                :telemetry_report, :telemetry_path,
                                 keyword_init: true) do
       def success?
         !!success
+      end
+
+      def deterministic?
+        manifest&.deterministic?
+      end
+
+      def throttling_detected?
+        manifest&.throttling_detected?
       end
     end
 
@@ -62,16 +72,42 @@ module LinuxBenchHub
           )
         end
 
-        # Step 2: Execution
+        # Step 2: Execution & Telemetry Collection
         started_at = Time.now.utc
         run_context = {
           run_id: effective_run_id,
           output_dir: run_output_dir.to_s
         }
 
-        exec_res = target.execute(pipeline, run_context)
+        telemetry_collector = nil
+        if pipeline.telemetry_enabled?
+          mode = case target.target_type
+                 when :simulated then :simulated
+                 when :ssh, :docker then :unavailable
+                 else :native
+                 end
+          opts = {
+            mode: mode,
+            interval: pipeline.telemetry_interval,
+            logger: @logger
+          }.merge(pipeline.telemetry_options).merge(mode: mode)
+          telemetry_collector = HardwareTelemetry::Collector.new(**opts)
+          telemetry_collector.start
+        end
+
+        begin
+          exec_res = target.execute(pipeline, run_context)
+        ensure
+          telemetry_report = telemetry_collector&.stop
+        end
         completed_at = Time.now.utc
         duration = completed_at - started_at
+
+        telemetry_path = nil
+        if telemetry_report
+          telemetry_path = run_output_dir.join("telemetry.json")
+          File.write(telemetry_path, telemetry_report.to_json)
+        end
 
         # Step 3: Artifact parsing & manifest generation
         composite_path = nil
@@ -100,9 +136,11 @@ module LinuxBenchHub
           duration_seconds: duration,
           status: status,
           workloads: workload_summaries,
+          hardware_telemetry: telemetry_report&.to_h,
           artifacts: {
             composite_xml: composite_path&.to_s,
             manifest_json: run_output_dir.join("manifest.json").to_s,
+            telemetry_json: telemetry_path&.to_s,
             summary_markdown: run_output_dir.join("summary.md").to_s
           }.compact,
           errors: exec_res.install_failures.map { |f| "#{f[:test]} install failed" }
@@ -114,7 +152,7 @@ module LinuxBenchHub
         summary_path = run_output_dir.join("summary.md")
         File.write(summary_path, manifest.summary_markdown)
 
-        log("Completed dispatch '#{effective_run_id}' with status: #{status}")
+        log("Completed dispatch '#{effective_run_id}' with status: #{status} (deterministic: #{manifest.deterministic?})")
 
         DispatchResult.new(
           success: status == :success,
@@ -122,7 +160,9 @@ module LinuxBenchHub
           execution_result: exec_res,
           output_dir: run_output_dir.to_s,
           composite_xml_path: composite_path&.to_s,
-          manifest_path: manifest_path.to_s
+          manifest_path: manifest_path.to_s,
+          telemetry_report: telemetry_report,
+          telemetry_path: telemetry_path&.to_s
         )
       end
 

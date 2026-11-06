@@ -2,6 +2,7 @@
 
 require "json"
 require "time"
+require_relative "../hardware_telemetry/report"
 
 module LinuxBenchHub
   module WorkloadDispatch
@@ -9,12 +10,13 @@ module LinuxBenchHub
     class Manifest
       attr_accessor :run_id, :pipeline_name, :target_type, :distro,
                     :architecture, :kernel, :started_at, :completed_at,
-                    :duration_seconds, :status, :workloads, :artifacts, :errors
+                    :duration_seconds, :status, :workloads, :artifacts,
+                    :hardware_telemetry, :errors
 
       def initialize(run_id:, pipeline_name:, target_type:, distro: nil,
                      architecture: nil, kernel: nil, started_at: nil,
                      completed_at: nil, duration_seconds: 0.0, status: :pending,
-                     workloads: [], artifacts: {}, errors: [])
+                     workloads: [], artifacts: {}, hardware_telemetry: nil, errors: [])
         @run_id = run_id.to_s
         @pipeline_name = pipeline_name.to_s
         @target_type = target_type.to_sym
@@ -27,11 +29,24 @@ module LinuxBenchHub
         @status = status.to_sym
         @workloads = Array(workloads).map { |w| w.is_a?(Hash) ? w.transform_keys(&:to_sym) : w }
         @artifacts = (artifacts || {}).transform_keys(&:to_sym)
+        @hardware_telemetry = hardware_telemetry.is_a?(Hash) ? hardware_telemetry.transform_keys(&:to_sym) : hardware_telemetry
         @errors = Array(errors).map(&:to_s)
       end
 
       def success?
         @status == :success
+      end
+
+      def deterministic?
+        return nil if @hardware_telemetry.nil?
+
+        @hardware_telemetry[:deterministic]
+      end
+
+      def throttling_detected?
+        return false if @hardware_telemetry.nil?
+
+        !!@hardware_telemetry[:throttling_detected]
       end
 
       def to_h
@@ -47,6 +62,7 @@ module LinuxBenchHub
           duration_seconds: @duration_seconds,
           status: @status,
           workloads: @workloads,
+          hardware_telemetry: @hardware_telemetry,
           artifacts: @artifacts,
           errors: @errors
         }
@@ -74,13 +90,19 @@ module LinuxBenchHub
           "- **Target**: #{@target_type}",
           "- **Distro / Arch**: #{@distro || 'N/A'} (#{@architecture || 'N/A'})",
           "- **Kernel**: #{@kernel || 'N/A'}",
-          "- **Duration**: #{@duration_seconds.round(2)}s",
-          "",
-          "## Benchmark Workload Results",
-          "",
-          "| Category | Workload | Metric / Scale | Mean | StdDev | Status |",
-          "| :--- | :--- | :--- | :--- | :--- | :--- |"
+          "- **Duration**: #{@duration_seconds.round(2)}s"
         ]
+
+        if @hardware_telemetry
+          det_label = deterministic?.nil? ? "UNVERIFIED" : (deterministic? ? "NO THROTTLING OBSERVED" : "THROTTLING OBSERVED")
+          rows << "- **Hardware Determinism**: #{det_label}#{throttling_detected? ? ' (Thermal throttling detected)' : ''}"
+        end
+
+        rows << ""
+        rows << "## Benchmark Workload Results"
+        rows << ""
+        rows << "| Category | Workload | Metric / Scale | Mean | StdDev | Status |"
+        rows << "| :--- | :--- | :--- | :--- | :--- | :--- |"
 
         @workloads.each do |w|
           mean_str = w[:mean] ? sprintf("%.2f", w[:mean]) : "N/A"
@@ -89,7 +111,14 @@ module LinuxBenchHub
           rows << "| #{w[:category]} | #{w[:name] || w[:identifier]} | #{scale_str} | #{mean_str} | #{stddev_str} | #{w[:status]} |"
         end
 
-        rows.join("\n") + "\n"
+        content = rows.join("\n") + "\n"
+
+        if @hardware_telemetry
+          report = HardwareTelemetry::Report.from_h(@hardware_telemetry)
+          content += "\n" + report.summary_markdown
+        end
+
+        content
       end
 
       private

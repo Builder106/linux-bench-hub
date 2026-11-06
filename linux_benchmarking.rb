@@ -38,13 +38,16 @@ def install_test(test_name)
   status.success?
 end
 
-def run_benchmark(workloads: %i[cpu memory disk_io], target: :local, output_dir: "captures", run_id: nil)
+def run_benchmark(workloads: %i[cpu memory disk_io], target: :local, output_dir: "captures",
+                  run_id: nil, telemetry: true, telemetry_options: {})
   puts "Dispatching automated workload pipeline: #{workloads.join(', ')} (target: #{target})..."
   result = LinuxBenchHub::WorkloadDispatch.dispatch(
     workloads: workloads,
     target: target,
     output_dir: output_dir,
     run_id: run_id,
+    telemetry: telemetry,
+    telemetry_options: telemetry_options,
     logger: $stdout
   )
   puts "Workload dispatch finished with status: #{result.success? ? 'SUCCESS' : 'FAILED'}"

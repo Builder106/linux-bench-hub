@@ -14,7 +14,11 @@ options = {
   run_id: nil,
   dry_run: false,
   check_only: false,
-  list_workloads: false
+  list_workloads: false,
+  telemetry: true,
+  telemetry_interval: 1.0,
+  simulate_throttling: false,
+  telemetry_check: false
 }
 
 parser = OptionParser.new do |opts|
@@ -53,6 +57,22 @@ parser = OptionParser.new do |opts|
     options[:target] = :simulated
   end
 
+  opts.on("--[no-]telemetry", "Enable or disable deterministic hardware telemetry (default: enabled)") do |val|
+    options[:telemetry] = val
+  end
+
+  opts.on("--telemetry-interval SECONDS", Float, "Background telemetry polling interval in seconds (default: 1.0)") do |val|
+    options[:telemetry_interval] = val
+  end
+
+  opts.on("--simulate-throttle", "Simulate thermal throttling during simulated execution to test trap handlers") do
+    options[:simulate_throttling] = true
+  end
+
+  opts.on("--telemetry-check", "Inspect current hardware counters and thermal zones then exit") do
+    options[:telemetry_check] = true
+  end
+
   opts.on("-l", "--list", "List available benchmark workloads and exit") do
     options[:list_workloads] = true
   end
@@ -85,9 +105,45 @@ if options[:list_workloads]
   exit 0
 end
 
+if options[:telemetry_check]
+  puts "=========================================================="
+  puts " LinuxBenchHub Hardware Telemetry Preflight Check"
+  puts "=========================================================="
+  snap = LinuxBenchHub::HardwareTelemetry.snapshot
+  thermal = snap.thermal
+  freq = snap.cpu_freq
+  cpu = snap.cpu_stats
+
+  puts "Thermal Monitoring:"
+  puts "  - Discovered Zones: #{thermal[:zones]&.size || 0}"
+  thermal[:zones]&.each do |z|
+    puts "    * #{z[:id]} (#{z[:type]}): #{z[:temp_c] || 'N/A'}°C"
+  end
+  puts "  - Mean Temperature: #{thermal[:mean_temp_c] || 'N/A'}°C (Max: #{thermal[:max_temp_c] || 'N/A'}°C)"
+  puts "  - Throttle Registers: package=#{thermal[:package_throttle_count]}, core=#{thermal[:core_throttle_count]} (#{thermal[:package_throttle_time_ms]}ms)"
+
+  puts ""
+  puts "CPU & Frequency State:"
+  puts "  - Governor: #{freq[:governor]}"
+  puts "  - Frequencies: #{freq[:avg_mhz] || 'N/A'} MHz avg (Min: #{freq[:min_mhz] || 'N/A'} MHz, Max: #{freq[:max_mhz] || 'N/A'} MHz)"
+  puts "  - Core Count: #{freq[:cores]&.size || 'N/A'}"
+
+  puts ""
+  puts "Kernel Counters:"
+  puts "  - Context Switches: #{cpu[:ctxt]}"
+  puts "  - Processes Created: #{cpu[:processes]}"
+  puts "  - Running / Blocked: #{cpu[:procs_running]} / #{cpu[:procs_blocked]}"
+  exit 0
+end
+
 pipeline = LinuxBenchHub::WorkloadDispatch::Pipeline.standard(
   categories: options[:workloads],
-  output_dir: options[:output_dir]
+  output_dir: options[:output_dir],
+  telemetry: options[:telemetry],
+  telemetry_interval: options[:telemetry_interval],
+  telemetry_options: {
+    simulate_throttling: options[:simulate_throttling]
+  }
 )
 
 target = LinuxBenchHub::WorkloadDispatch.target_for(
