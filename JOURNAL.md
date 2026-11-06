@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-11-06: Mark lbh-telemetry binary executable in git index #ci #fix
+
+The `bin/lbh-telemetry` CLI script was checked into git with non-executable mode `100644`. In CI under Linux, `HardwareTelemetryTest` execution failed with `Errno::EACCES: Permission denied` during subprocess spawn. Updated the git file mode to `100755` (`+x`).
+
 ## 2026-11-06: Add backend cross-kernel regression comparison #feature #milestone #decision
 
 Added `bin/lbh-compare-kernels` and a standalone Ruby comparison library over existing single-system PTS sample traces. Metrics match by exact profile version, application version, arguments, description, unit, and direction; JSON reports retain raw samples, means, signed changes, and added/removed metrics. A configurable 5% default tolerance flags regressions without claiming statistical significance. Matching recorded architecture, hardware, userland, and PTS version is required, while metadata and warnings preserve the limits of attributing changes to kernels on shared hosts; users must inspect telemetry separately. Invalid/ambiguous captures fail closed, and automation distinguishes regressions from incomplete or incompatible evidence. This reuses `composite.xml` without changing capture workflows or frontend code; stack/event trace visualization remains the next milestone. Verification covers 15 comparison tests with 204 assertions, all existing Ruby suites, full Rails line/branch coverage, lint/security checks, R parsing/lint, and production builds.
