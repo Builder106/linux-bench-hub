@@ -15,6 +15,10 @@
 
 > **Automated performance testing for Linux.** Compares the speed and memory efficiency of Ubuntu, Fedora, and Debian on identical virtual machines.
 
+<p align="center">
+  <img src="assets/screenshot.png" alt="The LinuxBenchHub results page: a honeycomb of Ubuntu, Fedora and Debian tiles for two machines, with Memcpy, Memset, C-Ray and Aircrack-ng results and the best result in each row lit." width="880">
+</p>
+
 ## 💡 What is LinuxBenchHub?
 
 Different flavors of Linux (Ubuntu, Fedora, Debian) often claim performance advantages, but comparing them fairly requires running identical tests on identical virtual hardware. LinuxBenchHub automates monthly speed, CPU, and memory benchmarks across operating systems, publishing clear comparison charts and raw data to show which setup is truly fastest.
