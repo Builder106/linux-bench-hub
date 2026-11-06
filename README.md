@@ -108,6 +108,19 @@ To re-derive markdown writeups from `composite.xml` files locally:
 ruby benchmarks/generate_writeup.rb
 ```
 
+To compare benchmark sample traces captured under different kernels on matching
+recorded hardware and userland:
+
+```bash
+bin/lbh-compare-kernels --threshold 5 baseline/composite.xml candidate/composite.xml > diff.json
+```
+
+The JSON diff reports direction-aware regressions and added/removed metrics.
+Exit codes are 0 for a passing comparison, 1 for regressions, and 2 for incomplete,
+incompatible, or invalid evidence. See the
+[cross-kernel specification](docs/specs/kernel_comparison.md) for matching rules
+and attribution limits.
+
 ## Capturing arm64 (Ampere)
 
 The ARM64 tests run on a long-lived Oracle Cloud Always-Free Ampere A1 server. Cloud infrastructure setup is managed via OpenTofu in [`infra/oci-ampere/`](infra/oci-ampere/).

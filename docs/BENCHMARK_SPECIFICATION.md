@@ -66,3 +66,15 @@ The hardware telemetry engine (`lib/linux_bench_hub/hardware_telemetry/` and `bi
 - **Artifacts**: Ruby dispatches emit `telemetry.json` plus manifest and Markdown sections. The shared monthly capture runner collects inside each benchmark container; both architecture matrices archive dated JSON and `telemetry-latest.json` alongside validated XML. Capture failures preserve prior output.
 - **Scope**: Samples are bounded and use a configurable one-second default interval. Reports label native, simulated, and unavailable collection. Remote Ruby dispatches require target-side collection; the orchestrator's counters are never presented as remote measurements.
 - **Specification**: See [`docs/specs/hardware_telemetry.md`](specs/hardware_telemetry.md) for availability semantics, limitations, and CLI usage.
+
+## 6. Cross-Kernel Comparison Engine
+
+`bin/lbh-compare-kernels BASELINE.xml CANDIDATE.xml` compares PTS sample traces
+across kernel versions with a configurable regression tolerance (default 5%).
+It requires matching recorded hardware, architecture, userland, and PTS version,
+matches metrics by their full versioned profile and parameters, and emits a JSON
+diff with raw samples, means, direction-aware changes, and added/removed metrics.
+Exit codes distinguish passing comparisons, regressions, and incomplete or
+incompatible evidence. Matching metadata does not establish kernel causality;
+inspect telemetry and capture context before attribution. See the
+[comparison specification](specs/kernel_comparison.md) for the contract and CLI.

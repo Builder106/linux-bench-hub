@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "optparse"
+require_relative "../lib/linux_bench_hub/kernel_comparison"
+
+options = { threshold_percent: 5.0 }
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: bin/lbh-compare-kernels [options] BASELINE.xml CANDIDATE.xml"
+  opts.on("--threshold PERCENT", Float, "Regression tolerance (default: 5%)") { |value| options[:threshold_percent] = value }
+  opts.on("-h", "--help", "Show usage") { puts opts; exit 0 }
+end
+
+begin
+  parser.parse!(ARGV)
+  raise ArgumentError, parser.to_s unless ARGV.size == 2
+
+  engine = LinuxBenchHub::KernelComparison::Engine.new(**options)
+  baseline, candidate = ARGV.map { |path| LinuxBenchHub::KernelComparison::Capture.load(path) }
+  report = engine.compare(baseline, candidate)
+  puts JSON.pretty_generate(report)
+  exit({ "passed" => 0, "regression" => 1 }.fetch(report.fetch(:status), 2))
+rescue OptionParser::ParseError, ArgumentError, SystemCallError => e
+  warn "Kernel comparison failed: #{e.message}"
+  exit 2
+end

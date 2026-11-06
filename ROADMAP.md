@@ -9,7 +9,7 @@ Linux kernel and server benchmarking orchestration roadmap.
 
 ## v1.2 — Interactive Performance Dashboard
 
-- [ ] **Cross-Kernel Comparison Engine**: Automated diffing of regression traces across kernel versions.
+- [x] **Cross-Kernel Comparison Engine**: Automated diffing of regression traces across kernel versions.
 - [ ] **Perfetto / FlameGraph Integration**: Trace visualization export for kernel bottlenecks.
 
 ## Out of Scope
