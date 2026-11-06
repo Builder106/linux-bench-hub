@@ -5,7 +5,7 @@ Linux kernel and server benchmarking orchestration roadmap.
 ## v1.1 — Automated Suite Runner
 
 - [x] **Automated Workload Dispatch**: Reproducible benchmark pipelines for CPU, memory bandwidth, and disk I/O.
-- [ ] **Deterministic Hardware Telemetry**: Low-overhead hardware counters and thermal throttling monitoring.
+- [x] **Deterministic Hardware Telemetry**: Low-overhead hardware counters and thermal throttling monitoring.
 
 ## v1.2 — Interactive Performance Dashboard
 
