@@ -4,7 +4,9 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
-## 2026-11-06: Move Rails to 8.1.4.1 to clear the dependency audit #ci #incident
+## 2026-11-06: Implement automated workload dispatch for CPU, memory, and disk I/O #feature #milestone
+
+Implemented the v1.1 automated workload dispatch engine across CPU (C-Ray raytracing), memory bandwidth (Tinymembench memcpy and memset), and block storage disk I/O (Flexible I/O Tester). Built a modular pipeline runner (`lib/linux_bench_hub/workload_dispatch/`) and CLI tool (`bin/lbh-dispatch`) supporting local execution, containerized distro runs (Ubuntu 26.04, Fedora 44, Debian 13), remote SSH targets, and deterministic simulated execution. Workloads execute non-interactively via pre-seeded response streams to eliminate prompt drift, while preflight checks trap dependency issues and missing tool profiles before benchmark execution. Completed runs emit structured execution manifests (`manifest.json`), validation summaries, and schema-compliant `composite.xml` artifacts. Added technical specification in `docs/specs/workload_dispatch.md`, updated `docs/BENCHMARK_SPECIFICATION.md`, refactored `linux_benchmarking.rb` around the dispatcher, and verified clean passes across new and existing Minitest suites, Rails tests (100% line and branch coverage), Rubocop, Brakeman, and R syntax parsers.
 
 The Ruby dependency audit began failing on 2026-11-05 with advisories against Rails 8.1.4 (Active Storage, Active Support). CI stayed red on every push after that, and the deploy job is skipped when CI fails, so nothing shipped. The Gemfile pin `~> 8.1.4` already allows the fix, so this is a lockfile-only update to 8.1.4.1. The audit, tests, rubocop and brakeman pass on it.
 
