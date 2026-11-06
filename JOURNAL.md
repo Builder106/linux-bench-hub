@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-11-06: Make the social preview tags absolute #fix
+
+The layout set `og:image` to `/social-card.png`, a relative path that link preview crawlers don't resolve, and had no `og:url` or `twitter:image`. It now builds absolute URLs from one `site_url` and adds the missing tags and the image size. A controller test pins them. The committed `website/export/` pages were updated to match. An `export:static` run in development adds template-name comments to every page, so the nine pages were patched in place instead, and each was checked against a fresh render with whitespace and comments ignored.
+
 ## 2026-10-27: Run Brakeman in the active CI workflow #ci #decision
 
 The root workflow now runs Brakeman in its Rails job. GitHub does not load the nested website workflow, so the security scan must run from the root workflow.
