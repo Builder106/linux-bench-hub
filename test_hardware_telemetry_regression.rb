@@ -87,6 +87,18 @@ class HardwareTelemetryRegressionTest < Minitest::Test
     assert_nil report.deterministic?
   end
 
+  def test_sensor_disappearance_remains_unverified_after_samples_are_discarded
+    cpu
+    c = collector.start
+    FileUtils.rm_rf(File.join(@sys, "devices/system/cpu"))
+    c.capture_sample(index: 1, elapsed: 1)
+    cpu
+    report = c.stop
+    assert_nil report.deterministic?
+    refute report.thermal[:throttling_available]
+    refute report.throttling_detected?
+  end
+
   def test_package_counts_and_times_are_deduplicated_independently
     cpu(cpu: 0, count: 5, time: 100)
     cpu(cpu: 1, count: 5, time: 130)
@@ -112,6 +124,26 @@ class HardwareTelemetryRegressionTest < Minitest::Test
     report = c.stop
     assert_equal 105.0, report.thermal[:peak_celsius]
     assert_nil report.thermal[:headroom_celsius] # no critical trip was exposed
+  end
+
+  def test_malformed_kernel_counters_and_frequency_are_not_zero_measurements
+    write("proc/stat", "broken")
+    write("proc/vmstat", "pgfault broken")
+    write("sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq", "broken")
+    state = HT::Counters.new(procfs_root: @proc, sysfs_root: @sys).read_state
+    assert_empty state[:cpu_stats]
+    assert_empty state[:vm_stats]
+    assert_nil state.dig(:cpu_freq, :avg_mhz)
+    c = collector.start
+    assert_nil c.stop.deterministic?
+  end
+
+  def test_cli_json_and_exit_status_match_wrapped_command
+    tool = File.expand_path("bin/lbh-telemetry", __dir__)
+    stdout, stderr, status = Open3.capture3(RbConfig.ruby, tool, "--simulate", "--json", "--exec", "echo child-output; exit 17")
+    assert_equal 17, status.exitstatus
+    assert_equal "simulated", JSON.parse(stdout).fetch("source")
+    assert_includes stderr, "child-output"
   end
 
   def test_invalid_sensor_values_are_unavailable
@@ -148,18 +180,19 @@ class HardwareTelemetryRegressionTest < Minitest::Test
   end
 
   def test_dispatch_exception_stops_collector
-    active = collector(interval: 60)
-    target = Class.new(WD::SimulatedTarget) do
-      def execute(*)
-        raise "benchmark failed"
-      end
-    end.new
-    HT::Collector.stub(:new, active) do
-      assert_raises(RuntimeError) do
-        WD::Dispatcher.new.dispatch(WD::Pipeline.standard(output_dir: @root), target)
-      end
+    baseline = Thread.list
+    sampled_threads = []
+    target = WD::SimulatedTarget.new
+    target.define_singleton_method(:target_type) { :local }
+    target.define_singleton_method(:execute) do |*|
+      sampled_threads.concat(Thread.list - baseline)
+      raise "benchmark failed"
     end
-    refute active.sampler.running?
+    pipeline = WD::Pipeline.standard(output_dir: @root, telemetry_interval: 60,
+                                    telemetry_options: { perf: false, procfs_root: @proc, sysfs_root: @sys })
+    assert_raises(RuntimeError) { WD::Dispatcher.new.dispatch(pipeline, target) }
+    assert_equal 1, sampled_threads.size
+    sampled_threads.each { |thread| refute thread.alive? }
   end
 
   def test_remote_targets_are_not_measured_on_the_dispatch_host

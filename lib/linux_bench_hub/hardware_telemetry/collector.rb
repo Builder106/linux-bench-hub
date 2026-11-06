@@ -42,6 +42,7 @@ module LinuxBenchHub
         @peak_temp = @initial_snapshot.thermal[:max_temp_c]
         @last_thermal = @initial_snapshot.thermal
         @observed_throttling = false
+        @coverage_complete = true
         @perf&.start
         if @interval.positive? && ![ :simulated, :unavailable ].include?(@mode)
           @sampler = Sampler.new(self, interval: @interval)
@@ -65,6 +66,7 @@ module LinuxBenchHub
         @peak_temp = [ @peak_temp, peak ].compact.max
         delta = @thermal_monitor.compute_delta(@last_thermal, thermal)
         @observed_throttling ||= delta[:throttling_detected]
+        @coverage_complete &&= delta[:throttling_available]
         @last_thermal = thermal
         freq = @counters.read_cpu_freq
         {
@@ -89,6 +91,7 @@ module LinuxBenchHub
         thermal = @thermal_monitor.compute_delta(@initial_snapshot.thermal, @final_snapshot.thermal, samples)
         thermal[:peak_celsius] = [ thermal[:peak_celsius], @peak_temp ].compact.max
         thermal[:throttling_detected] ||= @observed_throttling
+        thermal[:throttling_available] &&= @coverage_complete
         if thermal[:peak_celsius] && thermal[:critical_temp_celsius]
           thermal[:headroom_celsius] = thermal[:critical_temp_celsius] - thermal[:peak_celsius]
         end

@@ -31,11 +31,7 @@ module LinuxBenchHub
         stat_file = @procfs_root.join("stat")
         return {} unless stat_file.file?
 
-        res = {
-          user: 0, nice: 0, system: 0, idle: 0, iowait: 0,
-          irq: 0, softirq: 0, steal: 0, guest: 0, guest_nice: 0,
-          ctxt: 0, processes: 0, procs_running: 0, procs_blocked: 0
-        }
+        res = {}
 
         File.foreach(stat_file) do |line|
           case line
@@ -61,7 +57,7 @@ module LinuxBenchHub
           end
         end
 
-        res
+        res.key?(:user) && res.key?(:idle) ? res : {}
       rescue SystemCallError, IOError
         {}
       end
@@ -71,7 +67,7 @@ module LinuxBenchHub
         vmstat_file = @procfs_root.join("vmstat")
         return {} unless vmstat_file.file?
 
-        res = { pgfault: 0, pgmajfault: 0, pgpgin: 0, pgpgout: 0 }
+        res = {}
 
         File.foreach(vmstat_file) do |line|
           case line
@@ -104,7 +100,12 @@ module LinuxBenchHub
             next unless cpufreq_dir.directory?
 
             freq_raw = read_trimmed_file(cpufreq_dir.join("scaling_cur_freq"))
-            frequencies << (freq_raw.to_f / 1000.0).round(1) if freq_raw
+            begin
+              freq = Float(freq_raw)
+              frequencies << (freq / 1000.0).round(1) if freq.finite? && freq.positive?
+            rescue ArgumentError, TypeError
+              # Offline CPUs and unsupported files do not represent 0 MHz.
+            end
 
             governor ||= read_trimmed_file(cpufreq_dir.join("scaling_governor"))
           end
@@ -135,19 +136,19 @@ module LinuxBenchHub
         fin_vm = final_snapshot.vm_stats || {}
 
         # Context switches
-        ctxt_delta = [ 0, (fin_cpu[:ctxt] || 0) - (init_cpu[:ctxt] || 0) ].max
-        ctxt_rate = (ctxt_delta / dur).round(1)
+        ctxt_delta = count_delta(init_cpu, fin_cpu, :ctxt)
+        ctxt_rate = ctxt_delta && (ctxt_delta / dur).round(1)
 
         # Page faults
-        pgfault_delta = [ 0, (fin_vm[:pgfault] || 0) - (init_vm[:pgfault] || 0) ].max
-        pgfault_rate = (pgfault_delta / dur).round(1)
+        pgfault_delta = count_delta(init_vm, fin_vm, :pgfault)
+        pgfault_rate = pgfault_delta && (pgfault_delta / dur).round(1)
 
-        pgmajfault_delta = [ 0, (fin_vm[:pgmajfault] || 0) - (init_vm[:pgmajfault] || 0) ].max
-        pgmajfault_rate = (pgmajfault_delta / dur).round(1)
+        pgmajfault_delta = count_delta(init_vm, fin_vm, :pgmajfault)
+        pgmajfault_rate = pgmajfault_delta && (pgmajfault_delta / dur).round(1)
 
         # Process creations (forks)
-        procs_delta = [ 0, (fin_cpu[:processes] || 0) - (init_cpu[:processes] || 0) ].max
-        procs_rate = (procs_delta / dur).round(1)
+        procs_delta = count_delta(init_cpu, fin_cpu, :processes)
+        procs_rate = procs_delta && (procs_delta / dur).round(1)
 
         # CPU Utilization Breakdown
         utilization = compute_cpu_utilization(init_cpu, fin_cpu)
@@ -174,6 +175,12 @@ module LinuxBenchHub
       end
 
       private
+
+      def count_delta(initial, final, key)
+        return nil unless initial.key?(key) && final.key?(key) && final[key] >= initial[key]
+
+        final[key] - initial[key]
+      end
 
       def read_trimmed_file(path)
         return nil unless path.file?
