@@ -1,10 +1,10 @@
 name: Capture benchmarks
 
 # Monthly captures of the pinned CPU, memory, crypto, and disk suite across the
-# three target distros. Each matrix entry runs inside a distro container on
-# the same ubuntu-latest runner so the underlying CPU is identical across
-# distros — the comparison is fair, but absolute numbers are virtualized
-# runner numbers, not bare-metal numbers. The previous bare-metal sample
+# three target distros. Each x86 matrix entry runs on a separate GitHub-hosted
+# runner, so hardware can differ; compare recorded hardware before drawing
+# cross-distro conclusions. Absolute numbers include virtualization and the
+# container filesystem, not bare-metal performance. The previous sample
 # stays in benchmarks/ubuntu/composite.xml as the historical reference.
 #
 # The benchmark runs themselves are fully independent (different distros,

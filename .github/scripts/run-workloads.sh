@@ -15,6 +15,17 @@ export FORCE_TIMES_TO_RUN=3
 mkdir -p "$run_root/test-suites/local/lbh-workloads"
 cp "$scripts_dir/pts-batch-config.xml" "$run_root/user-config.xml"
 cp "$scripts_dir/workload-suite.xml" "$run_root/test-suites/local/lbh-workloads/suite-definition.xml"
+# Non-root PTS defaults can still expand to the real home directory even
+# with PTS_USER_PATH_OVERRIDE. Set absolute paths for both execution modes.
+mkdir -p "$run_root/installed-tests"
+export PTS_TEST_INSTALL_ROOT_PATH="$run_root/installed-tests/"
+# shellcheck disable=SC2016 # PHP variables must reach PHP without shell expansion.
+php -r '
+  $xml = simplexml_load_file($argv[1]);
+  $xml->Options->Installation->EnvironmentDirectory = $argv[2] . "/installed-tests/";
+  $xml->Options->Testing->ResultsDirectory = $argv[2] . "/test-results/";
+  if ($xml->asXML($argv[1]) === false) { exit(1); }
+' "$run_root/user-config.xml" "$run_root"
 
 printf 'y\nn\nn\nn\nn\nn\nn\n' | phoronix-test-suite batch-setup
 # All options are in the suite; stdin is closed so new prompts cannot hang CI.

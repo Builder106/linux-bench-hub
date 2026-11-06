@@ -4,12 +4,30 @@ This document details the benchmark suites, automated capture workflows, hardwar
 
 ## 1. Phoronix Test Suite (PTS) Workloads
 
-Captured monthly across identical virtual hardware:
+Captured monthly with fixed profiles; comparisons require matching recorded hardware:
 
 - **`pts/c-ray-2.0.0`**: CPU raytracing performance (1080p @ 16 rays per pixel). Output unit: `Seconds` (lower is faster).
-- **`pts/tinymembench-1.0.2`**: Sub-cache memory bandwidth (`memcpy` and `memset`). Output unit: `MB/s` (higher is faster).
+- **`pts/tinymembench-1.0.2`**: Sub-cache memory bandwidth (`memcpy`and`memset`). Output unit: `MB/s` (higher is faster).
 - **`pts/aircrack-ng-1.3.0`**: Multithreaded cryptographic network hash rate. Output unit: `k/s` (higher is faster).
-- **`pts/fio-2.1.0`**: Flexible I/O Tester for synchronous and asynchronous disk I/O throughput and latency (sequential and random read/write). Output unit: `MB/s` / `IOPS` (higher is faster).
+- **`pts/fio-2.1.0`**: Sequential disk read and write bandwidth. One job, Linux AIO, direct I/O, 1 MiB blocks, and a 1 GiB regular file in the test installation directory. Each sample has a 20-second start delay, 5-second ramp, and 60-second runtime. Output includes `MB/s` and `IOPS` (higher is faster).
+
+### Reproducible workload dispatch
+
+Both capture matrices invoke `.github/scripts/container-capture.sh`, which installs PTS 10.8.4 at commit `f0365737ae42c2a4ae80c28491a8c0ac22a10f3c`, then calls `run-workloads.sh`. The versioned `workload-suite.xml` is the single definition of profile versions and arguments. It preserves the historical CPU, memory, and crypto parameters and adds two disk operations. Every metric has exactly three samples; dynamic repetition is disabled. Change the suite version when changing its workload parameters.
+
+FIO's pinned wrapper consumes argument positions 1–4 for operation, engine, direct I/O, and block size, and position 6 for job count. The unused fifth argument preserves that position; omitting the seventh argument selects a regular `fiofile` inside the test directory. The suite never targets a block device. The scratch directory and test file are removed after the run.
+
+Each invocation creates an isolated PTS root, closes benchmark stdin, and limits benchmark execution to 120 minutes. `validate-workloads.php` requires a single system and one result entry per metric, the pinned profile identifiers, exact arguments and units, and three finite positive samples. CPU, both memcpy/memset metrics, crypto, and both disk bandwidth results must all be present. PTS may skip failed installs while returning success, so an exit status alone is insufficient. Missing, malformed, partial, or stale captures cannot replace published output. Successful validation atomically writes `composite.xml`; the workflow retains the existing dated archives and `composite-latest.xml` paths.
+
+To repeat a capture, use the workflow's manual dispatch (distribution selection and optional ARM64), or install a matrix's package dependencies in its distro container and run:
+
+```bash
+bash .github/scripts/container-capture.sh /output
+```
+
+With PTS already installed, `bash .github/scripts/run-workloads.sh /output` runs the same suite without reinstalling PTS. Required tools include Bash, GNU coreutils (`timeout`), PHP with SimpleXML, a compiler toolchain, and libaio development headers. The workflow supplies these for all six distro/architecture combinations. Test dispatch without running expensive benchmarks using `ruby test_workload_dispatch.rb`; its fake PTS process exercises publication and failure paths. CI also runs shellcheck and PHP syntax validation.
+
+Reproducibility here means fixed workload definitions and sample counts, not identical timings. Distribution image tags and package repositories can change. GitHub matrix jobs may receive different physical hosts, and container disk measurements include the host storage and Docker filesystem. Compare only captures with matching hardware/storage context; ARM64 and x86_64 results remain separate. Historical captures remain valid history and are not rewritten to add disk measurements.
 
 ## 2. Infrastructure & Execution Pipelines
 
@@ -22,7 +40,7 @@ Captured monthly across identical virtual hardware:
 
 - Always-Free Oracle Cloud Infrastructure Ampere A1 VM (4 OCPU, 24 GB RAM, Neoverse-N1).
 - Infrastructure provisioned via OpenTofu in `infra/oci-ampere/`.
-- CI SSH orchestration triggers `/usr/local/bin/lbh-capture` non-interactively, returning `composite-latest.xml`.
+- CI SSH orchestration runs the shared capture script in each distro container, then retrieves the validated XML. The host's legacy `/usr/local/bin/lbh-capture` helper is separate from this automated pipeline.
 
 ## 3. Web Showcase & Static Export Engine
 

@@ -16,7 +16,7 @@ class WorkloadDispatchTest < Minitest::Test
     @fixture = File.join(@dir, "capture.xml")
     @output = File.join(@dir, "output")
     @log = File.join(@dir, "run-root")
-    @document = REXML::Document.new(File.read(File.join(ROOT, "benchmarks/ubuntu/composite-latest.xml")))
+    @document = REXML::Document.new(File.read(File.join(ROOT, "benchmarks/ubuntu/captures/composite-2026-09-01.xml")))
     @document.elements.each("PhoronixTestSuite/Result/Data/Entry/RawString") do |raw|
       raw.text = raw.text.split(":").first(3).join(":")
     end
@@ -97,7 +97,7 @@ class WorkloadDispatchTest < Minitest::Test
   end
 
   def test_rejects_missing_and_malformed_xml
-    [nil, "<broken", "<Other/>", "<PhoronixTestSuite/>"].each do |content|
+    [ nil, "<broken", "<Other/>", "<PhoronixTestSuite/>" ].each do |content|
       File.write(@fixture, content) if content
       _stdout, _stderr, status = Open3.capture3("php", File.join(SCRIPTS, "validate-workloads.php"), @fixture)
       refute status.success?
@@ -117,6 +117,8 @@ class WorkloadDispatchTest < Minitest::Test
           test "$FORCE_TIMES_TO_RUN" = 3
           test -f "$PTS_USER_PATH_OVERRIDE/test-suites/local/lbh-workloads/suite-definition.xml"
           test -f "$PTS_USER_PATH_OVERRIDE/user-config.xml"
+          test "$PTS_TEST_INSTALL_ROOT_PATH" = "$PTS_USER_PATH_OVERRIDE"installed-tests/
+          grep -F "<ResultsDirectory>$PTS_USER_PATH_OVERRIDE"test-results/ "${PTS_USER_PATH_OVERRIDE}user-config.xml" >/dev/null
           ! read -r unexpected
           printf '%s' "$PTS_USER_PATH_OVERRIDE" > "$FAKE_LOG"
           test "$FAKE_MODE" != failure || exit 17
