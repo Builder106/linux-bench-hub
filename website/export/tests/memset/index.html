@@ -93,111 +93,112 @@
 
     <section class="pull-row" data-arch="x86_64" aria-labelledby="pull-x86_64">
       <h2 class="comb-title" id="pull-x86_64">
-        x86_64 <span class="comb-machine">on AMD EPYC 9V74, Linux 6.17.0-1022-azure</span>
+        x86_64 <span class="comb-machine">on AMD EPYC 7763, Linux 7.0.0-1017-azure</span>
       </h2>
       <div class="pull-cells">
           <div class="hex hex-test" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-memset-ubuntu-x86_64">
             <span class="hex-name">Ubuntu</span>
-              <strong class="hex-value">46,074</strong>
-              <span class="hex-sub">MB/s, mean of 6 runs</span>
-              <span class="hex-gap">5.5% behind</span>
+              <strong class="hex-value">27,907</strong>
+              <span class="hex-sub">MB/s, mean of 3 runs</span>
+              <span class="hex-gap">5.6% behind</span>
           </div>
           <div class="hex hex-test" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-memset-fedora-x86_64">
             <span class="hex-name">Fedora</span>
-              <span class="hex-none">no runs</span>
-              <span class="hex-sub">lbh-fedora-ci-2026-09-01</span>
+              <strong class="hex-value">26,674</strong>
+              <span class="hex-sub">MB/s, mean of 3 runs</span>
+              <span class="hex-gap">9.7% behind</span>
           </div>
           <div class="hex hex-test is-best" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-memset-debian-x86_64">
             <span class="hex-name">Debian</span>
-              <strong class="hex-value">48,734</strong>
-              <span class="hex-sub">MB/s, mean of 4 runs</span>
+              <strong class="hex-value">29,554</strong>
+              <span class="hex-sub">MB/s, mean of 3 runs</span>
               <span class="hex-gap">best</span>
           </div>
       </div>
 
       <ul class="runs" aria-label="Every Memset run on x86_64">
-        <li class="runs-scale" aria-hidden="true"><span>34,120</span><span class="scale-line"></span><span>58,486 MB/s</span></li>
+        <li class="runs-scale" aria-hidden="true"><span>24,893</span><span class="scale-line"></span><span>33,288 MB/s</span></li>
           <li class="run-lane" data-distro="ubuntu">
             <span class="run-name">Ubuntu</span>
-              <span class="raw"><b>49772.8</b>:<b>36931.7</b>:<b>43924.4</b>:<b>55674.3</b>:<b>48922</b>:<b>41218.9</b></span>
-              <span class="band" role="img" aria-label="Ubuntu x86_64: 6 runs from 36,932 to 55,674 MB/s, mean 46,074">
-                  <i style="--x: 64.241%" data-flip-id="memset-ubuntu-x86_64-0"></i>
-                  <i style="--x: 11.538%" data-flip-id="memset-ubuntu-x86_64-1"></i>
-                  <i style="--x: 40.238%" data-flip-id="memset-ubuntu-x86_64-2"></i>
-                  <i style="--x: 88.462%" data-flip-id="memset-ubuntu-x86_64-3"></i>
-                  <i style="--x: 60.749%" data-flip-id="memset-ubuntu-x86_64-4"></i>
-                  <i style="--x: 29.134%" data-flip-id="memset-ubuntu-x86_64-5"></i>
+              <span class="raw"><b>26035.5</b>:<b>27023.7</b>:<b>30662.7</b></span>
+              <span class="band" role="img" aria-label="Ubuntu x86_64: 3 runs from 26,036 to 30,663 MB/s, mean 27,907">
+                  <i style="--x: 13.612%" data-flip-id="memset-ubuntu-x86_64-0"></i>
+                  <i style="--x: 25.383%" data-flip-id="memset-ubuntu-x86_64-1"></i>
+                  <i style="--x: 68.728%" data-flip-id="memset-ubuntu-x86_64-2"></i>
               </span>
           </li>
           <li class="run-lane" data-distro="fedora">
             <span class="run-name">Fedora</span>
-              <span class="raw raw-empty">no runs in lbh-fedora-ci-2026-09-01</span>
-              <span class="band"></span>
+              <span class="raw"><b>25861.4</b>:<b>27994</b>:<b>26166.5</b></span>
+              <span class="band" role="img" aria-label="Fedora x86_64: 3 runs from 25,861 to 27,994 MB/s, mean 26,674">
+                  <i style="--x: 11.538%" data-flip-id="memset-fedora-x86_64-0"></i>
+                  <i style="--x: 36.940%" data-flip-id="memset-fedora-x86_64-1"></i>
+                  <i style="--x: 15.173%" data-flip-id="memset-fedora-x86_64-2"></i>
+              </span>
           </li>
           <li class="run-lane" data-distro="debian">
             <span class="run-name">Debian</span>
-              <span class="raw"><b>46173.7</b>:<b>54573.7</b>:<b>43066.8</b>:<b>51123.2</b></span>
-              <span class="band" role="img" aria-label="Debian x86_64: 4 runs from 43,067 to 54,574 MB/s, mean 48,734">
-                  <i style="--x: 49.469%" data-flip-id="memset-debian-x86_64-0"></i>
-                  <i style="--x: 83.944%" data-flip-id="memset-debian-x86_64-1"></i>
-                  <i style="--x: 36.718%" data-flip-id="memset-debian-x86_64-2"></i>
-                  <i style="--x: 69.783%" data-flip-id="memset-debian-x86_64-3"></i>
+              <span class="raw"><b>28812.8</b>:<b>27528.5</b>:<b>32319.4</b></span>
+              <span class="band" role="img" aria-label="Debian x86_64: 3 runs from 27,529 to 32,319 MB/s, mean 29,554">
+                  <i style="--x: 46.693%" data-flip-id="memset-debian-x86_64-0"></i>
+                  <i style="--x: 31.396%" data-flip-id="memset-debian-x86_64-1"></i>
+                  <i style="--x: 88.462%" data-flip-id="memset-debian-x86_64-2"></i>
               </span>
           </li>
       </ul>
     </section>
     <section class="pull-row" data-arch="arm64" aria-labelledby="pull-arm64">
       <h2 class="comb-title" id="pull-arm64">
-        arm64 <span class="comb-machine">on ARMv8 Neoverse-N1, Linux 6.17.0-1018-oracle</span>
+        arm64 <span class="comb-machine">on ARMv8 Neoverse-N1, Linux 7.0.0-1013-oracle</span>
       </h2>
       <div class="pull-cells">
           <div class="hex hex-test is-best" style="--col: 0; --row: 0; --lift: 0" data-distro="ubuntu" data-flip-id="cell-memset-ubuntu-arm64">
             <span class="hex-name">Ubuntu</span>
-              <strong class="hex-value">47,490</strong>
+              <strong class="hex-value">47,241</strong>
               <span class="hex-sub">MB/s, mean of 3 runs</span>
               <span class="hex-gap">best</span>
           </div>
           <div class="hex hex-test" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" data-flip-id="cell-memset-fedora-arm64">
             <span class="hex-name">Fedora</span>
-              <strong class="hex-value">47,449</strong>
+              <strong class="hex-value">47,093</strong>
               <span class="hex-sub">MB/s, mean of 3 runs</span>
-              <span class="hex-gap">0.1% behind</span>
+              <span class="hex-gap">0.3% behind</span>
           </div>
           <div class="hex hex-test" style="--col: 2; --row: 0; --lift: 0" data-distro="debian" data-flip-id="cell-memset-debian-arm64">
             <span class="hex-name">Debian</span>
-              <strong class="hex-value">47,471</strong>
+              <strong class="hex-value">47,117</strong>
               <span class="hex-sub">MB/s, mean of 3 runs</span>
-              <span class="hex-gap">0.0% behind</span>
+              <span class="hex-gap">0.3% behind</span>
           </div>
       </div>
 
       <ul class="runs" aria-label="Every Memset run on arm64">
-        <li class="runs-scale" aria-hidden="true"><span>47,357</span><span class="scale-line"></span><span>47,576 MB/s</span></li>
+        <li class="runs-scale" aria-hidden="true"><span>46,718</span><span class="scale-line"></span><span>47,433 MB/s</span></li>
           <li class="run-lane" data-distro="ubuntu">
             <span class="run-name">Ubuntu</span>
-              <span class="raw"><b>47491.2</b>:<b>47506.3</b>:<b>47472.9</b></span>
-              <span class="band" role="img" aria-label="Ubuntu arm64: 3 runs from 47,473 to 47,506 MB/s, mean 47,490">
-                  <i style="--x: 61.226%" data-flip-id="memset-ubuntu-arm64-0"></i>
-                  <i style="--x: 68.104%" data-flip-id="memset-ubuntu-arm64-1"></i>
-                  <i style="--x: 52.892%" data-flip-id="memset-ubuntu-arm64-2"></i>
+              <span class="raw"><b>47334.5</b>:<b>47154.6</b>:<b>47233.9</b></span>
+              <span class="band" role="img" aria-label="Ubuntu arm64: 3 runs from 47,155 to 47,335 MB/s, mean 47,241">
+                  <i style="--x: 86.197%" data-flip-id="memset-ubuntu-arm64-0"></i>
+                  <i style="--x: 61.045%" data-flip-id="memset-ubuntu-arm64-1"></i>
+                  <i style="--x: 72.132%" data-flip-id="memset-ubuntu-arm64-2"></i>
               </span>
           </li>
           <li class="run-lane" data-distro="fedora">
             <span class="run-name">Fedora</span>
-              <span class="raw"><b>47382.1</b>:<b>47551</b>:<b>47413</b></span>
-              <span class="band" role="img" aria-label="Fedora arm64: 3 runs from 47,382 to 47,551 MB/s, mean 47,449">
-                  <i style="--x: 11.538%" data-flip-id="memset-fedora-arm64-0"></i>
+              <span class="raw"><b>47128.4</b>:<b>47350.7</b>:<b>46800.5</b></span>
+              <span class="band" role="img" aria-label="Fedora arm64: 3 runs from 46,801 to 47,351 MB/s, mean 47,093">
+                  <i style="--x: 57.382%" data-flip-id="memset-fedora-arm64-0"></i>
                   <i style="--x: 88.462%" data-flip-id="memset-fedora-arm64-1"></i>
-                  <i style="--x: 25.611%" data-flip-id="memset-fedora-arm64-2"></i>
+                  <i style="--x: 11.538%" data-flip-id="memset-fedora-arm64-2"></i>
               </span>
           </li>
           <li class="run-lane" data-distro="debian">
             <span class="run-name">Debian</span>
-              <span class="raw"><b>47519.7</b>:<b>47423.3</b>:<b>47469.6</b></span>
-              <span class="band" role="img" aria-label="Debian arm64: 3 runs from 47,423 to 47,520 MB/s, mean 47,471">
-                  <i style="--x: 74.206%" data-flip-id="memset-debian-arm64-0"></i>
-                  <i style="--x: 30.302%" data-flip-id="memset-debian-arm64-1"></i>
-                  <i style="--x: 51.389%" data-flip-id="memset-debian-arm64-2"></i>
+              <span class="raw"><b>47114</b>:<b>47122</b>:<b>47113.6</b></span>
+              <span class="band" role="img" aria-label="Debian arm64: 3 runs from 47,114 to 47,122 MB/s, mean 47,117">
+                  <i style="--x: 55.369%" data-flip-id="memset-debian-arm64-0"></i>
+                  <i style="--x: 56.487%" data-flip-id="memset-debian-arm64-1"></i>
+                  <i style="--x: 55.313%" data-flip-id="memset-debian-arm64-2"></i>
               </span>
           </li>
       </ul>
@@ -211,12 +212,12 @@
       Each machine has its own scale.
     </p>
     <ul class="captures">
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-09-01</a>: Ubuntu 26.04 LTS on x86_64</li>
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-08-01-0824</a>: Ubuntu 26.04 LTS on arm64</li>
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora/composite-latest.xml">lbh-fedora-ci-2026-09-01</a>: Fedora 44 on x86_64</li>
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora-arm64/composite-latest.xml">2026-08-01-0859</a>: Fedora 44 on arm64</li>
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian/composite-latest.xml">lbh-debian-ci-2026-09-01</a>: Debian 13 on x86_64</li>
-        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian-arm64/composite-latest.xml">2026-08-01-0935</a>: Debian 13 on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-11-01</a>: Ubuntu 26.04.1 LTS on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-11-01-1251</a>: Ubuntu 26.04.1 LTS on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora/composite-latest.xml">lbh-fedora-ci-2026-11-01</a>: Fedora 44 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/fedora-arm64/composite-latest.xml">2026-11-01-1401</a>: Fedora 44 on arm64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian/composite-latest.xml">lbh-debian-ci-2026-11-01</a>: Debian 13 on x86_64</li>
+        <li><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/debian-arm64/composite-latest.xml">2026-11-01-1506</a>: Debian 13 on arm64</li>
     </ul>
   </section>
 
@@ -229,14 +230,14 @@
     </main>
     <footer class="colophon">
         <p>
-          x86_64 runs: AMD EPYC 9V74
+          x86_64 runs: AMD EPYC 7763
           (2 Cores / 4 Threads) in Docker, captured
-          2026-09-01.
+          2026-11-01.
         </p>
         <p>
           arm64 runs: ARMv8 Neoverse-N1
           (4 Cores) in Docker, captured
-          2026-08-01.
+          2026-11-01.
         </p>
       <p>
         Phoronix Test Suite 10.8.6.

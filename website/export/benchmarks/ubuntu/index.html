@@ -26,12 +26,12 @@
         document.querySelector('meta[name="theme-color"]').content = light ? "#f4f6f8" : "#0a0507";
       })();
     </script>
-    <title>Ubuntu 26.04 LTS userland: every benchmark run | LinuxBenchHub</title>
-    <meta name="description" content="Ubuntu 26.04 LTS Phoronix Test Suite runs on x86_64 and arm64, lit in the comb beside Ubuntu, Fedora and Debian on the same kernels.">
+    <title>Ubuntu 26.04.1 LTS userland: every benchmark run | LinuxBenchHub</title>
+    <meta name="description" content="Ubuntu 26.04.1 LTS Phoronix Test Suite runs on x86_64 and arm64, lit in the comb beside Ubuntu, Fedora and Debian on the same kernels.">
     <link rel="canonical" href="https://linuxbenchhub.vercel.app/benchmarks/ubuntu/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Ubuntu 26.04 LTS userland: every benchmark run | LinuxBenchHub">
-    <meta property="og:description" content="Ubuntu 26.04 LTS Phoronix Test Suite runs on x86_64 and arm64, lit in the comb beside Ubuntu, Fedora and Debian on the same kernels.">
+    <meta property="og:title" content="Ubuntu 26.04.1 LTS userland: every benchmark run | LinuxBenchHub">
+    <meta property="og:description" content="Ubuntu 26.04.1 LTS Phoronix Test Suite runs on x86_64 and arm64, lit in the comb beside Ubuntu, Fedora and Debian on the same kernels.">
     <meta property="og:url" content="https://linuxbenchhub.vercel.app/benchmarks/ubuntu/">
     <meta property="og:image" content="https://linuxbenchhub.vercel.app/social-card.png">
     <meta property="og:image:width" content="1200">
@@ -86,25 +86,25 @@
       
 <div class="home">
   <div class="home-head">
-    <h1 class="home-title lens-title" data-distro="ubuntu"><span class="lit-name">Ubuntu 26.04 LTS</span> userland.</h1>
+    <h1 class="home-title lens-title" data-distro="ubuntu"><span class="lit-name">Ubuntu 26.04.1 LTS</span> userland.</h1>
     <p class="home-lede">Its column is lit. Same kernel, same machine as the others. <a href="/">Show every distro</a></p>
     <div class="machines">
         <section class="machine" aria-labelledby="machine-x86_64">
           <h2 class="notes-title" id="machine-x86_64">x86_64</h2>
           <dl>
-            <div><dt>System</dt><dd>Ubuntu 26.04 LTS</dd></div>
+            <div><dt>System</dt><dd>Ubuntu 26.04.1 LTS</dd></div>
             <div><dt>Compiler</dt><dd>GCC 15.2.0</dd></div>
-            <div><dt>Kernel</dt><dd>6.17.0-1022-azure (x86_64)</dd></div>
-            <div><dt>Capture</dt><dd><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-09-01</a></dd></div>
+            <div><dt>Kernel</dt><dd>7.0.0-1017-azure (x86_64)</dd></div>
+            <div><dt>Capture</dt><dd><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu/composite-latest.xml">lbh-ubuntu-ci-2026-11-01</a></dd></div>
           </dl>
         </section>
         <section class="machine" aria-labelledby="machine-arm64">
           <h2 class="notes-title" id="machine-arm64">arm64</h2>
           <dl>
-            <div><dt>System</dt><dd>Ubuntu 26.04 LTS</dd></div>
+            <div><dt>System</dt><dd>Ubuntu 26.04.1 LTS</dd></div>
             <div><dt>Compiler</dt><dd>GCC 15.2.0</dd></div>
-            <div><dt>Kernel</dt><dd>6.17.0-1018-oracle (aarch64)</dd></div>
-            <div><dt>Capture</dt><dd><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-08-01-0824</a></dd></div>
+            <div><dt>Kernel</dt><dd>7.0.0-1013-oracle (aarch64)</dd></div>
+            <div><dt>Capture</dt><dd><a class="utility" href="https://github.com/Builder106/linux-bench-hub/blob/main/benchmarks/ubuntu-arm64/composite-latest.xml">2026-11-01-1251</a></dd></div>
           </dl>
         </section>
     </div>
@@ -126,7 +126,7 @@
 </span>
 
             <span class="hex-name">Ubuntu</span>
-            <span class="hex-sub">26.04 LTS</span>
+            <span class="hex-sub">26.04.1 LTS</span>
           </a>
           <a class="hex hex-head" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" href="/benchmarks/fedora/">
             <span class="distro-mark hex-logo" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;">
@@ -147,73 +147,75 @@
 
             <a class="hex hex-test" href="/tests/memcpy/" style="--col: 0; --row: 1; --lift: 0" data-distro="ubuntu" data-test="memcpy" data-flip-id="cell-memcpy-ubuntu-x86_64">
               <span class="hex-test-name">Memcpy</span>
-                <strong class="hex-value">24,477</strong>
+                <strong class="hex-value">20,349</strong>
                 <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">3.5% behind</span>
+                <span class="hex-gap">10.6% behind</span>
             </a>
             <a class="hex hex-test" href="/tests/memcpy/" style="--col: 1; --row: 1; --lift: 0.5" data-distro="fedora" data-test="memcpy" data-flip-id="cell-memcpy-fedora-x86_64">
               <span class="hex-test-name">Memcpy</span>
-                <span class="hex-none">no runs</span>
-                <span class="hex-sub">2026-09-01 capture</span>
+                <strong class="hex-value">21,463</strong>
+                <span class="hex-sub">MB/s</span>
+                <span class="hex-gap">5.7% behind</span>
             </a>
             <a class="hex hex-test is-best" href="/tests/memcpy/" style="--col: 2; --row: 1; --lift: 0" data-distro="debian" data-test="memcpy" data-flip-id="cell-memcpy-debian-x86_64">
               <span class="hex-test-name">Memcpy</span>
-                <strong class="hex-value">25,354</strong>
+                <strong class="hex-value">22,754</strong>
                 <span class="hex-sub">MB/s</span>
                 <span class="hex-gap">best</span>
             </a>
             <a class="hex hex-test is-alt" href="/tests/memset/" style="--col: 0; --row: 2; --lift: 0" data-distro="ubuntu" data-test="memset" data-flip-id="cell-memset-ubuntu-x86_64">
               <span class="hex-test-name">Memset</span>
-                <strong class="hex-value">46,074</strong>
+                <strong class="hex-value">27,907</strong>
                 <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">5.5% behind</span>
+                <span class="hex-gap">5.6% behind</span>
             </a>
             <a class="hex hex-test is-alt" href="/tests/memset/" style="--col: 1; --row: 2; --lift: 0.5" data-distro="fedora" data-test="memset" data-flip-id="cell-memset-fedora-x86_64">
               <span class="hex-test-name">Memset</span>
-                <span class="hex-none">no runs</span>
-                <span class="hex-sub">2026-09-01 capture</span>
+                <strong class="hex-value">26,674</strong>
+                <span class="hex-sub">MB/s</span>
+                <span class="hex-gap">9.7% behind</span>
             </a>
             <a class="hex hex-test is-best is-alt" href="/tests/memset/" style="--col: 2; --row: 2; --lift: 0" data-distro="debian" data-test="memset" data-flip-id="cell-memset-debian-x86_64">
               <span class="hex-test-name">Memset</span>
-                <strong class="hex-value">48,734</strong>
+                <strong class="hex-value">29,554</strong>
                 <span class="hex-sub">MB/s</span>
                 <span class="hex-gap">best</span>
             </a>
             <a class="hex hex-test" href="/tests/c-ray/" style="--col: 0; --row: 3; --lift: 0" data-distro="ubuntu" data-test="c-ray" data-flip-id="cell-c-ray-ubuntu-x86_64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">366.1</strong>
+                <strong class="hex-value">358.6</strong>
                 <span class="hex-sub">Seconds</span>
-                <span class="hex-gap">20.2% behind</span>
+                <span class="hex-gap">1.6% behind</span>
             </a>
             <a class="hex hex-test is-best" href="/tests/c-ray/" style="--col: 1; --row: 3; --lift: 0.5" data-distro="fedora" data-test="c-ray" data-flip-id="cell-c-ray-fedora-x86_64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">304.6</strong>
+                <strong class="hex-value">353.0</strong>
                 <span class="hex-sub">Seconds</span>
                 <span class="hex-gap">best</span>
             </a>
             <a class="hex hex-test" href="/tests/c-ray/" style="--col: 2; --row: 3; --lift: 0" data-distro="debian" data-test="c-ray" data-flip-id="cell-c-ray-debian-x86_64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">314.6</strong>
+                <strong class="hex-value">367.0</strong>
                 <span class="hex-sub">Seconds</span>
-                <span class="hex-gap">3.3% behind</span>
+                <span class="hex-gap">4.0% behind</span>
             </a>
-            <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 0; --row: 4; --lift: 0" data-distro="ubuntu" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-ubuntu-x86_64">
+            <a class="hex hex-test is-best is-alt" href="/tests/aircrack-ng/" style="--col: 0; --row: 4; --lift: 0" data-distro="ubuntu" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-ubuntu-x86_64">
               <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">6,989</strong>
-                <span class="hex-sub">k/s</span>
-                <span class="hex-gap">21.2% behind</span>
-            </a>
-            <a class="hex hex-test is-best is-alt" href="/tests/aircrack-ng/" style="--col: 1; --row: 4; --lift: 0.5" data-distro="fedora" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-fedora-x86_64">
-              <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">8,865</strong>
+                <strong class="hex-value">7,529</strong>
                 <span class="hex-sub">k/s</span>
                 <span class="hex-gap">best</span>
             </a>
+            <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 1; --row: 4; --lift: 0.5" data-distro="fedora" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-fedora-x86_64">
+              <span class="hex-test-name">Aircrack-ng</span>
+                <strong class="hex-value">7,512</strong>
+                <span class="hex-sub">k/s</span>
+                <span class="hex-gap">0.2% behind</span>
+            </a>
             <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 2; --row: 4; --lift: 0" data-distro="debian" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-debian-x86_64">
               <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">8,828</strong>
+                <strong class="hex-value">7,515</strong>
                 <span class="hex-sub">k/s</span>
-                <span class="hex-gap">0.4% behind</span>
+                <span class="hex-gap">0.2% behind</span>
             </a>
 
           <div class="hex hex-userland" style="--col: 0; --row: 5; --lift: 0" data-distro="ubuntu">
@@ -670,8 +672,8 @@
 
         </a>
         <div class="kernel-caption">
-          <code>Linux 6.17.0-1022-azure</code>
-          <h2 class="comb-title" id="comb-x86_64">x86_64 <span class="comb-machine">on AMD EPYC 9V74, 2 Cores / 4 Threads</span></h2>
+          <code>Linux 7.0.0-1017-azure</code>
+          <h2 class="comb-title" id="comb-x86_64">x86_64 <span class="comb-machine">on AMD EPYC 7763, 2 Cores / 4 Threads</span></h2>
         </div>
       </div>
     </section>
@@ -691,7 +693,7 @@
 </span>
 
             <span class="hex-name">Ubuntu</span>
-            <span class="hex-sub">26.04 LTS</span>
+            <span class="hex-sub">26.04.1 LTS</span>
           </a>
           <a class="hex hex-head" style="--col: 1; --row: 0; --lift: 0.5" data-distro="fedora" href="/benchmarks/fedora/">
             <span class="distro-mark hex-logo" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;">
@@ -710,77 +712,77 @@
             <span class="hex-sub">13</span>
           </a>
 
-            <a class="hex hex-test" href="/tests/memcpy/" style="--col: 0; --row: 1; --lift: 0" data-distro="ubuntu" data-test="memcpy" data-flip-id="cell-memcpy-ubuntu-arm64">
+            <a class="hex hex-test is-best" href="/tests/memcpy/" style="--col: 0; --row: 1; --lift: 0" data-distro="ubuntu" data-test="memcpy" data-flip-id="cell-memcpy-ubuntu-arm64">
               <span class="hex-test-name">Memcpy</span>
-                <strong class="hex-value">12,753</strong>
-                <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">0.5% behind</span>
-            </a>
-            <a class="hex hex-test is-best" href="/tests/memcpy/" style="--col: 1; --row: 1; --lift: 0.5" data-distro="fedora" data-test="memcpy" data-flip-id="cell-memcpy-fedora-arm64">
-              <span class="hex-test-name">Memcpy</span>
-                <strong class="hex-value">12,822</strong>
+                <strong class="hex-value">12,565</strong>
                 <span class="hex-sub">MB/s</span>
                 <span class="hex-gap">best</span>
             </a>
+            <a class="hex hex-test" href="/tests/memcpy/" style="--col: 1; --row: 1; --lift: 0.5" data-distro="fedora" data-test="memcpy" data-flip-id="cell-memcpy-fedora-arm64">
+              <span class="hex-test-name">Memcpy</span>
+                <strong class="hex-value">12,477</strong>
+                <span class="hex-sub">MB/s</span>
+                <span class="hex-gap">0.7% behind</span>
+            </a>
             <a class="hex hex-test" href="/tests/memcpy/" style="--col: 2; --row: 1; --lift: 0" data-distro="debian" data-test="memcpy" data-flip-id="cell-memcpy-debian-arm64">
               <span class="hex-test-name">Memcpy</span>
-                <strong class="hex-value">11,920</strong>
+                <strong class="hex-value">11,725</strong>
                 <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">7.0% behind</span>
+                <span class="hex-gap">6.7% behind</span>
             </a>
             <a class="hex hex-test is-best is-alt" href="/tests/memset/" style="--col: 0; --row: 2; --lift: 0" data-distro="ubuntu" data-test="memset" data-flip-id="cell-memset-ubuntu-arm64">
               <span class="hex-test-name">Memset</span>
-                <strong class="hex-value">47,490</strong>
+                <strong class="hex-value">47,241</strong>
                 <span class="hex-sub">MB/s</span>
                 <span class="hex-gap">best</span>
             </a>
             <a class="hex hex-test is-alt" href="/tests/memset/" style="--col: 1; --row: 2; --lift: 0.5" data-distro="fedora" data-test="memset" data-flip-id="cell-memset-fedora-arm64">
               <span class="hex-test-name">Memset</span>
-                <strong class="hex-value">47,449</strong>
+                <strong class="hex-value">47,093</strong>
                 <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">0.1% behind</span>
+                <span class="hex-gap">0.3% behind</span>
             </a>
             <a class="hex hex-test is-alt" href="/tests/memset/" style="--col: 2; --row: 2; --lift: 0" data-distro="debian" data-test="memset" data-flip-id="cell-memset-debian-arm64">
               <span class="hex-test-name">Memset</span>
-                <strong class="hex-value">47,471</strong>
+                <strong class="hex-value">47,117</strong>
                 <span class="hex-sub">MB/s</span>
-                <span class="hex-gap">0.0% behind</span>
+                <span class="hex-gap">0.3% behind</span>
             </a>
             <a class="hex hex-test" href="/tests/c-ray/" style="--col: 0; --row: 3; --lift: 0" data-distro="ubuntu" data-test="c-ray" data-flip-id="cell-c-ray-ubuntu-arm64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">245.6</strong>
+                <strong class="hex-value">226.5</strong>
                 <span class="hex-sub">Seconds</span>
-                <span class="hex-gap">3.3% behind</span>
+                <span class="hex-gap">3.0% behind</span>
             </a>
             <a class="hex hex-test" href="/tests/c-ray/" style="--col: 1; --row: 3; --lift: 0.5" data-distro="fedora" data-test="c-ray" data-flip-id="cell-c-ray-fedora-arm64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">240.4</strong>
+                <strong class="hex-value">229.0</strong>
                 <span class="hex-sub">Seconds</span>
-                <span class="hex-gap">1.1% behind</span>
+                <span class="hex-gap">4.2% behind</span>
             </a>
             <a class="hex hex-test is-best" href="/tests/c-ray/" style="--col: 2; --row: 3; --lift: 0" data-distro="debian" data-test="c-ray" data-flip-id="cell-c-ray-debian-arm64">
               <span class="hex-test-name">C-Ray</span>
-                <strong class="hex-value">237.7</strong>
+                <strong class="hex-value">219.8</strong>
                 <span class="hex-sub">Seconds</span>
                 <span class="hex-gap">best</span>
             </a>
-            <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 0; --row: 4; --lift: 0" data-distro="ubuntu" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-ubuntu-arm64">
+            <a class="hex hex-test is-best is-alt" href="/tests/aircrack-ng/" style="--col: 0; --row: 4; --lift: 0" data-distro="ubuntu" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-ubuntu-arm64">
               <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">3,726</strong>
-                <span class="hex-sub">k/s</span>
-                <span class="hex-gap">2.3% behind</span>
-            </a>
-            <a class="hex hex-test is-best is-alt" href="/tests/aircrack-ng/" style="--col: 1; --row: 4; --lift: 0.5" data-distro="fedora" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-fedora-arm64">
-              <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">3,813</strong>
+                <strong class="hex-value">4,155</strong>
                 <span class="hex-sub">k/s</span>
                 <span class="hex-gap">best</span>
             </a>
+            <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 1; --row: 4; --lift: 0.5" data-distro="fedora" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-fedora-arm64">
+              <span class="hex-test-name">Aircrack-ng</span>
+                <strong class="hex-value">4,010</strong>
+                <span class="hex-sub">k/s</span>
+                <span class="hex-gap">3.5% behind</span>
+            </a>
             <a class="hex hex-test is-alt" href="/tests/aircrack-ng/" style="--col: 2; --row: 4; --lift: 0" data-distro="debian" data-test="aircrack-ng" data-flip-id="cell-aircrack-ng-debian-arm64">
               <span class="hex-test-name">Aircrack-ng</span>
-                <strong class="hex-value">3,700</strong>
+                <strong class="hex-value">3,923</strong>
                 <span class="hex-sub">k/s</span>
-                <span class="hex-gap">3.0% behind</span>
+                <span class="hex-gap">5.6% behind</span>
             </a>
 
           <div class="hex hex-userland" style="--col: 0; --row: 5; --lift: 0" data-distro="ubuntu">
@@ -789,7 +791,7 @@
           </div>
           <div class="hex hex-userland" style="--col: 1; --row: 5; --lift: 0.5" data-distro="fedora">
             <span class="hex-sub">userland</span>
-            <code>GCC 16.1.1</code>
+            <code>GCC 16.2.1</code>
           </div>
           <div class="hex hex-userland" style="--col: 2; --row: 5; --lift: 0" data-distro="debian">
             <span class="hex-sub">userland</span>
@@ -1237,7 +1239,7 @@
 
         </a>
         <div class="kernel-caption">
-          <code>Linux 6.17.0-1018-oracle</code>
+          <code>Linux 7.0.0-1013-oracle</code>
           <h2 class="comb-title" id="comb-arm64">arm64 <span class="comb-machine">on ARMv8 Neoverse-N1, 4 Cores</span></h2>
         </div>
       </div>
@@ -1249,14 +1251,14 @@
     </main>
     <footer class="colophon">
         <p>
-          x86_64 runs: AMD EPYC 9V74
+          x86_64 runs: AMD EPYC 7763
           (2 Cores / 4 Threads) in Docker, captured
-          2026-09-01.
+          2026-11-01.
         </p>
         <p>
           arm64 runs: ARMv8 Neoverse-N1
           (4 Cores) in Docker, captured
-          2026-08-01.
+          2026-11-01.
         </p>
       <p>
         Phoronix Test Suite 10.8.6.
