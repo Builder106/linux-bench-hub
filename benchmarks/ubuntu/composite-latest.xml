@@ -2,20 +2,20 @@
 <!--Phoronix Test Suite v10.8.6-->
 <PhoronixTestSuite>
   <Generated>
-    <Title>lbh-ubuntu-ci-2026-09-01</Title>
-    <LastModified>2026-09-01 12:17:23</LastModified>
+    <Title>lbh-ubuntu-ci-2026-11-01</Title>
+    <LastModified>2026-11-01 13:31:10</LastModified>
     <TestClient>Phoronix Test Suite v10.8.6</TestClient>
-    <Description>Docker testing on Ubuntu 26.04 LTS via the Phoronix Test Suite.</Description>
+    <Description>Docker testing on Ubuntu 26.04.1 LTS via the Phoronix Test Suite.</Description>
   </Generated>
   <System>
-    <Identifier>AMD EPYC 9V74 80-Core</Identifier>
-    <Hardware>Processor: AMD EPYC 9V74 80-Core (2 Cores / 4 Threads), Motherboard: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS), Memory: 16GB, Disk: 161GB Virtual Disk, Graphics: hyperv_drmdrmfb</Hardware>
-    <Software>OS: Ubuntu 26.04 LTS, Kernel: 6.17.0-1022-azure (x86_64), Compiler: GCC 15.2.0, File-System: overlayfs, Screen Resolution: 1024x768, System Layer: Docker</Software>
+    <Identifier>AMD EPYC 7763 64-Core</Identifier>
+    <Hardware>Processor: AMD EPYC 7763 64-Core (2 Cores / 4 Threads), Motherboard: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS), Memory: 16GB, Disk: 161GB Virtual Disk, Graphics: hyperv_drmdrmfb</Hardware>
+    <Software>OS: Ubuntu 26.04.1 LTS, Kernel: 7.0.0-1017-azure (x86_64), Compiler: GCC 15.2.0, File-System: overlayfs, Screen Resolution: 1024x768, System Layer: Docker</Software>
     <User>root</User>
-    <TimeStamp>2026-09-01 11:17:53</TimeStamp>
+    <TimeStamp>2026-11-01 12:51:15</TimeStamp>
     <TestClientVersion>10.8.6</TestClientVersion>
     <Notes></Notes>
-    <JSON>{"compiler-configuration":"--build=x86_64-linux-gnu --disable-vtable-verify --disable-werror --enable-bootstrap --enable-cet --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-gnu-unique-object --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2,rust,cobol,algol68 --enable-libphobos-checking=release --enable-libstdcxx-backtrace --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-link-serialization=2 --enable-multiarch --enable-multilib --enable-nls --enable-objc-gc=auto --enable-offload-defaulted --enable-offload-targets=nvptx-none=\/build\/gcc-15-j35TAX\/gcc-15-15.2.0\/debian\/tmp-nvptx\/usr,amdgcn-amdhsa=\/build\/gcc-15-j35TAX\/gcc-15-15.2.0\/debian\/tmp-gcn\/usr --enable-plugin --enable-shared --enable-threads=posix --host=x86_64-linux-gnu --program-prefix=x86_64-linux-gnu- --target=x86_64-linux-gnu --with-abi=m64 --with-arch-32=i686 --with-build-config=bootstrap-lto-lean --with-default-libstdcxx-abi=new --with-gcc-major-version-only --with-multilib-list=m32,m64,mx32 --with-target-system-zlib=auto --with-tune=generic --without-cuda-driver -v","cpu-microcode":"0xffffffff","kernel-extra-details":"Transparent Huge Pages: always","security":"gather_data_sampling: Not affected + ghostwrite: Not affected + indirect_target_selection: Not affected + itlb_multihit: Not affected + l1tf: Not affected + mds: Not affected + meltdown: Not affected + mmio_stale_data: Not affected + old_microcode: Not affected + reg_file_data_sampling: Not affected + retbleed: Not affected + spec_rstack_overflow: Vulnerable: Safe RET no microcode + spec_store_bypass: Vulnerable + spectre_v1: Mitigation of usercopy\/swapgs barriers and __user pointer sanitization + spectre_v2: Mitigation of Retpolines; STIBP: disabled; RSB filling; PBRSB-eIBRS: Not affected; BHI: Not affected + srbds: Not affected + tsa: Vulnerable: No microcode + tsx_async_abort: Not affected + vmscape: Not affected"}</JSON>
+    <JSON>{"compiler-configuration":"--build=x86_64-linux-gnu --disable-vtable-verify --disable-werror --enable-bootstrap --enable-cet --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-gnu-unique-object --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2,rust,cobol,algol68 --enable-libphobos-checking=release --enable-libstdcxx-backtrace --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-link-serialization=2 --enable-multiarch --enable-multilib --enable-nls --enable-objc-gc=auto --enable-offload-defaulted --enable-offload-targets=nvptx-none=\/build\/gcc-15-j35TAX\/gcc-15-15.2.0\/debian\/tmp-nvptx\/usr,amdgcn-amdhsa=\/build\/gcc-15-j35TAX\/gcc-15-15.2.0\/debian\/tmp-gcn\/usr --enable-plugin --enable-shared --enable-threads=posix --host=x86_64-linux-gnu --program-prefix=x86_64-linux-gnu- --target=x86_64-linux-gnu --with-abi=m64 --with-arch-32=i686 --with-build-config=bootstrap-lto-lean --with-default-libstdcxx-abi=new --with-gcc-major-version-only --with-multilib-list=m32,m64,mx32 --with-target-system-zlib=auto --with-tune=generic --without-cuda-driver -v","cpu-microcode":"0xffffffff","kernel-extra-details":"Transparent Huge Pages: madvise","security":"gather_data_sampling: Not affected + ghostwrite: Not affected + indirect_target_selection: Not affected + itlb_multihit: Not affected + l1tf: Not affected + mds: Not affected + meltdown: Not affected + mmio_stale_data: Not affected + old_microcode: Not affected + reg_file_data_sampling: Not affected + retbleed: Not affected + spec_rstack_overflow: Vulnerable: Safe RET no microcode + spec_store_bypass: Vulnerable + spectre_v1: Mitigation of usercopy\/swapgs barriers and __user pointer sanitization + spectre_v2: Mitigation of Retpolines; STIBP: disabled; RSB filling; PBRSB-eIBRS: Not affected; BHI: Not affected + srbds: Not affected + tsa: Vulnerable: No microcode + tsx_async_abort: Not affected + vmscape: Not affected"}</JSON>
   </System>
   <Result>
     <Identifier>pts/tinymembench-1.0.2</Identifier>
@@ -28,10 +28,10 @@
     <DisplayFormat>BAR_GRAPH</DisplayFormat>
     <Data>
       <Entry>
-        <Identifier>AMD EPYC 9V74 80-Core</Identifier>
-        <Value>24476.7</Value>
-        <RawString>25154.6:24981.3:23211.3:26844.1:25013.9:21655.2</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"379.91:390.82:386.01:393.56:392.92:376.54"}</JSON>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>20349.1</Value>
+        <RawString>20148.3:20194.2:20704.9</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"391.52:398.52:389.65"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -46,10 +46,10 @@
     <DisplayFormat>BAR_GRAPH</DisplayFormat>
     <Data>
       <Entry>
-        <Identifier>AMD EPYC 9V74 80-Core</Identifier>
-        <Value>46074.0</Value>
-        <RawString>49772.8:36931.7:43924.4:55674.3:48922:41218.9</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"379.91:390.82:386.01:393.56:392.92:376.54"}</JSON>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>27907.3</Value>
+        <RawString>26035.5:27023.7:30662.7</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-O2 -lm"},"test-run-times":"391.52:398.52:389.65"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -64,10 +64,10 @@
     <DisplayFormat>BAR_GRAPH</DisplayFormat>
     <Data>
       <Entry>
-        <Identifier>AMD EPYC 9V74 80-Core</Identifier>
-        <Value>366.063</Value>
-        <RawString>365.759:366.144:366.287</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"365.89:366.27:366.42"}</JSON>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>358.604</Value>
+        <RawString>358.429:358.726:358.656</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CC","compiler":"gcc","compiler-options":"-lpthread -lm"},"test-run-times":"358.57:358.86:358.79"}</JSON>
       </Entry>
     </Data>
   </Result>
@@ -82,10 +82,10 @@
     <DisplayFormat>BAR_GRAPH</DisplayFormat>
     <Data>
       <Entry>
-        <Identifier>AMD EPYC 9V74 80-Core</Identifier>
-        <Value>6988.802</Value>
-        <RawString>7000.804:6978.279:6987.324</RawString>
-        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -ldl -lm -pthread"},"test-run-times":"30.04:30.06:30.02"}</JSON>
+        <Identifier>AMD EPYC 7763 64-Core</Identifier>
+        <Value>7529.207</Value>
+        <RawString>7528.836:7539.027:7519.758</RawString>
+        <JSON>{"compiler-options":{"compiler-type":"CXX","compiler":"g++","compiler-options":"-std=gnu++17 -O3 -fvisibility=hidden -fcommon -rdynamic -lnl-3 -lnl-genl-3 -lsqlite3 -lpthread -lz -lssl -lcrypto -ldl -lm -pthread"},"test-run-times":"30.05:30.07:30.12"}</JSON>
       </Entry>
     </Data>
   </Result>
