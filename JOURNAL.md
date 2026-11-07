@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-11-07: Land November 2026 captures and decouple missing-run test assertions #decision #testing
+
+Merged the November 1, 2026 benchmark captures into `main` after resolving test failures that originally blocked auto-merge in CI. In the November captures, Fedora completed all workloads, breaking earlier integration test expectations that had asserted against September's missing Fedora runs and older EPYC 9V74/Linux 6.17 numbers. Decoupled the missing-run placeholder assertions in `PagesControllerTest`, `BenchmarksControllerTest`, and `TestsControllerTest` by using `with_stubbed_captures` to test absent-test UI states independently of live dataset contents. Updated live assertions to the new EPYC 7763/Linux 7.0 results, refreshed `website/export/` for Vercel static deployment, and confirmed 100% line/branch coverage and clean passes across all Ruby suites and Brakeman on `ampere-dev`.
+
 ## 2026-11-06: Mark lbh-telemetry binary executable in git index #ci #fix
 
 The `bin/lbh-telemetry` CLI script was checked into git with non-executable mode `100644`. In CI under Linux, `HardwareTelemetryTest` execution failed with `Errno::EACCES: Permission denied` during subprocess spawn. Updated the git file mode to `100755` (`+x`).
