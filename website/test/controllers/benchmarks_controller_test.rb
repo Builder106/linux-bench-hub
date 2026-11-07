@@ -12,15 +12,33 @@ class BenchmarksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "the ledger lists every run and names the missing ones" do
+  test "the ledger lists every run" do
     get compare_benchmarks_url
     assert_response :success
     assert_select "table.ledger-table", 5
     assert_select "table.ledger-table tbody tr", 6 * 5
-    assert_select "tr[data-distro='fedora'] .ledger-none", "no runs in lbh-fedora-ci-2026-09-01"
-    assert_select ".ledger-runs span", text: "304.872"
+    assert_select ".ledger-runs span", text: "352.805"
     assert_select "td.is-best .best-tag", BenchTest::ALL.size * Capture::ARCHES.size
-    assert_select "tr[data-distro='fedora'] td.is-best", text: /\A304\.6 best\z/
+    assert_select "tr[data-distro='fedora'] td.is-best", text: /\A353\.0 best\z/
+  end
+
+  test "the ledger names the missing runs when a capture lacks them" do
+    incomplete = Capture.new("fedora", "x86_64", <<~XML)
+      <?xml version="1.0"?>
+      <PhoronixTestSuite>
+        <Generated><Title>lbh-fedora-ci-2026-11-01</Title><TestClient>Phoronix Test Suite v10.8.6</TestClient></Generated>
+        <System>
+          <Hardware>Processor: AMD EPYC 7763 64-Core (2 Cores / 4 Threads), Motherboard: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS), Memory: 16GB</Hardware>
+          <Software>OS: Fedora Linux 44, Kernel: 7.0.0-1017-azure (x86_64), Compiler: GCC 16.2.1 20260819, File-System: overlayfs, System Layer: Docker</Software>
+          <TimeStamp>2026-11-01 14:01:00</TimeStamp>
+        </System>
+      </PhoronixTestSuite>
+    XML
+    mock = Capture.all.map { |c| c.distro == "fedora" && c.arch == "x86_64" ? incomplete : c }
+    with_stubbed_captures(mock) do
+      get compare_benchmarks_url
+      assert_select "tr[data-distro='fedora'] .ledger-none", "no runs in lbh-fedora-ci-2026-11-01"
+    end
   end
 
   test "the ledger holds both kernel cells and takes each test name from the comb" do

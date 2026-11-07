@@ -13,6 +13,13 @@ module ActiveSupport
     # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
 
-    # Add more helper methods to be used by all tests here...
+    def with_stubbed_captures(mock_captures)
+      singleton = class << Capture; self; end
+      orig = Capture.method(:all)
+      singleton.send(:define_method, :all) { mock_captures }
+      yield
+    ensure
+      singleton.send(:define_method, :all, orig)
+    end
   end
 end

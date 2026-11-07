@@ -15,16 +15,30 @@ class TestsControllerTest < ActionDispatch::IntegrationTest
   test "c-ray shows each capture's runs verbatim and steps to its neighbours" do
     get "/tests/c-ray/"
     assert_select ".pull-row[data-arch='x86_64'] .hex-test.is-best[data-distro='fedora']"
-    assert_select ".pull-row[data-arch='x86_64'] .run-lane[data-distro='fedora'] .raw", "304.872:304.414:304.554"
+    assert_select ".pull-row[data-arch='x86_64'] .run-lane[data-distro='fedora'] .raw", "352.805:353.344:352.965"
     assert_select ".run-lane .band i[data-flip-id='c-ray-fedora-x86_64-0']"
     assert_select ".loupe-steps a[href='/tests/memset/']", "Previous: Memset"
     assert_select ".loupe-steps a[href='/tests/aircrack-ng/']", "Next: Aircrack-ng"
   end
 
   test "a distro with no runs says which capture lacks them" do
-    get "/tests/memcpy/"
-    assert_select ".pull-row[data-arch='x86_64'] .run-lane[data-distro='fedora'] .raw-empty", "no runs in lbh-fedora-ci-2026-09-01"
-    assert_select ".pull-row[data-arch='x86_64'] .hex-test[data-distro='fedora'] .hex-none", "no runs"
+    incomplete = Capture.new("fedora", "x86_64", <<~XML)
+      <?xml version="1.0"?>
+      <PhoronixTestSuite>
+        <Generated><Title>lbh-fedora-ci-2026-11-01</Title><TestClient>Phoronix Test Suite v10.8.6</TestClient></Generated>
+        <System>
+          <Hardware>Processor: AMD EPYC 7763 64-Core (2 Cores / 4 Threads), Motherboard: Microsoft Virtual Machine (Hyper-V UEFI v4.1 BIOS), Memory: 16GB</Hardware>
+          <Software>OS: Fedora Linux 44, Kernel: 7.0.0-1017-azure (x86_64), Compiler: GCC 16.2.1 20260819, File-System: overlayfs, System Layer: Docker</Software>
+          <TimeStamp>2026-11-01 14:01:00</TimeStamp>
+        </System>
+      </PhoronixTestSuite>
+    XML
+    mock = Capture.all.map { |c| c.distro == "fedora" && c.arch == "x86_64" ? incomplete : c }
+    with_stubbed_captures(mock) do
+      get "/tests/memcpy/"
+      assert_select ".pull-row[data-arch='x86_64'] .run-lane[data-distro='fedora'] .raw-empty", "no runs in lbh-fedora-ci-2026-11-01"
+      assert_select ".pull-row[data-arch='x86_64'] .hex-test[data-distro='fedora'] .hex-none", "no runs"
+    end
   end
 end
 
