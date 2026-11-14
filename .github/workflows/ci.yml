@@ -92,6 +92,7 @@ jobs:
           ruby test_hardware_telemetry.rb
           ruby test_hardware_telemetry_regression.rb
           ruby test_kernel_comparison.rb
+          ruby test_trace_export.rb
           ruby test_generate_writeup.rb
 
       - name: Lint capture scripts

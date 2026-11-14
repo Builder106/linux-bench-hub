@@ -6,7 +6,8 @@ The v1.2 engine automatically diffs recorded PTS benchmark sample traces between
 two kernel versions. It consumes the existing single-system `composite.xml`
 contract produced by workload dispatch and monthly captures. No new capture
 schema, privileged kernel switching, frontend, or visualization is required.
-Perfetto and FlameGraph exports remain a separate milestone.
+Perfetto and FlameGraph exports use separately recorded call stacks; see the
+[trace export specification](trace_export.md).
 
 Acceptance requires direction-aware regression detection, configurable tolerance,
 stable metric matching, explicit added/removed metrics, compatibility checks,

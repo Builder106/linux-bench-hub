@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "optparse"
+require_relative "../lib/linux_bench_hub/trace_export"
+
+options = { format: "perfetto" }
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: bin/lbh-export-trace [options] PERF_SCRIPT.txt (or - for stdin)"
+  opts.on("--format FORMAT", %w[perfetto folded], "perfetto JSON (default) or FlameGraph folded stacks") { |value| options[:format] = value }
+  opts.on("--event EVENT", "Select one exact perf event name") { |value| options[:event] = value }
+  opts.on("-h", "--help", "Show usage") { puts opts; exit 0 }
+end
+
+begin
+  parser.parse!(ARGV)
+  raise ArgumentError, parser.to_s unless ARGV.size == 1
+
+  profile = if ARGV.first == "-"
+    LinuxBenchHub::TraceExport::Profile.new($stdin, event: options[:event])
+  else
+    File.open(ARGV.first, "r:UTF-8") { |input| LinuxBenchHub::TraceExport::Profile.new(input, event: options[:event]) }
+  end
+  print(options[:format] == "folded" ? profile.folded : profile.perfetto)
+rescue OptionParser::ParseError, ArgumentError, SystemCallError => e
+  warn "Trace export failed: #{e.message}"
+  exit 2
+end

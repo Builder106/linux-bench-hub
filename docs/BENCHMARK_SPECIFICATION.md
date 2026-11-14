@@ -78,3 +78,14 @@ Exit codes distinguish passing comparisons, regressions, and incomplete or
 incompatible evidence. Matching metadata does not establish kernel causality;
 inspect telemetry and capture context before attribution. See the
 [comparison specification](specs/kernel_comparison.md) for the contract and CLI.
+
+## 7. Perfetto / FlameGraph Trace Exports
+
+`bin/lbh-export-trace` reads separately recorded `perf script` call stacks and
+exports Perfetto Chrome JSON instant samples or FlameGraph folded stacks.
+Samples retain process/thread and mapping identity; folded counts represent
+sample populations rather than function durations. Perfetto can also open the
+folded artifact as a flamegraph. Recording is opt-in on the benchmark host;
+neither PTS XML nor telemetry counters can supply stacks. See the
+[trace export specification](specs/trace_export.md) for prerequisites, supported
+input, event selection, and attribution limits.

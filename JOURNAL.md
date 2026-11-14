@@ -4,6 +4,10 @@
 > things happen — retrospectives need this raw material to land.
 > Reverse-chronological; one paragraph max per entry.
 
+## 2026-11-14: Export recorded stacks for Perfetto and FlameGraph #feature #milestone #decision
+
+Added an offline Ruby library and `bin/lbh-export-trace` for explicit-field `perf script` call stacks. Perfetto Chrome JSON retains thread-scoped instant samples, CPU identity, original timestamps, and stack arguments; folded output aggregates sample populations for external FlameGraph rendering or Perfetto's native flamegraph importer. Sampling remains opt-in on the benchmark host because existing PTS XML and telemetry counters contain no stacks and profiling changes overhead. No frontend, viewer, privileges, capture workflow, or benchmark schema changed. Mixed event populations require exact selection, unsupported input fails closed, and exports never infer function durations. Fixture tests cover identities, ordering, normalization, escaping, resource limits, and CLI errors; actual Perfetto and FlameGraph tools accept the exported artifacts. Verification includes all root Ruby suites, Rails tests at 100% line/branch coverage, RuboCop, Brakeman, dependency audit, shell/PHP lint, R syntax/lint, and the native production container build.
+
 ## 2026-11-07: Land November 2026 captures and decouple missing-run test assertions #decision #testing
 
 Merged the November 1, 2026 benchmark captures into `main` after resolving test failures that originally blocked auto-merge in CI. In the November captures, Fedora completed all workloads, breaking earlier integration test expectations that had asserted against September's missing Fedora runs and older EPYC 9V74/Linux 6.17 numbers. Decoupled the missing-run placeholder assertions in `PagesControllerTest`, `BenchmarksControllerTest`, and `TestsControllerTest` by using `with_stubbed_captures` to test absent-test UI states independently of live dataset contents. Updated live assertions to the new EPYC 7763/Linux 7.0 results, refreshed `website/export/` for Vercel static deployment, and confirmed 100% line/branch coverage and clean passes across all Ruby suites and Brakeman on `ampere-dev`.

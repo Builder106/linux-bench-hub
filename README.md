@@ -121,6 +121,17 @@ incompatible, or invalid evidence. See the
 [cross-kernel specification](docs/specs/kernel_comparison.md) for matching rules
 and attribution limits.
 
+To export separately recorded `perf script` stacks for Perfetto or FlameGraph:
+
+```bash
+bin/lbh-export-trace perf.txt > samples.json
+bin/lbh-export-trace --format folded perf.txt > stacks.collapsed
+```
+
+See the [trace export specification](docs/specs/trace_export.md) for recording
+commands, supported fields, external viewer usage, and sampling limits. PTS XML
+and telemetry counters do not contain the required call stacks.
+
 ## Capturing arm64 (Ampere)
 
 The ARM64 tests run on a long-lived Oracle Cloud Always-Free Ampere A1 server. Cloud infrastructure setup is managed via OpenTofu in [`infra/oci-ampere/`](infra/oci-ampere/).

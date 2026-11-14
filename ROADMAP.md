@@ -10,7 +10,7 @@ Plans for Linux kernel and server benchmarking.
 ## v1.2 — Interactive Performance Dashboard
 
 - [x] **Cross-Kernel Comparison Engine**: Compare regression traces across kernel versions.
-- [ ] **Perfetto / FlameGraph Integration**: Export trace visualizations for kernel bottlenecks.
+- [x] **Perfetto / FlameGraph Integration**: Export trace visualizations for kernel bottlenecks.
 
 ## Out of Scope
 
