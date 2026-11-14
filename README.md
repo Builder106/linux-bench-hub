@@ -21,9 +21,9 @@
 
 ## 💡 What is LinuxBenchHub?
 
-Different flavors of Linux (Ubuntu, Fedora, Debian) often claim performance advantages, but comparing them fairly requires running identical tests on identical virtual hardware. LinuxBenchHub automates monthly speed, CPU, and memory benchmarks across operating systems, publishing clear comparison charts and raw data to show which setup is truly fastest.
+LinuxBenchHub compares Ubuntu, Fedora, and Debian by running the same benchmarks on comparable virtual hardware. It publishes monthly CPU and memory results alongside charts and raw data, so readers can inspect how the distributions performed under the tested conditions.
 
-LinuxBenchHub runs Phoronix Test Suite across identical virtual hardware, captured monthly in GitHub Actions CI, with a Rails 8 showcase and static export pipeline.
+The project runs Phoronix Test Suite in a monthly GitHub Actions workflow and presents the results through a Rails 8 showcase and static export pipeline.
 
 **Live demo:** [linuxbenchhub.vercel.app](https://linuxbenchhub.vercel.app/)
 

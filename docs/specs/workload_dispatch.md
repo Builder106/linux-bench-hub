@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Automated Workload Dispatch engine (`lib/linux_bench_hub/workload_dispatch/` and `bin/lbh-dispatch`) provides deterministic, reproducible benchmark execution pipelines across three core subsystem tiers:
+The workload dispatcher (`lib/linux_bench_hub/workload_dispatch/` and `bin/lbh-dispatch`) runs configured benchmarks across three subsystem tiers. It records the execution settings and results; those controls do not guarantee identical timings between runs.
 
 1. **CPU**: Computational and raytracing stress tests (`pts/c-ray-2.0.0`).
 2. **Memory Bandwidth**: Sub-cache read and write memory throughput (`pts/tinymembench-1.0.2`).
@@ -10,7 +10,7 @@ The Automated Workload Dispatch engine (`lib/linux_bench_hub/workload_dispatch/`
 
 ## Pipeline Architecture
 
-The dispatch architecture separates workload specifications, pipeline configuration, target execution backends, and result manifest generation.
+The dispatcher separates workload specifications, pipeline configuration, execution targets, and result manifests.
 
 ```
                     +-----------------------+
@@ -86,9 +86,9 @@ The dispatch architecture separates workload specifications, pipeline configurat
   - Fedora: `fedora:44`
   - Debian: `debian:13`
 - **`SshTarget`**: Remote orchestration driving dedicated cloud hardware (e.g. Oracle Cloud Ampere A1 VM) over SSH.
-- **`SimulatedTarget`**: High-fidelity deterministic simulation producing schema-compliant `composite.xml` and manifest outputs for automated testing, CI pipelines, and dry-run validation.
+- **`SimulatedTarget`**: Deterministic simulated output in the `composite.xml` and manifest formats for automated tests, CI pipelines, and dry-run validation. It does not measure hardware performance.
 
-## Reproducibility Guarantees
+## Reproducibility controls
 
 1. **Zero Prompt Drift**: All interactive prompts across PTS setup and individual test options are pre-seeded and piped non-interactively via deterministic response streams.
 2. **Artifact Verification**: Verifies `composite.xml` presence, validates XML structure, and traps partial installation failures (`install-failed.log`).

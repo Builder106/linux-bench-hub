@@ -1,11 +1,11 @@
 # LinuxBenchHub Website (Rails 8 Showcase)
 
-The web showcase for **LinuxBenchHub** &mdash; a static showcase app built with Rails 8 (`--skip-active-record`) that renders benchmark writeups for Ubuntu, Fedora, and Debian.
+This Rails 8 app (`--skip-active-record`) renders LinuxBenchHub's benchmark writeups for Ubuntu, Fedora, and Debian as a static site.
 
 ## Architecture
 
-- **Data Source**: Parses per-distro markdown writeups located under `../benchmarks/<distro>/<distro>.md`via`DistroBenchmark` (`app/models/distro_benchmark.rb`).
-- **Static Export**: Generates static HTML and compiled assets into `export/`via`bin/rails export:static` (`lib/tasks/export.rake`).
+- **Data Source**: `DistroBenchmark` (`app/models/distro_benchmark.rb`) parses the per-distro Markdown writeups under `../benchmarks/<distro>/<distro>.md`.
+- **Static Export**: `bin/rails export:static` (`lib/tasks/export.rake`) writes static HTML and compiled assets to `export/`.
 - **Deployment**: Deployed directly to Vercel via static export ([`vercel.json`](../vercel.json)).
 
 ## Local Development
